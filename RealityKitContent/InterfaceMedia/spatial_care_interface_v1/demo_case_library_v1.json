@@ -1,0 +1,118 @@
+{
+  "schema_version": "1.0.0",
+  "resource_id": "demo_case_library_v1",
+  "module_id": "spatial_interface_v1",
+  "patient_display_authorized": false,
+  "contains_phi": false,
+  "content_mode": "fictional_demo_only",
+  "required_global_badge": "Fictional educational scenario — not a patient record",
+  "case_selection_policy": "Cases select a predetermined educational scene only. They do not diagnose, triage, recommend treatment, rank options, or predict an outcome.",
+  "cases": [
+    {
+      "id": "fictional_case_01_right_m1_orientation_v1",
+      "display_label": "Fictional Scenario 01",
+      "subtitle": "Right-M1 anatomy orientation",
+      "fictional": true,
+      "contains_phi": false,
+      "portrait_resource_id": "fictional_case_portrait_01_v1",
+      "portrait_filename": "case_portraits/fictional_case_portrait_01.png",
+      "portrait_alt": "Synthetic head-and-shoulders portrait used only to identify Fictional Scenario 01.",
+      "scene_preset_id": "stroke_guided_head_scene_v1",
+      "learning_focus": [
+        "Locate the generic cerebral arteries and conceptual right-M1 marker.",
+        "Distinguish structural anatomy from illustrative flow cues.",
+        "Practice restoring the complete orientation view."
+      ],
+      "timeline": [
+        {"sequence": 1, "label": "Orientation", "time_value": null},
+        {"sequence": 2, "label": "Generic occlusion explanation", "time_value": null},
+        {"sequence": 3, "label": "Return to context", "time_value": null}
+      ],
+      "recommendation": null,
+      "outcome_prediction": null
+    },
+    {
+      "id": "fictional_case_02_flow_cues_v1",
+      "display_label": "Fictional Scenario 02",
+      "subtitle": "Qualitative flow-cue comparison",
+      "fictional": true,
+      "contains_phi": false,
+      "portrait_resource_id": "fictional_case_portrait_02_v1",
+      "portrait_filename": "case_portraits/fictional_case_portrait_02.png",
+      "portrait_alt": "Synthetic head-and-shoulders portrait used only to identify Fictional Scenario 02.",
+      "scene_preset_id": "stroke_guided_head_scene_v1",
+      "learning_focus": [
+        "Compare baseline, restricted, and restored illustrative display states.",
+        "Recognize that arrows and marker timing do not encode velocity, pressure, perfusion, or outcome.",
+        "Use Pause and Replay with an explicit motion preference."
+      ],
+      "timeline": [
+        {"sequence": 1, "label": "Baseline illustrative cue", "time_value": null},
+        {"sequence": 2, "label": "Restricted illustrative cue", "time_value": null},
+        {"sequence": 3, "label": "Restored illustrative cue", "time_value": null}
+      ],
+      "recommendation": null,
+      "outcome_prediction": null
+    },
+    {
+      "id": "fictional_case_03_structural_detail_v1",
+      "display_label": "Fictional Scenario 03",
+      "subtitle": "Structural anatomy detail",
+      "fictional": true,
+      "contains_phi": false,
+      "portrait_resource_id": "fictional_case_portrait_03_v1",
+      "portrait_filename": "case_portraits/fictional_case_portrait_03.png",
+      "portrait_alt": "Synthetic head-and-shoulders portrait used only to identify Fictional Scenario 03.",
+      "scene_preset_id": "stroke_scholar_head_scene_v1",
+      "learning_focus": [
+        "Inspect one reviewed structural atlas focus at a time.",
+        "Keep structural labels separate from functional or deficit claims.",
+        "Reveal internal structures only after hiding or cutting obscuring anatomy."
+      ],
+      "timeline": [
+        {"sequence": 1, "label": "Whole-brain context", "time_value": null},
+        {"sequence": 2, "label": "Single structural focus", "time_value": null},
+        {"sequence": 3, "label": "Restore whole-brain context", "time_value": null}
+      ],
+      "recommendation": null,
+      "outcome_prediction": null
+    },
+    {
+      "id": "fictional_case_04_vessel_vignette_v1",
+      "display_label": "Fictional Scenario 04",
+      "subtitle": "Magnified vessel teaching view",
+      "fictional": true,
+      "contains_phi": false,
+      "portrait_resource_id": "fictional_case_portrait_04_v1",
+      "portrait_filename": "case_portraits/fictional_case_portrait_04.png",
+      "portrait_alt": "Synthetic head-and-shoulders portrait used only to identify Fictional Scenario 04.",
+      "scene_preset_id": "m1_occlusion_vessel_vignette_scene_v1",
+      "learning_focus": [
+        "Open a detached magnified vessel-wall teaching view.",
+        "Keep micro-scale thrombus content separate from the registered head.",
+        "Read the persistent conceptual and not-to-scale warning."
+      ],
+      "timeline": [
+        {"sequence": 1, "label": "Open detached vignette", "time_value": null},
+        {"sequence": 2, "label": "Inspect conceptual layers", "time_value": null},
+        {"sequence": 3, "label": "Return to head context", "time_value": null}
+      ],
+      "recommendation": null,
+      "outcome_prediction": null
+    }
+  ],
+  "prohibited_fields": [
+    "real_name",
+    "medical_record_number",
+    "date_of_birth",
+    "address",
+    "contact_information",
+    "absolute_event_timestamp",
+    "real_portrait",
+    "patient_scan_identifier",
+    "clinician_note",
+    "treatment_recommendation",
+    "eligibility_score",
+    "outcome_probability"
+  ]
+}

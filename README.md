@@ -63,7 +63,7 @@ Not part of the first slice: accounts, cloud sync, clinical decision support, pa
 
 ## Current 3D asset catalog
 
-The repository includes **135 uniquely named, manifest-backed USDZ runtime
+The repository includes **145 uniquely named, manifest-backed USDZ runtime
 assets**:
 
 - 65 original packages: 36 higher-detail v2 assets and 29 clearly labelled
@@ -75,7 +75,9 @@ assets**:
   packages and 14 open-cranial tool packages;
 - one comfort-oriented, reduced-graphic HRA brain derivative for adaptive
   patient/family orientation;
-- 137 total build records: the detailed source build produced 72 additional
+- ten original spatial-care environment packages: nine independently loadable
+  room components plus one registered review assembly;
+- 147 total build records: the detailed source build produced 82 additional
   packages, but
   `middle_inner_ear_bilateral_v3` and
   `cranial_support_registered_assembly_v3` are on an inner-ear licence hold,
@@ -98,6 +100,12 @@ The adaptive derivative is a presentation alternative, not an extra anatomy
 layer. In its lowest-detail profile it replaces the detailed brain view; it
 must not be co-loaded over the source anatomy or used to hide
 clinician-approved facts.
+
+The environment module is also a presentation option, not clinical content.
+On Vision Pro the default remains system passthrough; in Simulator the default
+remains the selected Simulator environment. The synthetic consultation room is
+disabled by default and may be loaded only for an explicitly selected
+fully-immersive developer demo or governed design review.
 
 The complete one-by-one catalog, paths, descriptions, runtime notes, manifests,
 and loading guidance are in
@@ -124,6 +132,8 @@ cataloged one by one in
 
 ![Comfort-oriented generic brain orientation](RealityKitContent/Assets/vision_pro_stroke_kit_v2/previews/adaptive_visuals_v1/01_brain_orientation_calm_educational_v1.png)
 
+![Optional spatial-care consultation environment](RealityKitContent/Assets/vision_pro_stroke_kit_v2/previews/spatial_care_environment_v1/10_spatial_care_consultation_environment_assembly_v1.png)
+
 These models are generic educational material—not patient-specific anatomy,
 histology, quantitative flow simulation, or clinical decision support. The
 micro-detail packages must always appear in a separate magnified teaching stage
@@ -138,6 +148,50 @@ categories treated as conditional options. Open-cranial tools are
 static or qualitatively kinematic: no force, depth, trajectory, pressure,
 energy, device sizing, compatibility, navigation, tissue interaction, or
 training meaning is encoded.
+
+## Spatial-care interface resource pack
+
+The supplied four-state interface reference is represented by a deliberately
+split implementation contract:
+
+- **USDZ** supplies the existing reviewed anatomy and the ten optional room
+  packages;
+- **SwiftUI/RealityKit attachments** must supply glass panels, text, role
+  choices, case cards, topic rails, evidence cards, progress, warnings,
+  leader lines, magnifier frames, and reversible controls;
+- **visionOS** supplies passthrough, the configured Simulator environment,
+  hand presence, gaze privacy, natural input, hover, and system boundaries;
+- **InterfaceMedia** supplies four clearly fictional demo portraits, a
+  code-native wordmark, scene presets, UI tokens, SF Symbols mappings,
+  review-blocked evidence placeholders, and an intentionally incomplete
+  annotation-anchor review scaffold.
+
+The supporting target board below translates the concept into a
+right-M1-compatible, non-graphic four-state flow. It is an ImageGen design
+reference—not a runtime screenshot, anatomical source, Simulator proof, or
+clinical evidence.
+
+![Spatial-care interface target storyboard](RealityKitContent/InterfaceMedia/spatial_care_interface_v1/previews/spatial_care_interface_storyboard_v1.png)
+
+The current detailed clot and blood-flow packages depict a conceptual
+**right-M1** scenario. Interface copy must say right M1; it must not reuse the
+source concept's left-MCA wording. A future left-sided lesson requires
+separately source-backed, registered, clinically reviewed left pathology and
+flow assets—never a mirrored model.
+
+All four case portraits and case records are synthetic fictional demo content.
+They contain no patient record, clinical timeline, treatment recommendation,
+eligibility decision, or predicted outcome. Keep the badge “Fictional
+educational scenario — not a patient record” visible, and keep evidence cards
+hidden in patient/family mode until the exact claim, current source, locale,
+accessible copy, expiry policy, and review record are approved together.
+
+The machine-readable pack is in
+[`RealityKitContent/InterfaceMedia/spatial_care_interface_v1`](RealityKitContent/InterfaceMedia/spatial_care_interface_v1),
+its [one-by-one interface resource catalog](RealityKitContent/InterfaceMedia/spatial_care_interface_v1/README.md)
+explains all 14 supporting files, and its integration, ownership, state,
+exclusion, physics, and Houdini rules are defined in
+[`MASTER.md`](MASTER.md).
 
 ## Adaptive visual-comfort endpoint
 
@@ -216,7 +270,9 @@ Stroke-VisionOS/
 │   ├── Models/                     # Domain and lesson-state models
 │   ├── Components/                 # Reusable SwiftUI/RealityKit pieces
 │   └── Resources/                  # App-owned resources
-├── RealityKitContent/              # Reality Composer Pro package/assets
+├── RealityKitContent/
+│   ├── Assets/                     # 145 manifest-backed USDZ packages
+│   └── InterfaceMedia/             # Fictional/demo UI media and scene config
 ├── Services/
 │   └── AdaptiveAssetService/       # Local visual-preference recipe endpoint
 ├── Tests/                          # Unit, contract, and UI tests

@@ -1,0 +1,187 @@
+{
+  "schema_version": "1.0.0",
+  "module_id": "spatial_interface_v1",
+  "version": "1.0.0",
+  "title": "Stroke Care spatial-interface non-geometry resource pack",
+  "resource_count": 14,
+  "intended_use": "Developer-preview resources for composing the landing, fictional case browser, guided right-M1 explanation, structural-detail explorer, and detached vessel vignette in a future native visionOS app.",
+  "patient_specific": false,
+  "contains_phi": false,
+  "patient_display_authorized": false,
+  "clinical_review_status": "REQUIRES_CLINICAL_HUMAN_FACTORS_ACCESSIBILITY_PRIVACY_AND_PHYSICAL_DEVICE_REVIEW",
+  "runtime_boundary": "This module contains app configuration, fictional demo media, a code-native wordmark, and a supporting storyboard. It contains no anatomy USDZ, hand mesh, room mesh, clinical case, diagnosis logic, treatment recommendation, patient record, or validated user interface.",
+  "source_asset_dependencies": [
+    "artery_cutaway_complete_v2",
+    "basal_ganglia_deep_nuclei_v3",
+    "brain_anatomy_realistic_v2",
+    "brain_deep_structures_v2",
+    "brain_orientation_calm_educational_v1",
+    "brain_ventricles_v2",
+    "cerebral_arteries_realistic_v2",
+    "cerebral_bloodflow_animation_v2",
+    "circle_of_willis_flow_overlay_v2",
+    "external_head_scalp_cutaway_v2",
+    "eyes_context_realistic_v2",
+    "frontal_cortex_parcellation_v3",
+    "insular_opercular_cortex_v3",
+    "ischemic_mca_clot_v2",
+    "neck_access_arteries_realistic_v2",
+    "parietal_cortex_parcellation_v3",
+    "platelet_fibrin_thrombus_microstructure_conceptual_v3",
+    "skull_semantic_realistic_v2",
+    "temporal_cortex_parcellation_v3"
+  ],
+  "resources": [
+    {
+      "id": "spatial_scene_preset_catalog_v1",
+      "path": "spatial_scene_preset_catalog_v1.json",
+      "media_type": "application/json",
+      "resource_kind": "runtime_scene_configuration",
+      "bytes": 11656,
+      "sha256": "f4f5b9b9bb47b81a468ebbfc0be86165ec55118494d38c4bc65589e2e26b646f",
+      "runtime_required": true
+    },
+    {
+      "id": "demo_case_library_v1",
+      "path": "demo_case_library_v1.json",
+      "media_type": "application/json",
+      "resource_kind": "fictional_demo_content",
+      "bytes": 5294,
+      "sha256": "d6397e8d180da0d67970e5c80ba4f9f2faca9d0075928bffa8fdd5989cfe16e7",
+      "runtime_required": true
+    },
+    {
+      "id": "educational_evidence_card_catalog_v1",
+      "path": "educational_evidence_card_catalog_v1.json",
+      "media_type": "application/json",
+      "resource_kind": "review_blocked_placeholder_content",
+      "bytes": 2882,
+      "sha256": "c566932dbf0e50f2282a94adab08162eb338ecc64f31186f60cc34e2c01751fd",
+      "runtime_required": true
+    },
+    {
+      "id": "spatial_annotation_anchor_map_v1",
+      "path": "spatial_annotation_anchor_map_v1.json",
+      "media_type": "application/json",
+      "resource_kind": "review_scaffold",
+      "bytes": 7884,
+      "sha256": "97020c871bf7b26de454c5b7b48d247f35a81fedcdb3202088146116619a74ee",
+      "runtime_required": true
+    },
+    {
+      "id": "spatial_annotation_anchor_map_v1_schema",
+      "path": "spatial_annotation_anchor_map_v1.schema.json",
+      "media_type": "application/schema+json",
+      "resource_kind": "schema",
+      "bytes": 3905,
+      "sha256": "00dd861d71c4ec98986c00f7d725131ce6c99c3866f5c643aac71a13d25aa49f",
+      "runtime_required": false
+    },
+    {
+      "id": "spatial_ui_design_tokens_v1",
+      "path": "spatial_ui_design_tokens_v1.json",
+      "media_type": "application/json",
+      "resource_kind": "app_design_tokens",
+      "bytes": 4203,
+      "sha256": "d417fa6d45864130927e67e7c3f0ff5b61f2bdc7c8a435719983b3c39915d3bc",
+      "runtime_required": true
+    },
+    {
+      "id": "spatial_icon_catalog_v1",
+      "path": "spatial_icon_catalog_v1.json",
+      "media_type": "application/json",
+      "resource_kind": "system_symbol_mapping",
+      "bytes": 3854,
+      "sha256": "e78475e68a7e22a8314ad9b13db923540259adf572f1a53c331d3407d12308d7",
+      "runtime_required": true
+    },
+    {
+      "id": "stroke_care_wordmark_v1",
+      "path": "stroke_care_wordmark_v1.svg",
+      "media_type": "image/svg+xml",
+      "resource_kind": "project_owned_code_native_vector",
+      "bytes": 1143,
+      "sha256": "2759462063b00a3c14c0b7eebe648ca680dbf09f7fb6c0f026e2d6c8bc18a4c7",
+      "runtime_required": true
+    },
+    {
+      "id": "fictional_case_portrait_01_v1",
+      "path": "case_portraits/fictional_case_portrait_01.png",
+      "media_type": "image/png",
+      "resource_kind": "synthetic_fictional_demo_portrait",
+      "bytes": 1973020,
+      "sha256": "afedba4b9d6c6b5d2e5e1aad98c778b23dd2991597d8daf1bfdea20087e04016",
+      "pixel_width": 1254,
+      "pixel_height": 1254,
+      "runtime_required": true
+    },
+    {
+      "id": "fictional_case_portrait_02_v1",
+      "path": "case_portraits/fictional_case_portrait_02.png",
+      "media_type": "image/png",
+      "resource_kind": "synthetic_fictional_demo_portrait",
+      "bytes": 1977186,
+      "sha256": "e7a0a7a3678148ec937975e57235a9701b873e7dd0db287696186a7ca39a927a",
+      "pixel_width": 1254,
+      "pixel_height": 1254,
+      "runtime_required": true
+    },
+    {
+      "id": "fictional_case_portrait_03_v1",
+      "path": "case_portraits/fictional_case_portrait_03.png",
+      "media_type": "image/png",
+      "resource_kind": "synthetic_fictional_demo_portrait",
+      "bytes": 1971084,
+      "sha256": "b8ab17e40431617c648a7d877c55fb366d29495cb6a4084130d0af775712fa40",
+      "pixel_width": 1254,
+      "pixel_height": 1254,
+      "runtime_required": true
+    },
+    {
+      "id": "fictional_case_portrait_04_v1",
+      "path": "case_portraits/fictional_case_portrait_04.png",
+      "media_type": "image/png",
+      "resource_kind": "synthetic_fictional_demo_portrait",
+      "bytes": 1865764,
+      "sha256": "07474a5e90ebcdd9b7e8a2d0a649bfa308c9278ebd93ac15ae0a8aac5049f22e",
+      "pixel_width": 1254,
+      "pixel_height": 1254,
+      "runtime_required": true
+    },
+    {
+      "id": "spatial_care_interface_storyboard_v1",
+      "path": "previews/spatial_care_interface_storyboard_v1.png",
+      "media_type": "image/png",
+      "resource_kind": "supporting_non_runtime_visual_target",
+      "bytes": 1983663,
+      "sha256": "52d38fe0db7e7226e85cc9b066d8c4c2e51827b99878bba19af1c19531d4342d",
+      "pixel_width": 1653,
+      "pixel_height": 952,
+      "runtime_required": false
+    },
+    {
+      "id": "image_generation_provenance_v1",
+      "path": "image_generation_provenance_v1.json",
+      "media_type": "application/json",
+      "resource_kind": "generation_provenance",
+      "bytes": 7304,
+      "sha256": "a23a3735ffafb4468408c56742beec9eadbe34a0f2f42a87081ecb16abc5486b",
+      "runtime_required": false
+    }
+  ],
+  "platform_ownership": {
+    "passthrough_or_simulator_environment": "visionOS system",
+    "hands_gaze_and_natural_input": "visionOS system",
+    "glass_panels_text_buttons_controls_and_accessibility": "host SwiftUI app",
+    "anatomy_geometry_and_authored_animation": "existing release asset manifests",
+    "presentation_effects_and_annotation_attachments": "host RealityKit app"
+  },
+  "prohibited_uses": [
+    "No resource may be presented as a real patient, patient record, clinical dashboard, diagnosis, triage result, treatment recommendation, eligibility decision, prognosis, or informed-consent substitute.",
+    "No portrait or storyboard may be used as identity, demographic, clinical, anatomical, usability, Simulator, or device evidence.",
+    "No structural label may be converted into a functional, symptom, perfusion, deficit, or outcome claim without a separate approved mapping and copy record.",
+    "No left-MCA text may accompany the current right-M1 clot or right-sided baked animation.",
+    "No app may infer anxiety or visual preference from gaze, pupil, hand, voice, movement, or other biometric data.",
+    "No evidence placeholder may be replaced by uncited or unreviewed clinical copy."
+  ]
+}

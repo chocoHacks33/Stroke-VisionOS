@@ -1,0 +1,107 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://stroke-visionos.invalid/schemas/spatial_annotation_anchor_map_v1.schema.json",
+  "title": "Stroke VisionOS spatial annotation anchor map",
+  "type": "object",
+  "additionalProperties": false,
+  "required": [
+    "schema_version",
+    "resource_id",
+    "module_id",
+    "patient_display_authorized",
+    "annotation_policy",
+    "anchor_requests"
+  ],
+  "properties": {
+    "schema_version": {"const": "1.0.0"},
+    "resource_id": {"const": "spatial_annotation_anchor_map_v1"},
+    "module_id": {"const": "spatial_interface_v1"},
+    "patient_display_authorized": {"const": false},
+    "annotation_policy": {"type": "string", "minLength": 1},
+    "anchor_requests": {
+      "type": "array",
+      "items": {"$ref": "#/$defs/anchorRequest"}
+    }
+  },
+  "$defs": {
+    "sha256": {"type": "string", "pattern": "^[a-f0-9]{64}$"},
+    "reviewStatus": {
+      "enum": [
+        "not_started",
+        "pending_runtime_topology_review",
+        "pending_spatial_review",
+        "pending_clinical_copy_review",
+        "approved_for_exact_package_revision",
+        "rejected"
+      ]
+    },
+    "entitySelector": {
+      "type": ["object", "null"],
+      "additionalProperties": false,
+      "required": ["selector_type", "value"],
+      "properties": {
+        "selector_type": {"enum": ["child_index_path", "reviewed_entity_path"]},
+        "value": {
+          "oneOf": [
+            {"type": "array", "items": {"type": "integer", "minimum": 0}, "minItems": 1},
+            {"type": "string", "minLength": 1}
+          ]
+        }
+      }
+    },
+    "localAnchorTransform": {
+      "type": ["object", "null"],
+      "additionalProperties": false,
+      "required": ["anchor_space", "translation_m", "orientation_xyzw"],
+      "properties": {
+        "anchor_space": {"const": "source_asset_local"},
+        "translation_m": {
+          "type": "array",
+          "prefixItems": [{"type": "number"}, {"type": "number"}, {"type": "number"}],
+          "items": false
+        },
+        "orientation_xyzw": {
+          "type": "array",
+          "prefixItems": [{"type": "number"}, {"type": "number"}, {"type": "number"}, {"type": "number"}],
+          "items": false
+        }
+      }
+    },
+    "anchorRequest": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": [
+        "id",
+        "structural_label_key",
+        "source_asset_id",
+        "source_package_relative_path",
+        "source_asset_sha256",
+        "source_hash_origin",
+        "entity_selector",
+        "entity_selector_review_status",
+        "local_anchor_transform",
+        "anchor_review_status",
+        "approved_display_copy",
+        "copy_review_status",
+        "functional_claim_allowed",
+        "review_requirements"
+      ],
+      "properties": {
+        "id": {"type": "string", "pattern": "^[a-z0-9_]+$"},
+        "structural_label_key": {"type": "string", "pattern": "^[a-z0-9_]+$"},
+        "source_asset_id": {"type": "string", "pattern": "^[a-z0-9_]+$"},
+        "source_package_relative_path": {"type": "string", "pattern": "^RealityKitContent/Assets/.+\\.usdz$"},
+        "source_asset_sha256": {"$ref": "#/$defs/sha256"},
+        "source_hash_origin": {"enum": ["release_manifest", "computed_release_package"]},
+        "entity_selector": {"$ref": "#/$defs/entitySelector"},
+        "entity_selector_review_status": {"$ref": "#/$defs/reviewStatus"},
+        "local_anchor_transform": {"$ref": "#/$defs/localAnchorTransform"},
+        "anchor_review_status": {"$ref": "#/$defs/reviewStatus"},
+        "approved_display_copy": {"type": ["string", "null"]},
+        "copy_review_status": {"$ref": "#/$defs/reviewStatus"},
+        "functional_claim_allowed": {"const": false},
+        "review_requirements": {"type": "array", "items": {"type": "string", "minLength": 1}, "minItems": 1}
+      }
+    }
+  }
+}

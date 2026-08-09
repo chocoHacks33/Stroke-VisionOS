@@ -6,9 +6,9 @@ source, attribution, and modification records when redistributing it.
 
 ## Original project assets
 
-Eighty-one of the 135 release-catalog USDZ packages are original project work:
-43 baseline packages, 12 conceptual micro-detail packages, and 26 surgical-tool
-packages. No
+Ninety-one of the 145 release-catalog USDZ packages are original project work:
+43 baseline packages, 12 conceptual micro-detail packages, 26 surgical-tool
+packages, and 10 optional spatial-care environment packages. No
 repository-wide licence has yet been selected for those files, so public access
 to the repository must not be interpreted as an additional licence grant.
 
@@ -32,6 +32,24 @@ and modification records in
 [PROVENANCE.md](PROVENANCE.md), and do not imply a trademark, manufacturer
 association, freedom-to-operate determination, or permission beyond the rights
 actually granted by the project owner.
+
+### Spatial-care environment and interface media
+
+All ten `spatial_care_environment_v1` USDZ packages are original procedural
+project geometry/materials with no third-party mesh, texture, stock model,
+portrait, product design, or generated image embedded. The manifest, previews,
+notes, and validation remain subject to the repository's unresolved project
+licence decision.
+
+The `spatial_interface_v1` JSON/SVG resources are original project
+configuration/artwork. Its four fictional portraits and supporting storyboard
+were created with built-in ImageGen and carry the exact output/provenance record
+in the resource pack. They contain no asserted real-person identity or patient
+data, but their presence does not grant clinical approval, personality rights
+for other uses, trademark rights, or a licence beyond the project owner's
+terms. The storyboard is supporting non-runtime artwork and must not be
+redistributed as a medical claim, anatomy source, Simulator capture, or evidence
+figure.
 
 ## NIH 3D and Human Reference Atlas derivatives — CC BY 4.0
 

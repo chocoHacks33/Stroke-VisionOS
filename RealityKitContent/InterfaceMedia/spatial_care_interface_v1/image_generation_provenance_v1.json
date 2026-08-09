@@ -1,0 +1,83 @@
+{
+  "schema_version": "1.0.0",
+  "resource_id": "image_generation_provenance_v1",
+  "module_id": "spatial_interface_v1",
+  "provider": "built_in_imagegen",
+  "external_model_or_stock_asset_used": false,
+  "provider_model_version": null,
+  "generation_date": "2026-08-09",
+  "patient_specific": false,
+  "contains_phi": false,
+  "identity_claim": false,
+  "clinical_evidence_role": false,
+  "prompt_record_status": "reconstructed_exact_intent_not_verbatim",
+  "prompt_record_note": "The retained generator record preserves exact prompt intent and constraints but not the generator's byte-for-byte submitted prompt serialization. Do not describe these strings as verbatim prompts.",
+  "portrait_shared_prompt_prefix": "Use case: photorealistic-natural. Asset type: fictional Apple Vision Pro stroke-education case-card portrait, square 1:1.",
+  "portrait_shared_constraints": "Calm neutral/reassuring expression, plain clothing, warm softly blurred clinic-studio background, natural skin texture, gentle frontal lighting, centered head-and-shoulders crop with breathing room, premium medical-education quality, must not resemble a public figure or real patient, no medical device, distress, logo, badge, text, watermark, or border.",
+  "generated_images": [
+    {
+      "resource_id": "fictional_case_portrait_01_v1",
+      "path": "case_portraits/fictional_case_portrait_01.png",
+      "sha256": "afedba4b9d6c6b5d2e5e1aad98c778b23dd2991597d8daf1bfdea20087e04016",
+      "bytes": 1973020,
+      "pixel_width": 1254,
+      "pixel_height": 1254,
+      "subject_prompt_intent": "Fictional Black man early 60s, muted sage shirt.",
+      "full_reconstructed_prompt_intent": "Use case: photorealistic-natural. Asset type: fictional Apple Vision Pro stroke-education case-card portrait, square 1:1. Fictional Black man early 60s, muted sage shirt. Calm neutral/reassuring expression, plain clothing, warm softly blurred clinic-studio background, natural skin texture, gentle frontal lighting, centered head-and-shoulders crop with breathing room, premium medical-education quality, must not resemble a public figure or real patient, no medical device, distress, logo, badge, text, watermark, or border."
+    },
+    {
+      "resource_id": "fictional_case_portrait_02_v1",
+      "path": "case_portraits/fictional_case_portrait_02.png",
+      "sha256": "e7a0a7a3678148ec937975e57235a9701b873e7dd0db287696186a7ca39a927a",
+      "bytes": 1977186,
+      "pixel_width": 1254,
+      "pixel_height": 1254,
+      "subject_prompt_intent": "Fictional South Asian woman mid-50s, muted terracotta blouse.",
+      "full_reconstructed_prompt_intent": "Use case: photorealistic-natural. Asset type: fictional Apple Vision Pro stroke-education case-card portrait, square 1:1. Fictional South Asian woman mid-50s, muted terracotta blouse. Calm neutral/reassuring expression, plain clothing, warm softly blurred clinic-studio background, natural skin texture, gentle frontal lighting, centered head-and-shoulders crop with breathing room, premium medical-education quality, must not resemble a public figure or real patient, no medical device, distress, logo, badge, text, watermark, or border."
+    },
+    {
+      "resource_id": "fictional_case_portrait_03_v1",
+      "path": "case_portraits/fictional_case_portrait_03.png",
+      "sha256": "b8ab17e40431617c648a7d877c55fb366d29495cb6a4084130d0af775712fa40",
+      "bytes": 1971084,
+      "pixel_width": 1254,
+      "pixel_height": 1254,
+      "subject_prompt_intent": "Fictional East Asian man late 40s, muted navy overshirt.",
+      "full_reconstructed_prompt_intent": "Use case: photorealistic-natural. Asset type: fictional Apple Vision Pro stroke-education case-card portrait, square 1:1. Fictional East Asian man late 40s, muted navy overshirt. Calm neutral/reassuring expression, plain clothing, warm softly blurred clinic-studio background, natural skin texture, gentle frontal lighting, centered head-and-shoulders crop with breathing room, premium medical-education quality, must not resemble a public figure or real patient, no medical device, distress, logo, badge, text, watermark, or border."
+    },
+    {
+      "resource_id": "fictional_case_portrait_04_v1",
+      "path": "case_portraits/fictional_case_portrait_04.png",
+      "sha256": "07474a5e90ebcdd9b7e8a2d0a649bfa308c9278ebd93ac15ae0a8aac5049f22e",
+      "bytes": 1865764,
+      "pixel_width": 1254,
+      "pixel_height": 1254,
+      "subject_prompt_intent": "Fictional white woman early 70s, muted teal blouse.",
+      "full_reconstructed_prompt_intent": "Use case: photorealistic-natural. Asset type: fictional Apple Vision Pro stroke-education case-card portrait, square 1:1. Fictional white woman early 70s, muted teal blouse. Calm neutral/reassuring expression, plain clothing, warm softly blurred clinic-studio background, natural skin texture, gentle frontal lighting, centered head-and-shoulders crop with breathing room, premium medical-education quality, must not resemble a public figure or real patient, no medical device, distress, logo, badge, text, watermark, or border."
+    },
+    {
+      "resource_id": "spatial_care_interface_storyboard_v1",
+      "path": "previews/spatial_care_interface_storyboard_v1.png",
+      "sha256": "52d38fe0db7e7226e85cc9b066d8c4c2e51827b99878bba19af1c19531d4342d",
+      "bytes": 1983663,
+      "pixel_width": 1653,
+      "pixel_height": 952,
+      "generation_method": "Built-in ImageGen edit using the user-supplied reference image and the four fictional portraits.",
+      "visual_copy_review_status": "rejected_as_runtime_copy",
+      "visual_copy_review_note": "The generated pixels include phrases such as real-world cases and a generic evidence statement that conflict with this module's fictional-case and evidence-placeholder contracts. Treat all visible storyboard text as non-authoritative composition reference only; do not transcribe, OCR, ship, or use it as implementation copy.",
+      "source_reference": {
+        "included_in_repository": false,
+        "sha256": "761dc35d9460db2a807b33fb51d5a2d1b2abf57df66bcf098337d4be418247b2",
+        "pixel_width": 1280,
+        "pixel_height": 737
+      },
+      "full_reconstructed_prompt_intent": "Clean 2x2 Apple Vision Pro stroke-education storyboard; top-left calm landing with translucent generic brain and role choice; top-right fictional case carousel; bottom-left guided generic right-M1 lesson with system hand-presence cues; bottom-right scholar view with dense structural labels, detached vessel cutaway, evidence placeholder, and topic rail; warm premium room, native-glass language, teal, sage, and amber palette; no copied names, PHI, recommendations, gore, incision, brands, or watermark."
+    }
+  ],
+  "usage_boundaries": [
+    "Portraits are synthetic demo identifiers, not real people, patient records, identity evidence, demographic evidence, or clinical evidence.",
+    "The storyboard is a supporting visual target only. It is not a runtime screen, anatomy source, UI verification screenshot, clinical source, or proof of Simulator or physical-device behavior.",
+    "Do not infer a person's condition, treatment, role, personality, prognosis, or history from portrait appearance.",
+    "Keep the fictional educational badge visible wherever a portrait or case card appears."
+  ]
+}

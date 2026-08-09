@@ -1,0 +1,62 @@
+{
+  "schema_version": "1.0.0",
+  "module_id": "spatial_interface_v1",
+  "validated_at": "2026-08-09",
+  "status": "PASS_WITH_BLOCKED_RUNTIME_CONTENT_AND_REQUIRED_EXTERNAL_REVIEWS",
+  "patient_display_authorized": false,
+  "manifest": {
+    "path": "RealityKitContent/InterfaceMedia/spatial_care_interface_v1/asset_manifest_spatial_interface_v1.json",
+    "bytes": 7971,
+    "sha256": "eee14ebce926d2594066142e1fe1d87153242d3e3a9235fe1012b4fdc49dc3cb",
+    "declared_resource_count": 14,
+    "verified_resource_count": 14,
+    "integrity_result": "PASS"
+  },
+  "checks": {
+    "json_files_parsed": 9,
+    "svg_well_formed": true,
+    "annotation_schema_draft": "2020-12",
+    "annotation_schema_and_instance_invariants_checked": true,
+    "third_party_json_schema_validator_available": false,
+    "released_source_manifests_checked": 12,
+    "released_source_asset_ids_checked": 135,
+    "scene_asset_references_checked": 32,
+    "unknown_scene_asset_references": 0,
+    "fictional_cases_checked": 4,
+    "synthetic_portraits_checked": 4,
+    "supporting_storyboards_checked": 1,
+    "annotation_requests_checked": 8,
+    "annotation_source_hashes_verified": 8,
+    "authored_entity_selectors": 0,
+    "authored_anchor_transforms": 0,
+    "approved_annotation_copy_records": 0,
+    "evidence_placeholders_checked": 3,
+    "authorized_evidence_cards": 0,
+    "private_absolute_paths_found": 0,
+    "runtime_usdz_files_in_module": 0
+  },
+  "image_integrity": [
+    {"id": "fictional_case_portrait_01_v1", "pixel_width": 1254, "pixel_height": 1254, "sha256_match": true, "macos_metadata_fields_empty": true},
+    {"id": "fictional_case_portrait_02_v1", "pixel_width": 1254, "pixel_height": 1254, "sha256_match": true, "macos_metadata_fields_empty": true},
+    {"id": "fictional_case_portrait_03_v1", "pixel_width": 1254, "pixel_height": 1254, "sha256_match": true, "macos_metadata_fields_empty": true},
+    {"id": "fictional_case_portrait_04_v1", "pixel_width": 1254, "pixel_height": 1254, "sha256_match": true, "macos_metadata_fields_empty": true},
+    {"id": "spatial_care_interface_storyboard_v1", "pixel_width": 1653, "pixel_height": 952, "sha256_match": true, "macos_metadata_fields_empty": true}
+  ],
+  "content_gates": {
+    "cases": "PASS as fictional developer-demo fixtures; patient display remains blocked",
+    "portraits": "PASS for gross visual/media integrity; accidental-resemblance and public-release privacy review remain required",
+    "evidence": "PASS because all clinical claim/source fields are null and every card is display-blocked",
+    "annotations": "PASS as an incomplete scaffold because no selector, transform, or copy was invented",
+    "storyboard": "BLOCKED as runtime copy or clinical evidence; generated visible wording is non-authoritative",
+    "left_right_consistency": "PASS in machine-readable presets: current lesson is explicitly right-M1 and left-MCA copy is prohibited"
+  },
+  "not_validated": [
+    "No Xcode visionOS application exists in this module.",
+    "No Simulator build, screenshot, interaction, accessibility, or performance result was produced.",
+    "No physical Apple Vision Pro test was performed.",
+    "No clinical, neuroanatomy, interventional, privacy, accessibility, human-factors, legal, or regulatory approval was performed.",
+    "No evidence statement or annotation was approved.",
+    "Synthetic image generation cannot by itself prove that a portrait resembles no real person.",
+    "Design-token values were not validated as comfort, accessibility, or performance guarantees."
+  ]
+}

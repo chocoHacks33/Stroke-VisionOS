@@ -1,0 +1,430 @@
+{
+  "module": "Generic calm spatial-care consultation environment v1",
+  "module_id": "spatial_care_environment_v1",
+  "manifest": "asset_manifest_spatial_care_environment_v1.json",
+  "generated_at_utc": "2026-08-09T12:35:56.071297+00:00",
+  "asset_count": 10,
+  "pass_count": 10,
+  "fail_count": 0,
+  "contract_checks": {
+    "asset_count_match": true,
+    "independent_count_match": true,
+    "assembly_count_match": true,
+    "unique_asset_ids": true,
+    "assembly_components_exact": true,
+    "assembly_exclusions_exact": true,
+    "default_passthrough_or_simulator": true,
+    "synthetic_environment_default_disabled": true,
+    "synthetic_environment_gated": true,
+    "module_patient_display_authorized_false": true,
+    "module_contains_phi_false": true,
+    "interface_anchor_slots_present": true,
+    "blank_feature_wall_for_app_ui_documented": true
+  },
+  "contract_pass": true,
+  "strict_command": "/usr/bin/usdchecker --arkit --strict <package.usdz>",
+  "realitykit_probe_source": "research/realitykit_load_probe.swift",
+  "records": [
+    {
+      "id": "calm_consultation_room_shell_v1",
+      "asset_kind": "independent_environment_component",
+      "triangle_count": 7708,
+      "triangle_budget": 32000,
+      "triangle_budget_pass": true,
+      "material_count_manifest": 6,
+      "usdz_bytes": 138335,
+      "usdz_bytes_match": true,
+      "usdz_sha256": "8c75ef926d9fc98ef81a77edc8fd997013e04d0c426cee5e61d205ebf2f653bd",
+      "usdz_sha256_match": true,
+      "strict_usd_pass": true,
+      "meters_per_unit_1": true,
+      "up_axis_y": true,
+      "embedded_stage_count": 1,
+      "embedded_stages": [
+        "calm_consultation_room_shell_v1.usdc"
+      ],
+      "external_asset_references": [],
+      "camera_or_light_prims": [],
+      "prohibited_content_prim_matches": [],
+      "realitykit_status": "PASS",
+      "realitykit_entities": 84,
+      "realitykit_models": 41,
+      "realitykit_materials": 41,
+      "realitykit_dimensions_runtime_xyz_m": [
+        7.2,
+        3.25,
+        6.2
+      ],
+      "realitykit_load_ms_observed": 50.5,
+      "runtime_dimensions_match_source_axis_mapping": true,
+      "preview_dimensions_px": [
+        1600,
+        1200
+      ],
+      "patient_display_authorized_false": true,
+      "no_ui_people_or_runtime_lights_declared": true,
+      "pass": true
+    },
+    {
+      "id": "curved_feature_wall_architecture_v1",
+      "asset_kind": "independent_environment_component",
+      "triangle_count": 7600,
+      "triangle_budget": 22000,
+      "triangle_budget_pass": true,
+      "material_count_manifest": 5,
+      "usdz_bytes": 247829,
+      "usdz_bytes_match": true,
+      "usdz_sha256": "11e003b1f5b2fde1b2c2c7fd10bb0853162407edb91b0d4f1f439102893d5e5f",
+      "usdz_sha256_match": true,
+      "strict_usd_pass": true,
+      "meters_per_unit_1": true,
+      "up_axis_y": true,
+      "embedded_stage_count": 1,
+      "embedded_stages": [
+        "curved_feature_wall_architecture_v1.usdc"
+      ],
+      "external_asset_references": [],
+      "camera_or_light_prims": [],
+      "prohibited_content_prim_matches": [],
+      "realitykit_status": "PASS",
+      "realitykit_entities": 48,
+      "realitykit_models": 23,
+      "realitykit_materials": 23,
+      "realitykit_dimensions_runtime_xyz_m": [
+        5.835,
+        2.68,
+        0.435
+      ],
+      "realitykit_load_ms_observed": 33.2,
+      "runtime_dimensions_match_source_axis_mapping": true,
+      "preview_dimensions_px": [
+        1600,
+        1200
+      ],
+      "patient_display_authorized_false": true,
+      "no_ui_people_or_runtime_lights_declared": true,
+      "pass": true
+    },
+    {
+      "id": "modular_lounge_seating_set_v1",
+      "asset_kind": "independent_environment_component",
+      "triangle_count": 12600,
+      "triangle_budget": 28000,
+      "triangle_budget_pass": true,
+      "material_count_manifest": 4,
+      "usdz_bytes": 405314,
+      "usdz_bytes_match": true,
+      "usdz_sha256": "9e0653960a3fb356e42743b3537ee14c4136c75de78f433bd427bca098da8e87",
+      "usdz_sha256_match": true,
+      "strict_usd_pass": true,
+      "meters_per_unit_1": true,
+      "up_axis_y": true,
+      "embedded_stage_count": 1,
+      "embedded_stages": [
+        "modular_lounge_seating_set_v1.usdc"
+      ],
+      "external_asset_references": [],
+      "camera_or_light_prims": [],
+      "prohibited_content_prim_matches": [],
+      "realitykit_status": "PASS",
+      "realitykit_entities": 38,
+      "realitykit_models": 18,
+      "realitykit_materials": 18,
+      "realitykit_dimensions_runtime_xyz_m": [
+        6.400949,
+        1.12,
+        1.245682
+      ],
+      "realitykit_load_ms_observed": 31.2,
+      "runtime_dimensions_match_source_axis_mapping": true,
+      "preview_dimensions_px": [
+        1600,
+        1200
+      ],
+      "patient_display_authorized_false": true,
+      "no_ui_people_or_runtime_lights_declared": true,
+      "pass": true
+    },
+    {
+      "id": "consultation_armchair_pair_v1",
+      "asset_kind": "independent_environment_component",
+      "triangle_count": 7640,
+      "triangle_budget": 16000,
+      "triangle_budget_pass": true,
+      "material_count_manifest": 3,
+      "usdz_bytes": 156466,
+      "usdz_bytes_match": true,
+      "usdz_sha256": "567d8b365280b8e89fbd55f0bf11862b594b9dec32144e8ad9670899736f664e",
+      "usdz_sha256_match": true,
+      "strict_usd_pass": true,
+      "meters_per_unit_1": true,
+      "up_axis_y": true,
+      "embedded_stage_count": 1,
+      "embedded_stages": [
+        "consultation_armchair_pair_v1.usdc"
+      ],
+      "external_asset_references": [],
+      "camera_or_light_prims": [],
+      "prohibited_content_prim_matches": [],
+      "realitykit_status": "PASS",
+      "realitykit_entities": 22,
+      "realitykit_models": 10,
+      "realitykit_materials": 10,
+      "realitykit_dimensions_runtime_xyz_m": [
+        4.475314,
+        1.15,
+        1.054224
+      ],
+      "realitykit_load_ms_observed": 19.1,
+      "runtime_dimensions_match_source_axis_mapping": true,
+      "preview_dimensions_px": [
+        1600,
+        1200
+      ],
+      "patient_display_authorized_false": true,
+      "no_ui_people_or_runtime_lights_declared": true,
+      "pass": true
+    },
+    {
+      "id": "round_spatial_display_dais_v1",
+      "asset_kind": "independent_environment_component",
+      "triangle_count": 7148,
+      "triangle_budget": 11000,
+      "triangle_budget_pass": true,
+      "material_count_manifest": 5,
+      "usdz_bytes": 305423,
+      "usdz_bytes_match": true,
+      "usdz_sha256": "93fe31c2cbf5ed1e8ad3b16eb0b42f09cc60364b6699e6b97e2782cc5f6ec806",
+      "usdz_sha256_match": true,
+      "strict_usd_pass": true,
+      "meters_per_unit_1": true,
+      "up_axis_y": true,
+      "embedded_stage_count": 1,
+      "embedded_stages": [
+        "round_spatial_display_dais_v1.usdc"
+      ],
+      "external_asset_references": [],
+      "camera_or_light_prims": [],
+      "prohibited_content_prim_matches": [],
+      "realitykit_status": "PASS",
+      "realitykit_entities": 16,
+      "realitykit_models": 7,
+      "realitykit_materials": 7,
+      "realitykit_dimensions_runtime_xyz_m": [
+        2.36,
+        0.106,
+        2.36
+      ],
+      "realitykit_load_ms_observed": 20.8,
+      "runtime_dimensions_match_source_axis_mapping": true,
+      "preview_dimensions_px": [
+        1600,
+        1200
+      ],
+      "patient_display_authorized_false": true,
+      "no_ui_people_or_runtime_lights_declared": true,
+      "pass": true
+    },
+    {
+      "id": "low_table_side_table_set_v1",
+      "asset_kind": "independent_environment_component",
+      "triangle_count": 5216,
+      "triangle_budget": 13000,
+      "triangle_budget_pass": true,
+      "material_count_manifest": 3,
+      "usdz_bytes": 142884,
+      "usdz_bytes_match": true,
+      "usdz_sha256": "4531ce883b43e8840c99ae2bfc3c2cf4b70d8d8e1b59b92860d678fef66f0092",
+      "usdz_sha256_match": true,
+      "strict_usd_pass": true,
+      "meters_per_unit_1": true,
+      "up_axis_y": true,
+      "embedded_stage_count": 1,
+      "embedded_stages": [
+        "low_table_side_table_set_v1.usdc"
+      ],
+      "external_asset_references": [],
+      "camera_or_light_prims": [],
+      "prohibited_content_prim_matches": [],
+      "realitykit_status": "PASS",
+      "realitykit_entities": 18,
+      "realitykit_models": 8,
+      "realitykit_materials": 8,
+      "realitykit_dimensions_runtime_xyz_m": [
+        6.16,
+        0.5425,
+        2.7
+      ],
+      "realitykit_load_ms_observed": 16.8,
+      "runtime_dimensions_match_source_axis_mapping": true,
+      "preview_dimensions_px": [
+        1600,
+        1200
+      ],
+      "patient_display_authorized_false": true,
+      "no_ui_people_or_runtime_lights_declared": true,
+      "pass": true
+    },
+    {
+      "id": "clinical_credenza_storage_v1",
+      "asset_kind": "independent_environment_component",
+      "triangle_count": 3556,
+      "triangle_budget": 13000,
+      "triangle_budget_pass": true,
+      "material_count_manifest": 6,
+      "usdz_bytes": 128963,
+      "usdz_bytes_match": true,
+      "usdz_sha256": "d8f087e75b7cc8ab473e158df14121ce9c78b92f445db183eff38ec848d0d9e6",
+      "usdz_sha256_match": true,
+      "strict_usd_pass": true,
+      "meters_per_unit_1": true,
+      "up_axis_y": true,
+      "embedded_stage_count": 1,
+      "embedded_stages": [
+        "clinical_credenza_storage_v1.usdc"
+      ],
+      "external_asset_references": [],
+      "camera_or_light_prims": [],
+      "prohibited_content_prim_matches": [],
+      "realitykit_status": "PASS",
+      "realitykit_entities": 26,
+      "realitykit_models": 12,
+      "realitykit_materials": 12,
+      "realitykit_dimensions_runtime_xyz_m": [
+        1.83,
+        1.15,
+        0.4955
+      ],
+      "realitykit_load_ms_observed": 21.8,
+      "runtime_dimensions_match_source_axis_mapping": true,
+      "preview_dimensions_px": [
+        1600,
+        1200
+      ],
+      "patient_display_authorized_false": true,
+      "no_ui_people_or_runtime_lights_declared": true,
+      "pass": true
+    },
+    {
+      "id": "calm_botanical_planter_set_v1",
+      "asset_kind": "independent_environment_component",
+      "triangle_count": 29640,
+      "triangle_budget": 36000,
+      "triangle_budget_pass": true,
+      "material_count_manifest": 6,
+      "usdz_bytes": 860946,
+      "usdz_bytes_match": true,
+      "usdz_sha256": "451d2eea6d79b486c75c27bf7798099e0c80cc336a849d64a793f997a9389c4c",
+      "usdz_sha256_match": true,
+      "strict_usd_pass": true,
+      "meters_per_unit_1": true,
+      "up_axis_y": true,
+      "embedded_stage_count": 1,
+      "embedded_stages": [
+        "calm_botanical_planter_set_v1.usdc"
+      ],
+      "external_asset_references": [],
+      "camera_or_light_prims": [],
+      "prohibited_content_prim_matches": [],
+      "realitykit_status": "PASS",
+      "realitykit_entities": 188,
+      "realitykit_models": 93,
+      "realitykit_materials": 93,
+      "realitykit_dimensions_runtime_xyz_m": [
+        6.916681,
+        1.926347,
+        4.966457
+      ],
+      "realitykit_load_ms_observed": 117.3,
+      "runtime_dimensions_match_source_axis_mapping": true,
+      "preview_dimensions_px": [
+        1600,
+        1200
+      ],
+      "patient_display_authorized_false": true,
+      "no_ui_people_or_runtime_lights_declared": true,
+      "pass": true
+    },
+    {
+      "id": "ambient_lighting_fixture_set_v1",
+      "asset_kind": "independent_environment_component",
+      "triangle_count": 7800,
+      "triangle_budget": 30000,
+      "triangle_budget_pass": true,
+      "material_count_manifest": 3,
+      "usdz_bytes": 265375,
+      "usdz_bytes_match": true,
+      "usdz_sha256": "7424931b9843524df9629b94264f874115f7b6d6b224a16aa2fe4b893d2d6888",
+      "usdz_sha256_match": true,
+      "strict_usd_pass": true,
+      "meters_per_unit_1": true,
+      "up_axis_y": true,
+      "embedded_stage_count": 1,
+      "embedded_stages": [
+        "ambient_lighting_fixture_set_v1.usdc"
+      ],
+      "external_asset_references": [],
+      "camera_or_light_prims": [],
+      "prohibited_content_prim_matches": [],
+      "realitykit_status": "PASS",
+      "realitykit_entities": 30,
+      "realitykit_models": 14,
+      "realitykit_materials": 14,
+      "realitykit_dimensions_runtime_xyz_m": [
+        6.46,
+        2.945787,
+        4.015
+      ],
+      "realitykit_load_ms_observed": 380.4,
+      "runtime_dimensions_match_source_axis_mapping": true,
+      "preview_dimensions_px": [
+        1600,
+        1200
+      ],
+      "patient_display_authorized_false": true,
+      "no_ui_people_or_runtime_lights_declared": true,
+      "pass": true
+    },
+    {
+      "id": "spatial_care_consultation_environment_assembly_v1",
+      "asset_kind": "registered_environment_assembly",
+      "triangle_count": 88908,
+      "triangle_budget": 185000,
+      "triangle_budget_pass": true,
+      "material_count_manifest": 20,
+      "usdz_bytes": 2618451,
+      "usdz_bytes_match": true,
+      "usdz_sha256": "1830791789cca300e7bb7050d1fe643aa1daf3569542172ba88bcae87f8b5143",
+      "usdz_sha256_match": true,
+      "strict_usd_pass": true,
+      "meters_per_unit_1": true,
+      "up_axis_y": true,
+      "embedded_stage_count": 1,
+      "embedded_stages": [
+        "spatial_care_consultation_environment_assembly_v1.usdc"
+      ],
+      "external_asset_references": [],
+      "camera_or_light_prims": [],
+      "prohibited_content_prim_matches": [],
+      "realitykit_status": "PASS",
+      "realitykit_entities": 454,
+      "realitykit_models": 226,
+      "realitykit_materials": 226,
+      "realitykit_dimensions_runtime_xyz_m": [
+        7.2,
+        3.25,
+        6.2
+      ],
+      "realitykit_load_ms_observed": 356.7,
+      "runtime_dimensions_match_source_axis_mapping": true,
+      "preview_dimensions_px": [
+        1600,
+        1200
+      ],
+      "patient_display_authorized_false": true,
+      "no_ui_people_or_runtime_lights_declared": true,
+      "pass": true
+    }
+  ],
+  "pass": true
+}

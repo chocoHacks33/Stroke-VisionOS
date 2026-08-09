@@ -2,11 +2,12 @@
 
 ## Scope
 
-The committed release catalog contains 135 unique, manifest-backed runtime USDZ
+The committed release catalog contains 145 unique, manifest-backed runtime USDZ
 packages: the original 65 (36 higher-detail v2 and 29 prototype-v1), 43
 non-held v3 detail packages, 26 v3 surgical-tool packages, and one adaptive
-visual derivative. The complete source build produced 71 v3 packages plus the
-adaptive derivative, for 137 unique build records, but the two inner-ear-containing
+visual derivative, plus ten original optional consultation-environment
+packages. The complete source build produced 71 v3 packages plus the adaptive
+derivative and environment module, for 147 unique build records, but the two inner-ear-containing
 packages are on a licence hold and are deliberately absent from this publishing
 tree. The unmanifested `stroke_kit_asset_gallery.usdz` review composite remains
 excluded because it duplicates prototype geometry.
@@ -149,6 +150,44 @@ See
 [ADAPTIVE_VISUALS_SOURCE_PROVENANCE_V1.md](research/ADAPTIVE_VISUALS_SOURCE_PROVENANCE_V1.md)
 and
 [ADAPTIVE_VISUALS_ASSET_NOTES_V1.md](source-notes/ADAPTIVE_VISUALS_ASSET_NOTES_V1.md).
+
+## Spatial-care consultation environment v1
+
+The nine independent room components and one registered assembly are wholly
+project-authored procedural Blender geometry and materials. No third-party
+mesh, texture, stock asset, portrait, manufacturer design, patient information,
+or ImageGen output is embedded in these USDZ packages. The user-supplied image
+was used only as a high-level mood/composition reference; its pixels, text,
+people, hands, interface panels, portraits, and anatomy were not copied.
+
+The environment is optional presentation geometry. System passthrough on
+Vision Pro—or the configured Simulator scene—remains the default; all packages
+remain `patient_display_authorized=false`. Exact construction, exclusions, and
+validation are in
+[SPATIAL_CARE_ENVIRONMENT_SOURCE_PROVENANCE_V1.md](../../RealityKitContent/Assets/vision_pro_stroke_kit_v2/SPATIAL_CARE_ENVIRONMENT_SOURCE_PROVENANCE_V1.md)
+and
+[SPATIAL_CARE_ENVIRONMENT_VALIDATION_V1.md](../../RealityKitContent/Assets/vision_pro_stroke_kit_v2/validation/SPATIAL_CARE_ENVIRONMENT_VALIDATION_V1.md).
+
+## Spatial-interface v1 media and configuration
+
+The non-geometry pack contains original JSON/SVG configuration, four synthetic
+fictional case-card portraits, and one supporting ImageGen storyboard. The
+portraits are fictional identifiers only—not real people, patient records,
+identity/demographic evidence, or clinical evidence. The storyboard is a
+non-runtime design target; generated visible wording inside it is explicitly
+not approved implementation or evidence copy.
+
+Built-in ImageGen was used only for the four portraits and storyboard. The
+recorded prompt intent, dimensions, exact output hashes, source-reference hash,
+and use restrictions are preserved in
+[image_generation_provenance_v1.json](../../RealityKitContent/InterfaceMedia/spatial_care_interface_v1/image_generation_provenance_v1.json).
+The pack's scene presets reference existing manifest-backed anatomy; they do
+not generate, modify, or validate anatomy. Glass, cards, controls, labels,
+hands, natural input, passthrough, and accessibility remain native visionOS/app
+responsibilities. See
+[SPATIAL_INTERFACE_V1_NOTES.md](source-notes/SPATIAL_INTERFACE_V1_NOTES.md)
+and
+[SPATIAL_INTERFACE_V1_VALIDATION.md](validation/SPATIAL_INTERFACE_V1_VALIDATION.md).
 
 ## Clinical meaning boundary
 

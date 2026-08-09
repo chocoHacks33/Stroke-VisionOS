@@ -1,0 +1,255 @@
+{
+  "schema_version": "1.0.0",
+  "resource_id": "spatial_scene_preset_catalog_v1",
+  "module_id": "spatial_interface_v1",
+  "status": "developer_preview",
+  "patient_display_authorized": false,
+  "state_owner": "host_application",
+  "non_geometry_resource": true,
+  "source_catalog_contract": {
+    "dependency_scope": "released_anatomy_tool_and_adaptive_assets_excluding_optional_environment",
+    "dependency_asset_count": 135,
+    "dependency_manifest_count": 12,
+    "complete_release_asset_count_including_optional_environment": 145,
+    "complete_release_manifest_count_including_optional_environment": 13,
+    "asset_identity_key": "manifest id",
+    "required_units": "meters",
+    "required_up_axis": "Y",
+    "source_transforms_must_be_preserved": true
+  },
+  "presentation_components": [
+    {
+      "id": "brain_hologram_material_preset_v1",
+      "kind": "app_owned_realitykit_material",
+      "geometry_resource": false,
+      "meaning": "Orientation styling only; not anatomy, imaging, tissue transparency, or diagnostic evidence.",
+      "implementation_status": "specified_not_implemented"
+    },
+    {
+      "id": "anatomy_layer_reveal_material_preset_v1",
+      "kind": "app_owned_realitykit_material",
+      "geometry_resource": false,
+      "meaning": "Selection emphasis only. Prefer opaque cutaway swaps over stacked transparent anatomy.",
+      "implementation_status": "specified_not_implemented"
+    },
+    {
+      "id": "ischemic_focus_beacon_presentation_v1",
+      "kind": "app_owned_realitykit_procedural_entity",
+      "geometry_resource": false,
+      "meaning": "Non-anatomical focus ring bound to a reviewed anchor; never a lesion boundary or measurement.",
+      "implementation_status": "specified_not_implemented"
+    },
+    {
+      "id": "orientation_stage_ring_presentation_v1",
+      "kind": "app_owned_realitykit_procedural_entity",
+      "geometry_resource": false,
+      "meaning": "Detached landing-stage visual with no scale or clinical meaning.",
+      "implementation_status": "specified_not_implemented"
+    },
+    {
+      "id": "annotation_leader_line_style_v1",
+      "kind": "app_owned_swiftui_realitykit_attachment_style",
+      "geometry_resource": false,
+      "meaning": "Camera-readable leader line rendered only after an exact source selector and anchor are reviewed.",
+      "implementation_status": "specified_not_implemented"
+    }
+  ],
+  "global_runtime_rules": [
+    "Load manifest assets asynchronously and key the outer container by manifest id.",
+    "Apply user placement only to ExperiencePlacementRoot; preserve every authored source transform.",
+    "Resolve no display-blocked source, generated draft, or interface preset in patient mode.",
+    "Use SwiftUI attachments or ornaments for cards, labels, buttons, progress, tool rails, evidence, warnings, and the circular vignette frame.",
+    "Use visionOS system hand presence and natural input; do not load custom hand meshes.",
+    "Reject any interface laterality label that disagrees with the selected pathology and flow assets.",
+    "Reset must restore scene, visibility, placement, selection, annotations, motion, warnings, and original source materials."
+  ],
+  "scene_presets": [
+    {
+      "id": "stroke_care_landing_scene_v1",
+      "screen_role": "landing",
+      "canonical_parent": "AdaptivePresentationRoot",
+      "display_authorized": false,
+      "source_asset_slots": [
+        {
+          "slot": "orientation_brain_candidate",
+          "asset_id": "brain_orientation_calm_educational_v1",
+          "required": false,
+          "load_gate": "exact_asset_policy_mapping_specialist_human_factors_and_patient_display_approval",
+          "fail_closed_fallback": "Show the native landing interface without a 3D brain."
+        }
+      ],
+      "presentation_component_ids": [
+        "brain_hologram_material_preset_v1",
+        "orientation_stage_ring_presentation_v1"
+      ],
+      "app_ui": ["project wordmark", "orientation statement", "Family action", "Presenter action", "developer-preview badge"],
+      "mutually_exclusive_asset_ids": [
+        "brain_anatomy_realistic_v2",
+        "brain_structures_generic",
+        "thrombectomy_registered_hero_v2",
+        "layered_head_cutaway_registered_v2",
+        "neural_detail_registered_review_assembly_v3",
+        "cerebral_arteries_realistic_v2",
+        "ischemic_mca_clot_v2",
+        "ischemic_lvo_clot",
+        "ich_hematoma",
+        "cerebral_bloodflow_animation_v2",
+        "cerebral_bloodflow_teaching_set_v2"
+      ],
+      "semantic_exclusions": ["pathology", "vasculature", "blood_or_flow", "procedure_tool", "microscopic_teaching_content"],
+      "integration_notes": [
+        "The calm brain is a replacement view, never an additive layer.",
+        "The hologram material is a presentation hypothesis and must not be described as transparent tissue or an imaging modality.",
+        "Family entry requires the host application's participation or authorization and privacy flow before any case content is shown."
+      ]
+    },
+    {
+      "id": "stroke_guided_head_scene_v1",
+      "screen_role": "guided_explainer",
+      "canonical_parent": "PatientContextRoot/HeadRegisteredRoot",
+      "display_authorized": false,
+      "pathway": "ischemic_thrombectomy_educational",
+      "laterality_contract": {
+        "pathology_asset_id": "ischemic_mca_clot_v2",
+        "side": "right",
+        "site": "M1",
+        "required_copy": "Conceptual right-M1 occlusion",
+        "left_mca_copy_allowed": false
+      },
+      "base_source_asset_ids": [
+        "external_head_scalp_cutaway_v2",
+        "brain_anatomy_realistic_v2",
+        "cerebral_arteries_realistic_v2",
+        "neck_access_arteries_realistic_v2"
+      ],
+      "state_source_assets": {
+        "baseline": ["circle_of_willis_flow_overlay_v2"],
+        "occlusion": ["ischemic_mca_clot_v2", "circle_of_willis_flow_overlay_v2"],
+        "illustrative_motion": ["cerebral_bloodflow_animation_v2"]
+      },
+      "optional_source_asset_ids": [
+        "eyes_context_realistic_v2",
+        "skull_semantic_realistic_v2",
+        "brain_deep_structures_v2",
+        "brain_ventricles_v2"
+      ],
+      "presentation_component_ids": [
+        "anatomy_layer_reveal_material_preset_v1",
+        "ischemic_focus_beacon_presentation_v1",
+        "annotation_leader_line_style_v1"
+      ],
+      "app_ui": ["three-step progress", "reviewed fact rail", "tool rail", "qualitative flow control", "annotation attachments", "Reset or Home"],
+      "mutually_exclusive_asset_ids": [
+        "external_head_scalp_realistic_v2",
+        "thrombectomy_registered_hero_v2",
+        "layered_head_cutaway_registered_v2",
+        "ischemic_lvo_clot",
+        "ich_hematoma",
+        "edema_swelling",
+        "ischemic_tissue_zones_conceptual_v3",
+        "neural_detail_registered_review_assembly_v3"
+      ],
+      "module_exclusions": ["open_cranial_tools_v3"],
+      "integration_notes": [
+        "Prefer the component composition so baseline and occlusion states can switch independently.",
+        "Keep the optional skull off by default because its cross-source alignment is approximate.",
+        "The four-second flow animation is dimensionless explanatory timing, not circulation, velocity, pressure, or perfusion.",
+        "Do not stack translucent scalp, skull, dura, and brain. Use the reviewed cutaway and discrete visibility swaps."
+      ]
+    },
+    {
+      "id": "stroke_scholar_head_scene_v1",
+      "screen_role": "structural_detail_explorer",
+      "canonical_parent": "PatientContextRoot/HeadRegisteredRoot",
+      "display_authorized": false,
+      "pathway": "ischemic_thrombectomy_educational",
+      "laterality_contract": {
+        "pathology_asset_id": "ischemic_mca_clot_v2",
+        "side": "right",
+        "site": "M1",
+        "functional_mapping_included": false
+      },
+      "base_source_asset_ids": [
+        "brain_anatomy_realistic_v2",
+        "cerebral_arteries_realistic_v2",
+        "ischemic_mca_clot_v2"
+      ],
+      "single_focus_source_asset_ids": [
+        "frontal_cortex_parcellation_v3",
+        "parietal_cortex_parcellation_v3",
+        "temporal_cortex_parcellation_v3",
+        "insular_opercular_cortex_v3",
+        "basal_ganglia_deep_nuclei_v3"
+      ],
+      "optional_context_asset_ids": [
+        "external_head_scalp_cutaway_v2",
+        "eyes_context_realistic_v2",
+        "skull_semantic_realistic_v2",
+        "circle_of_willis_flow_overlay_v2"
+      ],
+      "presentation_component_ids": [
+        "anatomy_layer_reveal_material_preset_v1",
+        "ischemic_focus_beacon_presentation_v1",
+        "annotation_leader_line_style_v1"
+      ],
+      "app_ui": ["detail-mode selector", "structural annotation attachments", "detached vignette portal", "review-blocked evidence card", "topic rail", "Reset or Home"],
+      "mutually_exclusive_asset_ids": [
+        "thrombectomy_registered_hero_v2",
+        "layered_head_cutaway_registered_v2",
+        "neural_detail_registered_review_assembly_v3",
+        "ischemic_lvo_clot",
+        "ich_hematoma",
+        "ischemic_tissue_zones_conceptual_v3"
+      ],
+      "focus_policy": {
+        "maximum_active_semantic_focus_assets": 1,
+        "hide_or_cut_obscuring_opaque_cortex": true,
+        "structural_labels_only": true,
+        "functional_or_deficit_claims_allowed": false
+      },
+      "integration_notes": [
+        "Scholar is an information-density mode, not clinical approval or a diagnostic mode.",
+        "HRA structure names do not establish motor, speech, language, symptom, perfusion-territory, or outcome claims.",
+        "Every annotation remains hidden until its exact package hash, selector, local anchor, copy, and review record are approved together."
+      ]
+    },
+    {
+      "id": "m1_occlusion_vessel_vignette_scene_v1",
+      "screen_role": "detached_magnified_vignette",
+      "canonical_parent": "TeachingVignetteRoot",
+      "display_authorized": false,
+      "variant_policy": "Choose exactly one detached scale domain at a time.",
+      "variants": [
+        {
+          "id": "vessel_wall_cutaway",
+          "canonical_parent": "TeachingVignetteRoot/VesselWallVignetteRoot",
+          "source_asset_ids": ["artery_cutaway_complete_v2"],
+          "mutually_exclusive_asset_ids": ["artery_wall_cutaway_v2", "artery_interior_bloodflow_v2"],
+          "persistent_warning": "Magnified educational vessel view — not to anatomical scale; qualitative and nonquantitative."
+        },
+        {
+          "id": "micro_thrombus",
+          "canonical_parent": "TeachingVignetteRoot/MicroScaleRoot",
+          "source_asset_ids": ["platelet_fibrin_thrombus_microstructure_conceptual_v3"],
+          "mutually_exclusive_asset_ids": ["intracranial_micro_teaching_set_v3"],
+          "persistent_warning": "Magnified conceptual micro-scale teaching view — not patient-specific, quantitative, or histology."
+        }
+      ],
+      "app_ui": ["circular portal frame", "persistent scale warning", "close or return action"],
+      "head_registration_allowed": false,
+      "integration_notes": [
+        "The circular frame is native UI; no portal-frame USDZ is required.",
+        "Never place the micro-scale thrombus inside the head or claim it depicts the selected macro clot.",
+        "The asset dimensions, cell counts, colors, spacing, and flow cues have no measured biological meaning."
+      ]
+    }
+  ],
+  "ui_resource_ids": [
+    "spatial_ui_design_tokens_v1",
+    "spatial_icon_catalog_v1",
+    "demo_case_library_v1",
+    "educational_evidence_card_catalog_v1",
+    "spatial_annotation_anchor_map_v1",
+    "stroke_care_wordmark_v1"
+  ]
+}

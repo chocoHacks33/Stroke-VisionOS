@@ -1,0 +1,63 @@
+{
+  "schema_version": "1.0.0",
+  "resource_id": "educational_evidence_card_catalog_v1",
+  "module_id": "spatial_interface_v1",
+  "patient_display_authorized": false,
+  "status": "placeholder_only",
+  "fail_closed_policy": "The host app must hide a card in patient or family mode unless claim text, source, version, review record, expiry policy, locale, and accessibility copy are all approved together.",
+  "cards": [
+    {
+      "id": "evidence_placeholder_stroke_mechanism_v1",
+      "topic": "stroke_mechanism",
+      "developer_placeholder_text": "Clinical evidence content pending current-source and specialist review.",
+      "claim_text": null,
+      "source_title": null,
+      "source_url": null,
+      "source_version": null,
+      "source_publication_date": null,
+      "source_verified_at": null,
+      "clinical_reviewer": null,
+      "review_record_id": null,
+      "review_status": "blocked_pending_current_source_and_specialist_review",
+      "display_authorized": false
+    },
+    {
+      "id": "evidence_placeholder_intervention_overview_v1",
+      "topic": "intervention_overview",
+      "developer_placeholder_text": "Clinical evidence content pending current-source and specialist review.",
+      "claim_text": null,
+      "source_title": null,
+      "source_url": null,
+      "source_version": null,
+      "source_publication_date": null,
+      "source_verified_at": null,
+      "clinical_reviewer": null,
+      "review_record_id": null,
+      "review_status": "blocked_pending_current_source_and_specialist_review",
+      "display_authorized": false
+    },
+    {
+      "id": "evidence_placeholder_recovery_uncertainty_v1",
+      "topic": "recovery_uncertainty",
+      "developer_placeholder_text": "Clinical evidence content pending current-source and specialist review.",
+      "claim_text": null,
+      "source_title": null,
+      "source_url": null,
+      "source_version": null,
+      "source_publication_date": null,
+      "source_verified_at": null,
+      "clinical_reviewer": null,
+      "review_record_id": null,
+      "review_status": "blocked_pending_current_source_and_specialist_review",
+      "display_authorized": false
+    }
+  ],
+  "approval_requirements": [
+    "Use a current primary guideline, regulator, or peer-reviewed primary source appropriate to the exact claim.",
+    "Verify the source URL, title, version, publication date, and applicable population at release time.",
+    "Record the exact reviewed claim text, accessible plain-language text, reviewer role, review record, locale, and expiry or re-verification rule.",
+    "Separate evidence strength from treatment recommendations and preserve limitations and uncertainty.",
+    "Do not copy the reference image's citation or recommendation wording without a fresh source and clinical review.",
+    "Never present a generic evidence card as advice for a particular person."
+  ]
+}

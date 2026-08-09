@@ -1,0 +1,613 @@
+{
+  "kit": "Vision Pro Stroke Patient Education Kit",
+  "module": "Generic calm spatial-care consultation environment v1",
+  "module_id": "spatial_care_environment_v1",
+  "version": "1.0.0",
+  "generated_with": "5.2.0 LTS",
+  "generator": "source/build_spatial_care_environment_v1.py",
+  "editable_source": "blender/spatial_care_environment_v1.blend",
+  "units": "meters",
+  "usd_up_axis": "Y",
+  "independent_asset_count": 9,
+  "assembly_count": 1,
+  "asset_count": 10,
+  "intended_use": "Optional generic synthetic fully-immersive/demo environment and spatial-layout scaffold for a visionOS stroke-education prototype",
+  "default_runtime_environment": "SYSTEM_PASSTHROUGH_OR_SIMULATOR_SCENE",
+  "synthetic_environment_default_enabled": false,
+  "synthetic_environment_gate": "EXPLICIT_DEVELOPER_DEMO_OR_REVIEW_ONLY",
+  "patient_specific": false,
+  "contains_phi": false,
+  "patient_display_authorized": false,
+  "review_status": "REQUIRES_HUMAN_FACTORS_ACCESSIBILITY_AND_DEVICE_REVIEW",
+  "source_provenance": "All geometry and materials are project-authored procedurally in Blender; no third-party models, textures, portraits, product designs, patient information, or external media are used.",
+  "coordinate_contract": {
+    "common_anchor": "experience_floor_origin",
+    "source_blender_axes": "X horizontal, Y room depth, Z up",
+    "runtime_usd_axes": "X horizontal, Y up, -Z into the room",
+    "floor_origin_runtime_xyz_m": [
+      0.0,
+      0.0,
+      0.0
+    ],
+    "authored_room_bounds_runtime_xyz_m": [
+      7.2,
+      3.25,
+      6.2
+    ],
+    "suggested_viewer_floor_position_runtime_xyz_m": [
+      0.0,
+      0.0,
+      1.75
+    ],
+    "suggested_viewer_eye_position_runtime_xyz_m": [
+      0.0,
+      1.55,
+      1.75
+    ],
+    "forward_view_direction_runtime_xyz": [
+      0.0,
+      0.0,
+      -1.0
+    ],
+    "placement_note": "Suggested authoring positions are not a guarantee of safe real-world clearance. Re-anchor to the user's confirmed safe space and retain system boundaries."
+  },
+  "spatial_interface_anchor_slots": {
+    "welcome_brain_or_calm_orientation": {
+      "position_xyz_m": [
+        0.0,
+        1.38,
+        -0.48
+      ],
+      "forward_xyz": [
+        0.0,
+        0.0,
+        1.0
+      ]
+    },
+    "welcome_role_choice_attachment": {
+      "position_xyz_m": [
+        0.0,
+        1.02,
+        -0.08
+      ],
+      "forward_xyz": [
+        0.0,
+        0.0,
+        1.0
+      ]
+    },
+    "case_selection_carousel": {
+      "position_xyz_m": [
+        0.0,
+        1.45,
+        -0.55
+      ],
+      "forward_xyz": [
+        0.0,
+        0.0,
+        1.0
+      ]
+    },
+    "hero_head_anatomy": {
+      "position_xyz_m": [
+        0.0,
+        1.35,
+        -0.48
+      ],
+      "forward_xyz": [
+        0.0,
+        0.0,
+        1.0
+      ]
+    },
+    "left_guidance_attachment": {
+      "position_xyz_m": [
+        -1.55,
+        1.4,
+        -0.15
+      ],
+      "forward_xyz": [
+        0.0,
+        0.0,
+        1.0
+      ]
+    },
+    "right_evidence_attachment": {
+      "position_xyz_m": [
+        1.6,
+        1.26,
+        -0.12
+      ],
+      "forward_xyz": [
+        0.0,
+        0.0,
+        1.0
+      ]
+    },
+    "right_topic_rail": {
+      "position_xyz_m": [
+        2.42,
+        1.42,
+        -0.32
+      ],
+      "forward_xyz": [
+        0.0,
+        0.0,
+        1.0
+      ]
+    },
+    "magnified_inset": {
+      "position_xyz_m": [
+        1.6,
+        1.58,
+        -0.28
+      ],
+      "forward_xyz": [
+        0.0,
+        0.0,
+        1.0
+      ]
+    },
+    "comfort_controls": {
+      "position_xyz_m": [
+        0.0,
+        0.82,
+        0.1
+      ],
+      "forward_xyz": [
+        0.0,
+        0.0,
+        1.0
+      ]
+    }
+  },
+  "integration_contract": {
+    "environment_priority": "Prefer system passthrough on device and the selected Apple Vision Pro Simulator scene. Load this synthetic room only for an explicitly selected fully immersive developer demo or governed review mode.",
+    "unnecessary_load_prohibited": "Do not load this module behind ordinary windows, volumes, or mixed/passthrough presentation merely to mimic the reference screenshot.",
+    "ui_policy": "All text, buttons, case cards, labels, evidence panels, topic rails, portraits, and privacy-sensitive information must be app-native SwiftUI/RealityKit attachments, never baked into these models.",
+    "anatomy_policy": "Load existing manifest-backed brain/head/vascular assets at a named anchor slot; this module contains no anatomy and does not replace clinical asset review.",
+    "hands_policy": "Use system hand input and permitted interaction affordances; no authored hand meshes are included.",
+    "lighting_policy": "Fixture packages are non-emissive visual geometry. Author runtime ImageBasedLight/DirectionalLight choices in the app and verify on simulator and device.",
+    "collision_policy": "Generate only coarse static collision for confirmed room boundaries/floor when needed. Do not add dynamic rigid bodies or treat virtual furniture as safe physical seating.",
+    "assembly_policy": "Load either the assembly or selected independent components, never both. Independents are already registered at the shared floor origin.",
+    "accessibility_policy": "Provide a non-immersive window/volume fallback, VoiceOver labels for app-native controls, Reduce Motion behavior, seated reach checks, readable contrast, and an immediate exit path."
+  },
+  "performance_contract": {
+    "assembly_triangle_budget": 185000,
+    "preferred_load_strategy": "Load the room shell and immediately visible components first; lazy-load optional decor. Prefer the single assembly only for authored review and simple developer previews.",
+    "runtime_measurement_required": true,
+    "device_validation_required": true,
+    "note": "Triangle counts and desktop decode checks are engineering evidence only, not a Vision Pro frame-rate, memory, thermal, or comfort guarantee."
+  },
+  "assets": [
+    {
+      "id": "calm_consultation_room_shell_v1",
+      "title": "Warm consultation-room architectural shell",
+      "description": "Open-front room shell with oak floor, warm plaster boundaries, baseboards, a framed side window, and an open-centre ceiling perimeter.",
+      "module": "spatial_care_environment_v1",
+      "asset_kind": "independent_environment_component",
+      "role_tags": [
+        "immersive_environment",
+        "architectural_boundary",
+        "floor_reference"
+      ],
+      "authored_at_shared_room_frame": true,
+      "common_anchor": "experience_floor_origin",
+      "component_of_assembly": "spatial_care_consultation_environment_assembly_v1",
+      "mutually_exclusive_with_assembly": "spatial_care_consultation_environment_assembly_v1",
+      "triangle_budget": 32000,
+      "triangle_count": 7708,
+      "material_count": 6,
+      "dimensions_m_source_xyz": [
+        7.2,
+        6.2,
+        3.25
+      ],
+      "units": "meters",
+      "usd_up_axis": "Y",
+      "usdc": "exports/usdc/calm_consultation_room_shell_v1.usdc",
+      "usdz": "exports/usdz/calm_consultation_room_shell_v1.usdz",
+      "usdz_bytes": 138335,
+      "usdz_sha256": "8c75ef926d9fc98ef81a77edc8fd997013e04d0c426cee5e61d205ebf2f653bd",
+      "preview": "previews/spatial_care_environment_v1/01_calm_consultation_room_shell_v1.png",
+      "collision_role": "static_floor_and_boundary_candidates",
+      "dynamic_physics_authored": false,
+      "runtime_lights_authored": false,
+      "ui_content_authored": false,
+      "people_or_hands_authored": false,
+      "patient_specific": false,
+      "contains_phi": false,
+      "patient_display_authorized": false,
+      "review_status": "REQUIRES_HUMAN_FACTORS_ACCESSIBILITY_AND_DEVICE_REVIEW"
+    },
+    {
+      "id": "curved_feature_wall_architecture_v1",
+      "title": "Curved hero feature wall and walnut acoustic rhythm",
+      "description": "Rounded central hero backdrop, walnut side slats, low display ledge, and a non-text identity backer for app-native branding.",
+      "module": "spatial_care_environment_v1",
+      "asset_kind": "independent_environment_component",
+      "role_tags": [
+        "hero_backdrop",
+        "visual_identity_zone",
+        "acoustic_architecture"
+      ],
+      "authored_at_shared_room_frame": true,
+      "common_anchor": "experience_floor_origin",
+      "component_of_assembly": "spatial_care_consultation_environment_assembly_v1",
+      "mutually_exclusive_with_assembly": "spatial_care_consultation_environment_assembly_v1",
+      "triangle_budget": 22000,
+      "triangle_count": 7600,
+      "material_count": 5,
+      "dimensions_m_source_xyz": [
+        5.835,
+        0.435,
+        2.68
+      ],
+      "units": "meters",
+      "usd_up_axis": "Y",
+      "usdc": "exports/usdc/curved_feature_wall_architecture_v1.usdc",
+      "usdz": "exports/usdz/curved_feature_wall_architecture_v1.usdz",
+      "usdz_bytes": 247829,
+      "usdz_sha256": "11e003b1f5b2fde1b2c2c7fd10bb0853162407edb91b0d4f1f439102893d5e5f",
+      "preview": "previews/spatial_care_environment_v1/02_curved_feature_wall_architecture_v1.png",
+      "collision_role": "none_by_default",
+      "dynamic_physics_authored": false,
+      "runtime_lights_authored": false,
+      "ui_content_authored": false,
+      "people_or_hands_authored": false,
+      "patient_specific": false,
+      "contains_phi": false,
+      "patient_display_authorized": false,
+      "review_status": "REQUIRES_HUMAN_FACTORS_ACCESSIBILITY_AND_DEVICE_REVIEW"
+    },
+    {
+      "id": "modular_lounge_seating_set_v1",
+      "title": "Two-piece modular lounge seating set",
+      "description": "Two warm upholstered sofas with individual seat and back cushions, timber plinths, arm rests, and restrained teal/sand accents.",
+      "module": "spatial_care_environment_v1",
+      "asset_kind": "independent_environment_component",
+      "role_tags": [
+        "waiting_area",
+        "family_zone",
+        "environment_furniture"
+      ],
+      "authored_at_shared_room_frame": true,
+      "common_anchor": "experience_floor_origin",
+      "component_of_assembly": "spatial_care_consultation_environment_assembly_v1",
+      "mutually_exclusive_with_assembly": "spatial_care_consultation_environment_assembly_v1",
+      "triangle_budget": 28000,
+      "triangle_count": 12600,
+      "material_count": 4,
+      "dimensions_m_source_xyz": [
+        6.400949,
+        1.245683,
+        1.12
+      ],
+      "units": "meters",
+      "usd_up_axis": "Y",
+      "usdc": "exports/usdc/modular_lounge_seating_set_v1.usdc",
+      "usdz": "exports/usdz/modular_lounge_seating_set_v1.usdz",
+      "usdz_bytes": 405314,
+      "usdz_sha256": "9e0653960a3fb356e42743b3537ee14c4136c75de78f433bd427bca098da8e87",
+      "preview": "previews/spatial_care_environment_v1/03_modular_lounge_seating_set_v1.png",
+      "collision_role": "coarse_static_optional",
+      "dynamic_physics_authored": false,
+      "runtime_lights_authored": false,
+      "ui_content_authored": false,
+      "people_or_hands_authored": false,
+      "patient_specific": false,
+      "contains_phi": false,
+      "patient_display_authorized": false,
+      "review_status": "REQUIRES_HUMAN_FACTORS_ACCESSIBILITY_AND_DEVICE_REVIEW"
+    },
+    {
+      "id": "consultation_armchair_pair_v1",
+      "title": "Family and presenter armchair pair",
+      "description": "A paired teal-and-sand consultation seating arrangement framing the central spatial display zone.",
+      "module": "spatial_care_environment_v1",
+      "asset_kind": "independent_environment_component",
+      "role_tags": [
+        "family_zone",
+        "presenter_zone",
+        "environment_furniture"
+      ],
+      "authored_at_shared_room_frame": true,
+      "common_anchor": "experience_floor_origin",
+      "component_of_assembly": "spatial_care_consultation_environment_assembly_v1",
+      "mutually_exclusive_with_assembly": "spatial_care_consultation_environment_assembly_v1",
+      "triangle_budget": 16000,
+      "triangle_count": 7640,
+      "material_count": 3,
+      "dimensions_m_source_xyz": [
+        4.475314,
+        1.054224,
+        1.15
+      ],
+      "units": "meters",
+      "usd_up_axis": "Y",
+      "usdc": "exports/usdc/consultation_armchair_pair_v1.usdc",
+      "usdz": "exports/usdz/consultation_armchair_pair_v1.usdz",
+      "usdz_bytes": 156466,
+      "usdz_sha256": "567d8b365280b8e89fbd55f0bf11862b594b9dec32144e8ad9670899736f664e",
+      "preview": "previews/spatial_care_environment_v1/04_consultation_armchair_pair_v1.png",
+      "collision_role": "coarse_static_optional",
+      "dynamic_physics_authored": false,
+      "runtime_lights_authored": false,
+      "ui_content_authored": false,
+      "people_or_hands_authored": false,
+      "patient_specific": false,
+      "contains_phi": false,
+      "patient_display_authorized": false,
+      "review_status": "REQUIRES_HUMAN_FACTORS_ACCESSIBILITY_AND_DEVICE_REVIEW"
+    },
+    {
+      "id": "round_spatial_display_dais_v1",
+      "title": "Round spatial-display dais and rug",
+      "description": "Circular greige rug, low dark display plinth, teal accent ring, and three orientation cues marking the virtual anatomy presentation zone.",
+      "module": "spatial_care_environment_v1",
+      "asset_kind": "independent_environment_component",
+      "role_tags": [
+        "hero_anchor",
+        "anatomy_display_zone",
+        "orientation_affordance"
+      ],
+      "authored_at_shared_room_frame": true,
+      "common_anchor": "experience_floor_origin",
+      "component_of_assembly": "spatial_care_consultation_environment_assembly_v1",
+      "mutually_exclusive_with_assembly": "spatial_care_consultation_environment_assembly_v1",
+      "triangle_budget": 11000,
+      "triangle_count": 7148,
+      "material_count": 5,
+      "dimensions_m_source_xyz": [
+        2.36,
+        2.36,
+        0.106
+      ],
+      "units": "meters",
+      "usd_up_axis": "Y",
+      "usdc": "exports/usdc/round_spatial_display_dais_v1.usdc",
+      "usdz": "exports/usdz/round_spatial_display_dais_v1.usdz",
+      "usdz_bytes": 305423,
+      "usdz_sha256": "93fe31c2cbf5ed1e8ad3b16eb0b42f09cc60364b6699e6b97e2782cc5f6ec806",
+      "preview": "previews/spatial_care_environment_v1/05_round_spatial_display_dais_v1.png",
+      "collision_role": "none_by_default",
+      "dynamic_physics_authored": false,
+      "runtime_lights_authored": false,
+      "ui_content_authored": false,
+      "people_or_hands_authored": false,
+      "patient_specific": false,
+      "contains_phi": false,
+      "patient_display_authorized": false,
+      "review_status": "REQUIRES_HUMAN_FACTORS_ACCESSIBILITY_AND_DEVICE_REVIEW"
+    },
+    {
+      "id": "low_table_side_table_set_v1",
+      "title": "Low coffee and side-table set",
+      "description": "Rounded walnut coffee table plus two pedestal side tables that support the consultation composition without encoding interaction logic.",
+      "module": "spatial_care_environment_v1",
+      "asset_kind": "independent_environment_component",
+      "role_tags": [
+        "waiting_area",
+        "environment_furniture",
+        "spatial_scale_cue"
+      ],
+      "authored_at_shared_room_frame": true,
+      "common_anchor": "experience_floor_origin",
+      "component_of_assembly": "spatial_care_consultation_environment_assembly_v1",
+      "mutually_exclusive_with_assembly": "spatial_care_consultation_environment_assembly_v1",
+      "triangle_budget": 13000,
+      "triangle_count": 5216,
+      "material_count": 3,
+      "dimensions_m_source_xyz": [
+        6.16,
+        2.7,
+        0.5425
+      ],
+      "units": "meters",
+      "usd_up_axis": "Y",
+      "usdc": "exports/usdc/low_table_side_table_set_v1.usdc",
+      "usdz": "exports/usdz/low_table_side_table_set_v1.usdz",
+      "usdz_bytes": 142884,
+      "usdz_sha256": "4531ce883b43e8840c99ae2bfc3c2cf4b70d8d8e1b59b92860d678fef66f0092",
+      "preview": "previews/spatial_care_environment_v1/06_low_table_side_table_set_v1.png",
+      "collision_role": "coarse_static_optional",
+      "dynamic_physics_authored": false,
+      "runtime_lights_authored": false,
+      "ui_content_authored": false,
+      "people_or_hands_authored": false,
+      "patient_specific": false,
+      "contains_phi": false,
+      "patient_display_authorized": false,
+      "review_status": "REQUIRES_HUMAN_FACTORS_ACCESSIBILITY_AND_DEVICE_REVIEW"
+    },
+    {
+      "id": "clinical_credenza_storage_v1",
+      "title": "Generic closed consultation-room credenza",
+      "description": "Unbranded closed storage with walnut fronts, a dark top, restrained brass pulls, and two non-medical decorative objects.",
+      "module": "spatial_care_environment_v1",
+      "asset_kind": "independent_environment_component",
+      "role_tags": [
+        "closed_storage",
+        "waiting_area",
+        "privacy_neutral_environment"
+      ],
+      "authored_at_shared_room_frame": true,
+      "common_anchor": "experience_floor_origin",
+      "component_of_assembly": "spatial_care_consultation_environment_assembly_v1",
+      "mutually_exclusive_with_assembly": "spatial_care_consultation_environment_assembly_v1",
+      "triangle_budget": 13000,
+      "triangle_count": 3556,
+      "material_count": 6,
+      "dimensions_m_source_xyz": [
+        1.83,
+        0.4955,
+        1.15
+      ],
+      "units": "meters",
+      "usd_up_axis": "Y",
+      "usdc": "exports/usdc/clinical_credenza_storage_v1.usdc",
+      "usdz": "exports/usdz/clinical_credenza_storage_v1.usdz",
+      "usdz_bytes": 128963,
+      "usdz_sha256": "d8f087e75b7cc8ab473e158df14121ce9c78b92f445db183eff38ec848d0d9e6",
+      "preview": "previews/spatial_care_environment_v1/07_clinical_credenza_storage_v1.png",
+      "collision_role": "coarse_static_optional",
+      "dynamic_physics_authored": false,
+      "runtime_lights_authored": false,
+      "ui_content_authored": false,
+      "people_or_hands_authored": false,
+      "patient_specific": false,
+      "contains_phi": false,
+      "patient_display_authorized": false,
+      "review_status": "REQUIRES_HUMAN_FACTORS_ACCESSIBILITY_AND_DEVICE_REVIEW"
+    },
+    {
+      "id": "calm_botanical_planter_set_v1",
+      "title": "Three-piece botanical planter set",
+      "description": "Three stylized but softly modeled indoor plants with ceramic planters, stems, soil disks, and individually oriented leaves.",
+      "module": "spatial_care_environment_v1",
+      "asset_kind": "independent_environment_component",
+      "role_tags": [
+        "biophilic_environment",
+        "visual_softening",
+        "corner_landmark"
+      ],
+      "authored_at_shared_room_frame": true,
+      "common_anchor": "experience_floor_origin",
+      "component_of_assembly": "spatial_care_consultation_environment_assembly_v1",
+      "mutually_exclusive_with_assembly": "spatial_care_consultation_environment_assembly_v1",
+      "triangle_budget": 36000,
+      "triangle_count": 29640,
+      "material_count": 6,
+      "dimensions_m_source_xyz": [
+        6.916681,
+        4.966457,
+        1.926346
+      ],
+      "units": "meters",
+      "usd_up_axis": "Y",
+      "usdc": "exports/usdc/calm_botanical_planter_set_v1.usdc",
+      "usdz": "exports/usdz/calm_botanical_planter_set_v1.usdz",
+      "usdz_bytes": 860946,
+      "usdz_sha256": "451d2eea6d79b486c75c27bf7798099e0c80cc336a849d64a793f997a9389c4c",
+      "preview": "previews/spatial_care_environment_v1/08_calm_botanical_planter_set_v1.png",
+      "collision_role": "none_by_default",
+      "dynamic_physics_authored": false,
+      "runtime_lights_authored": false,
+      "ui_content_authored": false,
+      "people_or_hands_authored": false,
+      "patient_specific": false,
+      "contains_phi": false,
+      "patient_display_authorized": false,
+      "review_status": "REQUIRES_HUMAN_FACTORS_ACCESSIBILITY_AND_DEVICE_REVIEW"
+    },
+    {
+      "id": "ambient_lighting_fixture_set_v1",
+      "title": "Warm ambient fixture geometry set",
+      "description": "Two floor lamps, a layered ceiling ring, and two wall sconces. Geometry is non-emissive; runtime illumination is app-authored.",
+      "module": "spatial_care_environment_v1",
+      "asset_kind": "independent_environment_component",
+      "role_tags": [
+        "fixture_geometry",
+        "warm_environment",
+        "runtime_light_reference"
+      ],
+      "authored_at_shared_room_frame": true,
+      "common_anchor": "experience_floor_origin",
+      "component_of_assembly": "spatial_care_consultation_environment_assembly_v1",
+      "mutually_exclusive_with_assembly": "spatial_care_consultation_environment_assembly_v1",
+      "triangle_budget": 30000,
+      "triangle_count": 7800,
+      "material_count": 3,
+      "dimensions_m_source_xyz": [
+        6.46,
+        4.015,
+        2.945787
+      ],
+      "units": "meters",
+      "usd_up_axis": "Y",
+      "usdc": "exports/usdc/ambient_lighting_fixture_set_v1.usdc",
+      "usdz": "exports/usdz/ambient_lighting_fixture_set_v1.usdz",
+      "usdz_bytes": 265375,
+      "usdz_sha256": "7424931b9843524df9629b94264f874115f7b6d6b224a16aa2fe4b893d2d6888",
+      "preview": "previews/spatial_care_environment_v1/09_ambient_lighting_fixture_set_v1.png",
+      "collision_role": "none_by_default",
+      "dynamic_physics_authored": false,
+      "runtime_lights_authored": false,
+      "ui_content_authored": false,
+      "people_or_hands_authored": false,
+      "patient_specific": false,
+      "contains_phi": false,
+      "patient_display_authorized": false,
+      "review_status": "REQUIRES_HUMAN_FACTORS_ACCESSIBILITY_AND_DEVICE_REVIEW"
+    },
+    {
+      "id": "spatial_care_consultation_environment_assembly_v1",
+      "title": "Registered spatial-care consultation environment assembly",
+      "description": "Complete open-front warm consultation-room composition matching the reference mood, containing all nine registered environment components in one package.",
+      "module": "spatial_care_environment_v1",
+      "asset_kind": "registered_environment_assembly",
+      "role_tags": [
+        "immersive_environment",
+        "review_assembly",
+        "spatial_interface_stage"
+      ],
+      "component_asset_ids": [
+        "calm_consultation_room_shell_v1",
+        "curved_feature_wall_architecture_v1",
+        "modular_lounge_seating_set_v1",
+        "consultation_armchair_pair_v1",
+        "round_spatial_display_dais_v1",
+        "low_table_side_table_set_v1",
+        "clinical_credenza_storage_v1",
+        "calm_botanical_planter_set_v1",
+        "ambient_lighting_fixture_set_v1"
+      ],
+      "transitive_exclusions": [
+        "calm_consultation_room_shell_v1",
+        "curved_feature_wall_architecture_v1",
+        "modular_lounge_seating_set_v1",
+        "consultation_armchair_pair_v1",
+        "round_spatial_display_dais_v1",
+        "low_table_side_table_set_v1",
+        "clinical_credenza_storage_v1",
+        "calm_botanical_planter_set_v1",
+        "ambient_lighting_fixture_set_v1"
+      ],
+      "authored_at_shared_room_frame": true,
+      "common_anchor": "experience_floor_origin",
+      "triangle_budget": 185000,
+      "triangle_count": 88908,
+      "material_count": 20,
+      "dimensions_m_source_xyz": [
+        7.2,
+        6.2,
+        3.25
+      ],
+      "units": "meters",
+      "usd_up_axis": "Y",
+      "usdc": "exports/usdc/spatial_care_consultation_environment_assembly_v1.usdc",
+      "usdz": "exports/usdz/spatial_care_consultation_environment_assembly_v1.usdz",
+      "usdz_bytes": 2618451,
+      "usdz_sha256": "1830791789cca300e7bb7050d1fe643aa1daf3569542172ba88bcae87f8b5143",
+      "preview": "previews/spatial_care_environment_v1/10_spatial_care_consultation_environment_assembly_v1.png",
+      "collision_role": "static_floor_and_boundary_candidates_only",
+      "dynamic_physics_authored": false,
+      "runtime_lights_authored": false,
+      "ui_content_authored": false,
+      "people_or_hands_authored": false,
+      "patient_specific": false,
+      "contains_phi": false,
+      "patient_display_authorized": false,
+      "review_status": "REQUIRES_HUMAN_FACTORS_ACCESSIBILITY_AND_DEVICE_REVIEW"
+    }
+  ],
+  "warnings": [
+    "Generic environment only; it contains no patient-specific anatomy, patient data, clinical recommendation, or medical decision logic.",
+    "The visual mood is a design hypothesis. Do not claim that warm colors, plants, muted materials, or reduced contrast treat or diagnose anxiety.",
+    "Do not place identifying portraits, patient records, or protected health information into authored textures or shared scene geometry.",
+    "Virtual furniture is not physical furniture. It must not encourage users to sit, lean, or walk where real-world clearance is unknown.",
+    "The reference image guides mood and composition only; no visible interface text, portraits, hands, or anatomy are copied into this module.",
+    "System passthrough on device, or the configured Simulator scene, is the default environment. This synthetic room is an optional developer/demo fallback and must not be loaded by default.",
+    "Patient-facing use remains blocked until specialist content review plus human-factors, accessibility, privacy, simulator, and physical-device validation are complete."
+  ]
+}

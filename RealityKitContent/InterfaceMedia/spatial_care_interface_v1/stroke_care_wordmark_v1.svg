@@ -1,0 +1,16 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 480 120" role="img" aria-labelledby="title desc">
+  <title id="title">Stroke Care</title>
+  <desc id="desc">Project wordmark with a simple brain and flow symbol.</desc>
+  <g fill="none" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round">
+    <path d="M48 28c-12 0-21 9-21 21 0 4 1 8 3 11-7 4-11 11-11 19 0 12 10 22 22 22h7V28Z" stroke-width="5"/>
+    <path d="M48 28c12 0 21 9 21 21 0 4-1 8-3 11 7 4 11 11 11 19 0 12-10 22-22 22h-7V28Z" stroke-width="5"/>
+    <path d="M34 48c7 0 12 5 12 12M62 48c-7 0-12 5-12 12M29 77c8-1 15 3 18 10M67 77c-8-1-15 3-18 10" stroke-width="3" opacity=".72"/>
+    <path d="M26 94c13 8 28 9 44 2" stroke-width="4"/>
+    <path d="M38 94c6-7 12-12 20-16" stroke-width="4"/>
+  </g>
+  <g fill="currentColor" font-family="system-ui, -apple-system, BlinkMacSystemFont, sans-serif">
+    <text x="100" y="62" font-size="34" font-weight="650" letter-spacing="3">STROKE CARE</text>
+    <text x="102" y="88" font-size="13" font-weight="500" letter-spacing="4" opacity=".72">LEARN · UNDERSTAND</text>
+  </g>
+</svg>

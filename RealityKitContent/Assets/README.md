@@ -1,13 +1,14 @@
 # Stroke VisionOS asset catalog
 
-This directory contains **135 unique, manifest-backed runtime USDZ assets**:
+This directory contains **145 unique, manifest-backed runtime USDZ assets**:
 
 - **69 release-eligible v3 assets** across five manifests: 43 anatomy/detail
   packages and 26 representative surgical-tool packages.
 - **36 higher-detail v2 assets** across five manifests.
 - **29 prototype-v1 assets** in one manifest.
 - **1 comfort-oriented adaptive visual** in one manifest.
-- **275,619,913 bytes** of runtime USDZ payload.
+- **10 original optional spatial-care environment assets** in one manifest.
+- **280,889,899 bytes** of runtime USDZ payload.
 
 “Release-eligible” here means only that a package is not on the known
 inner-ear licence hold and is present in the publishing catalog. It does not
@@ -20,14 +21,14 @@ not counted as additional runtime assets. Composite assemblies are counted
 because they are separately loadable packages, although they duplicate geometry
 from their component layers.
 
-The complete source build has **137 unique package records**: 65 original, 71
-v3, and one adaptive visual derivative. The two inner-ear-containing v3
+The complete source build has **147 unique package records**: 65 original, 71
+v3, one adaptive visual derivative, and ten environment records. The two inner-ear-containing v3
 packages are licence-held and their binaries are deliberately absent here, so
-the release catalog contains 135 packages.
+the release catalog contains 145 packages.
 
 The historical review-only `stroke_kit_asset_gallery.usdz` is deliberately not
 included. It is an unmanifested composite of prototype geometry, not an
-additional 136th release asset or a 138th source-build package.
+additional 146th release asset or a 148th source-build package.
 
 For the canonical scene hierarchy, all component/assembly relationships,
 procedure state logic, interaction physics, and Houdini/RealityKit handoff, see
@@ -66,7 +67,8 @@ Assets/
     ├── asset_manifest_endovascular_tools_v3.json
     ├── asset_manifest_open_cranial_tools_v3.json
     ├── asset_manifest_adaptive_visuals_v1.json
-    ├── exports/usdz/                 # 36 v2 + 69 v3 + 1 adaptive package
+    ├── asset_manifest_spatial_care_environment_v1.json
+    ├── exports/usdz/                 # 36 v2 + 69 v3 + 1 adaptive + 10 environment
     ├── previews/                     # supporting v2/v3 renders
     └── textures/source/              # supporting material maps
 ```
@@ -291,7 +293,7 @@ static, with optional qualitative kinematic pickup/rotation; there is no force,
 depth, trajectory, pressure, flow, energy, device sizing, compatibility,
 navigation, tissue interaction, or training model.
 
-The tool release-number column occupies entries 109–134 in the 135-file
+The tool release-number column occupies entries 109–134 in the 145-file
 publishing index. The same packages are full-build records 111–136 in
 [`MASTER.md`](../../MASTER.md), which retains held records 92 and 98 in the
 build sequence.
@@ -369,6 +371,39 @@ Release records:
 - [Technical and visual validation](../../docs/assets/validation/ADAPTIVE_VISUALS_VALIDATION_V1.md)
 - [Endpoint research and safety contract](../../docs/adaptive-visuals/RESEARCH_AND_SAFETY.md)
 
+## Optional spatial-care environment assets (10 release packages)
+
+These original, self-contained packages provide the warm consultation-room
+composition visible in the interface target board. They contain no anatomy,
+people, hands, text, case data, controls, lights, cameras, or clinical objects.
+They are **disabled by default**: use system passthrough on Vision Pro and the
+selected Simulator environment during simulator work. Load this module only for
+an explicitly selected fully immersive developer demo or governed design
+review. The blank feature-wall centre is reserved for app-native content.
+
+All nine independent components share `experience_floor_origin`. Load either
+selected components or the complete assembly—never both.
+
+| Release # | Runtime file | Description and runtime rule |
+|---:|---|---|
+| 136 | [calm_consultation_room_shell_v1.usdz](vision_pro_stroke_kit_v2/exports/usdz/calm_consultation_room_shell_v1.usdz) | **Warm consultation-room architectural shell.** Open-front 7.2 × 6.2 m room with oak floor, warm plaster boundaries, baseboards, framed side window, and open-centre ceiling perimeter. It is a visual scale scaffold, not verified physical clearance. |
+| 137 | [curved_feature_wall_architecture_v1.usdz](vision_pro_stroke_kit_v2/exports/usdz/curved_feature_wall_architecture_v1.usdz) | **Curved hero feature wall.** Rounded central backdrop, walnut acoustic rhythm, low ledge, and abstract non-text identity backer. Keep its centre blank for SwiftUI/RealityKit attachments. |
+| 138 | [modular_lounge_seating_set_v1.usdz](vision_pro_stroke_kit_v2/exports/usdz/modular_lounge_seating_set_v1.usdz) | **Modular lounge seating.** Two softened sofa compositions for the rear family/waiting zones. They are virtual composition cues—not physical seating to sit on, lean against, or collide with. |
+| 139 | [consultation_armchair_pair_v1.usdz](vision_pro_stroke_kit_v2/exports/usdz/consultation_armchair_pair_v1.usdz) | **Family/presenter armchair pair.** Teal and sand chairs framing the central anatomy zone. They encode no identity, permission, role state, or tracked seat position. |
+| 140 | [round_spatial_display_dais_v1.usdz](vision_pro_stroke_kit_v2/exports/usdz/round_spatial_display_dais_v1.usdz) | **Round spatial-display dais and rug.** Central plinth, restrained teal ring, and orientation points under the hero anchor. The marks are aesthetic—not calibration, measurement, collision, or safe-space indicators. |
+| 141 | [low_table_side_table_set_v1.usdz](vision_pro_stroke_kit_v2/exports/usdz/low_table_side_table_set_v1.usdz) | **Low coffee and side-table set.** Rounded noninteractive room furniture used only for balance and scale. It contains no records, controls, or clinical supplies. |
+| 142 | [clinical_credenza_storage_v1.usdz](vision_pro_stroke_kit_v2/exports/usdz/clinical_credenza_storage_v1.usdz) | **Closed consultation-room credenza.** Generic walnut storage and privacy-neutral decor with no equipment, medication, document, or manufacturer meaning. |
+| 143 | [calm_botanical_planter_set_v1.usdz](vision_pro_stroke_kit_v2/exports/usdz/calm_botanical_planter_set_v1.usdz) | **Botanical planter set.** Three modeled planters with stems, branches, and 42 leaves. Plants are visual landmarks and make no calming, therapeutic, or anxiety-reduction claim. |
+| 144 | [ambient_lighting_fixture_set_v1.usdz](vision_pro_stroke_kit_v2/exports/usdz/ambient_lighting_fixture_set_v1.usdz) | **Ambient fixture geometry.** Two floor lamps, ceiling rings, and wall sconces. Meshes are non-emissive; the host app owns IBL, RealityKit lights, exposure, and device profiling. |
+| 145 | [spatial_care_consultation_environment_assembly_v1.usdz](vision_pro_stroke_kit_v2/exports/usdz/spatial_care_consultation_environment_assembly_v1.usdz) | **Registered full-room assembly.** Review/demo convenience package containing all nine components at the shared floor origin. It transitively excludes every component and is not the default patient environment. |
+
+The module manifest also supplies suggested anchors for landing, case carousel,
+hero head, guidance/evidence attachments, topic rail, magnified vignette, and
+comfort controls. These are authoring starting points, not comfort or safety
+guarantees. See the [environment notes](vision_pro_stroke_kit_v2/SPATIAL_CARE_ENVIRONMENT_ASSET_NOTES_V1.md),
+[provenance](vision_pro_stroke_kit_v2/SPATIAL_CARE_ENVIRONMENT_SOURCE_PROVENANCE_V1.md),
+and [validation](vision_pro_stroke_kit_v2/validation/SPATIAL_CARE_ENVIRONMENT_VALIDATION_V1.md).
+
 ### Full-build records excluded from release (2)
 
 | Build-record ID | Status | Publishing-tree rule |
@@ -406,6 +441,7 @@ full gap and duplication analysis.
 - [Endovascular-support-tools-v3 manifest](vision_pro_stroke_kit_v2/asset_manifest_endovascular_tools_v3.json)
 - [Open-cranial-tools-v3 manifest](vision_pro_stroke_kit_v2/asset_manifest_open_cranial_tools_v3.json)
 - [Adaptive-visuals-v1 manifest](vision_pro_stroke_kit_v2/asset_manifest_adaptive_visuals_v1.json)
+- [Spatial-care-environment-v1 manifest](vision_pro_stroke_kit_v2/asset_manifest_spatial_care_environment_v1.json)
 
 Manifest `usdz` paths are relative to the corresponding kit directory. Keep
 the package layout intact or rewrite paths intentionally in the app's catalog
@@ -433,6 +469,14 @@ the calm orientation asset may temporarily replace—but never overlay or
 co-load with—the detailed source brain. Restore the source before medical
 detail is shown. Runtime material/visibility edits remain sidecars owned by the
 application; do not bake them destructively into the atlas USDZ.
+
+Route `spatial_care_environment_v1` only to
+`ExperiencePlacementRoot/OptionalEnvironmentRoot`. Prefer no module asset in
+ordinary mixed/passthrough or Simulator-scene presentation. In the gated
+synthetic fully immersive mode, load the assembly or selected components at
+the shared floor origin; generate only deliberate coarse static collisions and
+never treat virtual walls, floors, furniture, rug, or dais as verified real
+space. All interface panels and runtime lighting remain app-owned.
 
 Do not apply another axis correction: the exported USD stages already use Y-up
 and metres. Center inspection views using visual bounds. Load combined hero

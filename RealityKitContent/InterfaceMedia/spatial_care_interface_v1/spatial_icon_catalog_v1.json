@@ -1,0 +1,33 @@
+{
+  "schema_version": "1.0.0",
+  "resource_id": "spatial_icon_catalog_v1",
+  "module_id": "spatial_interface_v1",
+  "status": "developer_preview",
+  "patient_display_authorized": false,
+  "asset_policy": "No copied icon artwork is included. Resolve SF Symbols at runtime, check availability for the deployment target, and fall back to the localized text label.",
+  "icons": [
+    {"id": "family_mode", "reference_feature": "Family entry action", "symbol_candidates": ["person.2.fill", "person.2"], "fallback_label": "Family"},
+    {"id": "presenter_mode", "reference_feature": "Presenter entry action", "symbol_candidates": ["person.crop.circle", "person.fill"], "fallback_label": "Presenter"},
+    {"id": "pointer_tool", "reference_feature": "Select or point", "symbol_candidates": ["cursorarrow.rays", "cursorarrow"], "fallback_label": "Pointer"},
+    {"id": "draw_tool", "reference_feature": "Temporary presenter markup", "symbol_candidates": ["pencil.tip", "pencil"], "fallback_label": "Draw"},
+    {"id": "measure_tool", "reference_feature": "Non-clinical visual comparison guide", "symbol_candidates": ["ruler", "line.diagonal"], "fallback_label": "Compare size"},
+    {"id": "focus_tool", "reference_feature": "Move visual focus to a reviewed annotation", "symbol_candidates": ["scope", "viewfinder"], "fallback_label": "Focus"},
+    {"id": "erase_tool", "reference_feature": "Clear presenter markup", "symbol_candidates": ["eraser.fill", "eraser"], "fallback_label": "Erase"},
+    {"id": "home_tool", "reference_feature": "Restore the complete default view", "symbol_candidates": ["house.fill", "house"], "fallback_label": "Reset view"},
+    {"id": "blood_flow", "reference_feature": "Qualitative flow-cue control", "symbol_candidates": ["arrow.triangle.2.circlepath", "arrow.right"], "fallback_label": "Illustrative blood flow"},
+    {"id": "anatomy_category", "reference_feature": "Structural anatomy category", "symbol_candidates": ["brain.head.profile", "figure.stand"], "fallback_label": "Anatomy"},
+    {"id": "pathophysiology_category", "reference_feature": "Mechanism category", "symbol_candidates": ["waveform.path.ecg", "waveform.path"], "fallback_label": "Pathophysiology"},
+    {"id": "imaging_category", "reference_feature": "Imaging education category", "symbol_candidates": ["viewfinder", "photo"], "fallback_label": "Imaging"},
+    {"id": "interventions_category", "reference_feature": "Intervention education category", "symbol_candidates": ["cross.case.fill", "cross.case"], "fallback_label": "Interventions"},
+    {"id": "medications_category", "reference_feature": "Medication education category", "symbol_candidates": ["pills.fill", "pills"], "fallback_label": "Medications"},
+    {"id": "outcomes_category", "reference_feature": "Outcome uncertainty category", "symbol_candidates": ["chart.line.uptrend.xyaxis", "chart.bar"], "fallback_label": "Outcomes"},
+    {"id": "guidelines_category", "reference_feature": "Reviewed guideline category", "symbol_candidates": ["book.closed.fill", "book.closed"], "fallback_label": "Guidelines"},
+    {"id": "evidence_card", "reference_feature": "Reviewed evidence card", "symbol_candidates": ["doc.text.magnifyingglass", "doc.text"], "fallback_label": "Evidence"},
+    {"id": "more_categories", "reference_feature": "Additional category list", "symbol_candidates": ["ellipsis", "ellipsis.circle"], "fallback_label": "More"}
+  ],
+  "prohibited_meanings": [
+    "An icon cannot communicate diagnosis, treatment recommendation, urgency score, procedural competence, or outcome prediction.",
+    "The measure icon is a non-clinical presentation comparison only and must not expose anatomical, device, lesion, distance, or trajectory measurements.",
+    "The success-state checkmark, if used by the host app, may confirm an interface action only and must never mean clinical success."
+  ]
+}

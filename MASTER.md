@@ -1,8 +1,8 @@
 # MASTER — scene assembly, behavior, and Houdini handoff
 
 This document is the implementation contract for assembling the repository's
-135 release-catalog runtime assets into one coherent Apple Vision Pro
-educational experience. The full source build has 137 unique package records;
+145 release-catalog runtime assets into one coherent Apple Vision Pro
+educational experience. The full source build has 147 unique package records;
 two inner-ear-containing records are licence-held and not present as runtime
 binaries in this publishing tree.
 It is written for a coding agent, technical artist, Houdini artist, or
@@ -21,7 +21,7 @@ must be validated before a patient-facing pilot.
 
 When files disagree, use this order:
 
-1. The twelve release JSON manifests are authoritative for asset IDs, package paths,
+1. The thirteen release JSON manifests are authoritative for asset IDs, package paths,
    units, up axis, provenance notes, and prohibited combinations.
 2. This file is authoritative for assembly, state, interaction, and pathway
    rules.
@@ -51,6 +51,17 @@ When files disagree, use this order:
    disclosure, family privacy, and patient-display review gates. The endpoint
    [OpenAPI contract](Services/AdaptiveAssetService/openapi.json) is
    machine-readable transport documentation, not clinical approval.
+9. The
+   [spatial-care environment manifest](RealityKitContent/Assets/vision_pro_stroke_kit_v2/asset_manifest_spatial_care_environment_v1.json)
+   is authoritative for the ten room IDs, common-floor registration, anchor
+   starting points, assembly exclusion, system-default environment rule, and
+   package integrity.
+10. The
+    [spatial-interface resource manifest](RealityKitContent/InterfaceMedia/spatial_care_interface_v1/asset_manifest_spatial_interface_v1.json)
+    is authoritative for supporting-media integrity. Its scene presets, cases,
+    evidence placeholders, annotation scaffold, UI tokens, and icon mappings
+    remain developer-preview/application resources—not clinical approval or a
+    substitute for native visionOS implementation.
 
 The word **must** below means a release-blocking requirement. **Should** means
 the default implementation unless a reviewed design decision says otherwise.
@@ -92,6 +103,16 @@ the default implementation unless a reviewed design decision says otherwise.
   are preserved, but it is an orientation replacement—not a registered layer
   to overlay on the detailed brain. Never transfer its display transform,
   material profile, or simplified silhouette back into atlas geometry.
+- The ten `spatial_care_environment_v1` packages share
+  `experience_floor_origin`. Their room frame is X horizontal, Y up, and -Z
+  into the room. Load them only under `OptionalEnvironmentRoot`; never center
+  or normalize components independently. The suggested anchor transforms are
+  design starting points, not safe-space, reach, comfort, or calibration proof.
+- System passthrough on device and the selected Apple Vision Pro Simulator
+  scene remain the default environment. The synthetic room is disabled unless
+  an explicit fully immersive developer-demo or governed-review state enables
+  it. Never load room geometry behind an ordinary window/volume merely to
+  imitate a concept render.
 - Tool-v3 packages use metre/Y-up presentation frames but are not registered
   patient anatomy or measured products. Handheld/display bounds are plausible
   authoring dimensions only; no asset may supply device sizing, compatibility,
@@ -119,7 +140,9 @@ change, but ownership and separation must not.
 flowchart TD
     R["StrokeExperienceRoot"] --> P["ExperiencePlacementRoot"]
     R --> UI["AppUIRoot"]
-    P --> E["EnvironmentRoot"]
+    UI --> IA["InterfaceAttachmentRoot"]
+    UI --> WO["WindowOrnamentRoot"]
+    P --> E["OptionalEnvironmentRoot"]
     P --> PT["PatientContextRoot"]
     P --> G["SpatialGuidanceRoot"]
     P --> AP["AdaptivePresentationRoot"]
@@ -169,8 +192,12 @@ Recommended engine names and responsibilities:
 |---|---|---|
 | `StrokeExperienceRoot` | Lifecycle and lesson-state owner | Identity; never directly manipulated by gestures |
 | `ExperiencePlacementRoot` | World placement, global orbit, zoom, reset | Only user-controlled spatial transform |
+| `AppUIRoot` | Native SwiftUI navigation, privacy, accessibility, warnings, and global actions | App-owned; never baked into USDZ or transformed as anatomy |
+| `InterfaceAttachmentRoot` | World-aware SwiftUI/RealityKit attachments for case cards, facts, labels, topic rail, scale warnings, and comfort controls | Reorients for readability; binds only to reviewed package selectors/anchors |
+| `WindowOrnamentRoot` | Non-spatial windows, ornaments, fallback navigation, and exit/return controls | Always available even when immersive content is hidden or fails |
 | `AdaptivePresentationRoot` | Detached low-intensity orientation replacement and app-owned presentation sidecars | Disabled by default; never co-load its calm brain candidate with the detailed source; no physics inheritance into anatomy |
-| `EnvironmentRoot` | Table, C-arm, monitor, IV pole, staff | World-scale; static or kinematic only |
+| `OptionalEnvironmentRoot` | Ten `spatial_care_environment_v1` packages for an explicitly selected synthetic room | Disabled by default; assembly or components, never both; coarse static collision only after safe-space review |
+| `EnvironmentRoot` | Prototype table, C-arm, monitor, IV pole, and staff for procedure-room lessons | World-scale; static or kinematic only; separate from the optional consultation room |
 | `PatientContextRoot` | Supine patient and all patient-relative content | One reviewed visual alignment to room context |
 | `HeadRegisteredRoot` | All compatible v2 head-space content | Preserve authored child transforms |
 | `LegacyHeadRoot` | Prototype-v1 head/pathology staging | Separate manual alignment; never assumed registered to v2 |
@@ -340,14 +367,15 @@ stateDiagram-v2
 The app must require an explicit pathway choice before enabling intervention
 assets. Changing pathway performs a full state reset.
 
-## 5. Master relationship map — 137 build records / 135 release assets
+## 5. Master relationship map — 147 build records / 145 release assets
 
 The `Parent` column is the canonical scene slot. `Relationship / rule` tells an
 agent how each package fits into the constructed experience. Records 1–65 are
 the original release baseline; records 66–110 are the intracranial-detail v3
 expansion; and records 111–136 are the surgical-tool v3 expansion. Records 92
 and 98 are held audit records with no published binary; record 137 is the
-adaptive visual derivative, leaving 135 release assets. Asset IDs, not sequence
+adaptive visual derivative, and records 138–147 are the optional environment
+module, leaving 145 release assets. Asset IDs, not sequence
 numbers, are the runtime keys.
 
 ### 5.1 Realistic v2 core anatomy
@@ -468,7 +496,7 @@ numbers, are the runtime keys.
 ### 5.11 Neural-detail v3 — build records 66–80
 
 These 15 packages are release-eligible generic HRA atlas layers. Build numbers
-remain stable across the complete 137-record build map; runtime code must use the
+remain stable across the complete 147-record build map; runtime code must use the
 asset ID, not the number.
 
 | Build # | Asset ID | Parent | Relationship / rule |
@@ -592,7 +620,27 @@ open surgery is appropriate or that every category is required.
 |---:|---|---|---|
 | 137 | `brain_orientation_calm_educational_v1` | `AdaptivePresentationRoot/OrientationCandidate` | Generic HRA-derived external brain orientation with matte pastel materials and no vessels, blood, pathology, incision, tools, or dense labels. It is a display-blocked candidate, not an anxiety treatment or approved patient asset. After exact asset + policy + mapping review, it may replace the detailed brain for orientation only; never co-load it, transfer its materials into clinical-detail views, or hide material facts. |
 
-### 5.17 Known gaps and omission rule
+### 5.17 Optional spatial-care environment — build records 138–147
+
+These records are original presentation geometry, not anatomy or clinical
+content. They share `experience_floor_origin` and remain disabled while the app
+uses passthrough or a configured Simulator scene. The complete assembly is a
+replacement for all nine components, never an additional layer.
+
+| Build # | Asset ID | Parent | Relationship / rule |
+|---:|---|---|---|
+| 138 | `calm_consultation_room_shell_v1` | `OptionalEnvironmentRoot/Architecture/RoomShell` | Open-front room/floor/ceiling boundary scaffold. Optional coarse static floor/boundary collision only after safe-space review; no verified physical clearance. |
+| 139 | `curved_feature_wall_architecture_v1` | `OptionalEnvironmentRoot/Architecture/FeatureWall` | Blank hero backdrop and wood-slat rhythm. App-native UI owns every word, panel, portrait, label, and control placed in front of it. |
+| 140 | `modular_lounge_seating_set_v1` | `OptionalEnvironmentRoot/Furniture/Lounge` | Two rear lounge modules used for composition and scale only. No collision by default; never invite the viewer to sit or lean on virtual furniture. |
+| 141 | `consultation_armchair_pair_v1` | `OptionalEnvironmentRoot/Furniture/RoleChairs` | Foreground teal/sand pair supporting visual role framing only. Family/presenter choice, authorization, and identity remain app state. |
+| 142 | `round_spatial_display_dais_v1` | `OptionalEnvironmentRoot/Presentation/Dais` | Central rug/plinth/ring beneath the hero anchor. It is not a calibration target, tracked boundary, measurement guide, or physical step. |
+| 143 | `low_table_side_table_set_v1` | `OptionalEnvironmentRoot/Furniture/Tables` | Noninteractive coffee/side tables. Exclude before core architecture when reducing decor cost. |
+| 144 | `clinical_credenza_storage_v1` | `OptionalEnvironmentRoot/Decor/Credenza` | Closed privacy-neutral storage/decor. It contains no records, medication, devices, or clinical supplies. |
+| 145 | `calm_botanical_planter_set_v1` | `OptionalEnvironmentRoot/Decor/Plants` | Three procedural planters/foliage landmarks. No therapeutic, calming, or anxiety-reduction meaning; no collision or motion by default. |
+| 146 | `ambient_lighting_fixture_set_v1` | `OptionalEnvironmentRoot/Decor/Fixtures` | Non-emissive lamp, ring, and sconce meshes. App-owned IBL/RealityKit lights determine actual illumination and must be profiled separately. |
+| 147 | `spatial_care_consultation_environment_assembly_v1` | `OptionalEnvironmentRoot/ReviewAssembly` | Complete registered room replacing records 138–146. Use for the simplest gated demo or whole-room authoring review; unload all component packages first. |
+
+### 5.18 Known gaps and omission rule
 
 The surgical-tool set is representative, not exhaustive. The current build has
 no dedicated access-ultrasound prop, diagnostic or balloon-guide catheter
@@ -610,6 +658,64 @@ project-owned or verified compatible source, the same branch/stage metadata,
 technical/visual QA, specialist review, and an updated release count.
 
 ## 6. Recommended lesson assembly
+
+### 6.0 Four-state spatial interface composition
+
+The project-owned
+[`spatial_scene_preset_catalog_v1.json`](RealityKitContent/InterfaceMedia/spatial_care_interface_v1/spatial_scene_preset_catalog_v1.json)
+maps the supplied reference to four deterministic app states. It is
+developer-preview configuration, not a clinically approved screen.
+
+| State | USDZ composition | Native visionOS / app composition | Required boundary |
+|---|---|---|---|
+| `landing` | No detailed anatomy. A future governed release may place `brain_orientation_calm_educational_v1` under `AdaptivePresentationRoot`; current fallback is no 3D brain. Optional synthetic room remains separately gated. | Wordmark, short orientation copy, Family and Presenter actions, persistent developer/review status. | Calm brain is display-blocked and replaces rather than overlays anatomy. Family entry requires participation/authorization and privacy confirmation. |
+| `caseBrowser` | Keep anatomy unloaded; optional environment stays static if already in the gated demo. | Horizontal native case-card carousel using the four synthetic portraits and fictional scenario records. | Always show “Fictional educational scenario — not a patient record.” No PHI, real timestamps, recommendations, eligibility, or outcomes. |
+| `guidedHead` | Components: `external_head_scalp_cutaway_v2`, `brain_anatomy_realistic_v2`, `cerebral_arteries_realistic_v2`, `neck_access_arteries_realistic_v2`; add `ischemic_mca_clot_v2`, the qualitative overlay, and baked flow animation only by state. | Three-step rail, short fact panel, reviewed labels, tool rail, flow control, Pause/Replay, Reset/Home, and system hand/pointer affordances. | Copy must say **conceptual right-M1 occlusion**. Never stack hero/registered aggregate over components; no left-MCA text; flow is non-CFD/nonquantitative. |
+| `scholarHead` | Brain + arteries + right-M1 marker, with at most one semantic focus asset. A detached vignette may load `artery_cutaway_complete_v2` or one conceptual micro package under its separate scale root. | Detail-mode selector, structural labels, circular vignette frame, evidence placeholder, topic rail, warnings, Reset/Home. | “Scholar” means higher information density, not diagnosis or approval. Functional/deficit claims remain off; evidence cards fail closed; micro warning stays visible. |
+
+System-owned hands, gaze, hover, pinch, passthrough, safe-space boundaries, and
+Simulator environment are never represented by authored meshes. SwiftUI or
+RealityKit attachments own panels, text, buttons, icons, leader lines, portal
+frames, progress, topic navigation, and accessibility. The four-panel
+ImageGen storyboard is a non-runtime target only; generated copy inside it is
+not approved implementation copy.
+
+#### 6.0.1 Interface resource ownership
+
+| Manifest resource ID | Consumer | Rule |
+|---|---|---|
+| `spatial_scene_preset_catalog_v1` | App state/scene loader | Validate every referenced ID against the release manifests before loading; preserve component/aggregate and laterality exclusions. |
+| `demo_case_library_v1` | Native case browser | Four fictional demo records only; no data entry or link to a real person. Keep them local/non-sensitive unless an institution supplies a separately governed backend. |
+| `educational_evidence_card_catalog_v1` | Evidence-card renderer | All claims are null and display-blocked. Hide in patient/family mode until the exact reviewed content tuple is complete. |
+| `spatial_annotation_anchor_map_v1` | Annotation authoring workflow | Intentional scaffold: selectors, local transforms, and copy are null. Render nothing until each exact package hash/selector/anchor/copy/review record is approved. |
+| `spatial_annotation_anchor_map_v1_schema` | Build/review tooling | Draft 2020-12 schema for completed anchor records. Validate with a conforming third-party tool before accepting a reviewed map. |
+| `spatial_ui_design_tokens_v1` | SwiftUI design system | Starting points only. Respect Dynamic Type, VoiceOver, Increase Contrast, Reduce Transparency, Reduce Motion, seated/reclined reach, and physical-device QA. |
+| `spatial_icon_catalog_v1` | Native icon resolver | Prefer available SF Symbols; fall back to localized text. Icons never communicate diagnosis, clinical success, measurement, or treatment. |
+| `stroke_care_wordmark_v1` | Landing brand mark | Project-owned vector; do not convert it into a medical-certification mark. |
+| `fictional_case_portrait_01_v1` | Native case browser | Synthetic identifier for Fictional Scenario 01/right-M1 orientation; never present it as a patient photograph. |
+| `fictional_case_portrait_02_v1` | Native case browser | Synthetic identifier for Fictional Scenario 02/qualitative flow cues; never present it as a patient photograph. |
+| `fictional_case_portrait_03_v1` | Native case browser | Synthetic identifier for Fictional Scenario 03/structural detail; never present it as a patient photograph. |
+| `fictional_case_portrait_04_v1` | Native case browser | Synthetic identifier for Fictional Scenario 04/detached vessel teaching; never present it as a patient photograph. |
+| `spatial_care_interface_storyboard_v1` | Design review/docs | Supporting visual target only; not shipped as a screen, anatomical texture, Simulator capture, or clinical evidence. |
+| `image_generation_provenance_v1` | Provenance/release review | Preserve the five generated-image hashes, prompt intent, source-reference hash, and restrictions; the record grants no clinical approval. |
+
+`asset_manifest_spatial_interface_v1.json` is the build-time envelope for these
+14 records. Verify every file by declared byte count and SHA-256, and do not
+count these non-USDZ resources as 3D runtime assets.
+
+#### 6.0.2 Optional environment loading
+
+1. Default `environmentMode = systemPassthroughOrSimulatorScene`; load no
+   `spatial_care_environment_v1` geometry.
+2. Only an explicit developer-demo/governed-review action may set
+   `environmentMode = syntheticConsultationRoom`.
+3. Choose the assembly **or** registered components. For progressive loading,
+   load shell + feature wall + dais, then seating/tables, then optional decor.
+4. Keep interface and anatomy under their own roots. Environment unload must
+   not destroy case, lesson, or presentation state.
+5. Before leaving the immersive demo—or whenever system safety requires—unload
+   the room, restore system passthrough/Simulator presentation, and retain an
+   immediate native Exit/Return control.
 
 ### 6.1 Orientation and layer reveal
 
@@ -811,6 +917,15 @@ enum AdaptationPreferenceSource: String, Codable {
     case selfReportPreference, clinicianOverride, simulatedDemo
 }
 
+enum SpatialInterfaceMode: String, Codable {
+    case landing, caseBrowser, guidedHead, scholarHead, detachedVignette
+}
+
+enum EnvironmentPresentationMode: String, Codable {
+    case systemPassthroughOrSimulatorScene
+    case syntheticConsultationRoomDeveloperDemo
+}
+
 enum ICHManagementBranch: String, Codable {
     case none, medicalMonitoring, minimallyInvasiveEvacuation
     case openCraniotomyEvacuation, decompressiveCraniectomy, evdAdjunct
@@ -842,6 +957,10 @@ enum BoneClosure: String, Codable {
 }
 
 struct StrokeExperienceState: Equatable {
+    var interfaceMode: SpatialInterfaceMode = .landing
+    var environmentMode: EnvironmentPresentationMode = .systemPassthroughOrSimulatorScene
+    var syntheticEnvironmentComponentIDs: Set<String> = []
+    var selectedFictionalCaseID: String? = nil
     var pathway: EducationPathway = .none
     var step: LessonStep = .orientation
     var visibleAssetIDs: Set<String> = []
@@ -864,6 +983,9 @@ struct StrokeExperienceState: Equatable {
     var adaptivePresentationActive = false
     var adaptivePatientDisplayAuthorized = false
     var familyParticipationOrAuthorizationConfirmed = false
+    var privacyConfirmationActive = false
+    var approvedEvidenceCardIDs: Set<String> = []
+    var approvedAnnotationRequestIDs: Set<String> = []
     var adaptiveRecipeRevision = 0
     var animationRevision = 0       // increment to replay deterministically
     var clinicalWarningsVisible = true
@@ -888,6 +1010,33 @@ visibility transition and duplication test.
 Reducer invariants:
 
 ```text
+if environmentMode == systemPassthroughOrSimulatorScene:
+    assert no spatial_care_environment_v1 asset is loaded
+
+if environmentMode == syntheticConsultationRoomDeveloperDemo:
+    require explicit developer-demo or governed-review gate
+    require assembly XOR selected independent components
+    assert app-native Exit/Return remains available
+
+if interfaceMode == caseBrowser:
+    require selected case data is fictional_demo_only
+    require fictional educational badge is visible
+    assert no real patient identifier or absolute event timestamp is present
+
+if audience == family:
+    require familyParticipationOrAuthorizationConfirmed
+    require privacyConfirmationActive
+
+if selected pathology == ischemic_mca_clot_v2:
+    require displayed laterality copy == conceptual right-M1 occlusion
+    reject left-MCA copy and mirrored geometry
+
+if evidence card has any null source/review/display field:
+    hide it in patient/family mode
+
+if annotation selector, local anchor, copy, package hash, or review is incomplete:
+    render no annotation for that request
+
 if pathway changes:
     stop all animations
     clear device/clot/open-cranial states
@@ -993,12 +1142,14 @@ simulation.
 | Stent retriever | Kinematic | Optional authored event trigger | Swap/reveal deployed and withdrawn poses; do not claim self-expansion mechanics |
 | Flow markers/arrows/RBCs | No rigid body | None | Transform or particle-cue animation; direction and timing are illustrative and dimensionless |
 | Room equipment | Static or kinematic | Coarse safety/selection volumes only | No verified C-arm/table collision envelope |
+| Optional consultation-room shell/furniture/decor | Static; no gravity | None by default; optional coarse floor/boundary proxies only in the gated immersive demo | No dynamic furniture, fabric, plant, lighting, walking, seating, leaning, or safe-space simulation |
 | Patient/staff | Static | Input/comfort exclusion only if needed | No ragdoll or human biomechanics |
 | Prototype open-cranial tools/flaps | Kinematic | Optional trigger for lesson sequencing | Authored transforms only; no cutting, drilling, suction, tissue, or force simulation |
 | v3 endovascular support tools | Static; detached pickup may use a kinematic presentation proxy | Coarse UI picking only; never vessel/device contact | Stage visibility, highlight, exploded comparison, or return-to-tray pose only; no puncture, connection, injection, aspiration, pressure, radiation, compatibility, navigation, or operating simulation |
 | v3 open-cranial instrument sets | Static; detached pickup may use a kinematic presentation proxy | Coarse UI picking only; never anatomy/tool contact | Stage visibility, highlight, exploded comparison, or return-to-tray pose only; no marking, cutting, drilling, retraction, suction, irrigation, energy, fixation, closure, CSF access, or tissue simulation |
 | v3 micro cells, thrombus, BBB, myelin, synapse, CSF interface, and tissue zones | Static; illustrative markers may be kinematic | None except coarse UI picking | Separate-stage visibility or qualitative cue motion only; no fluid, diffusion, electrophysiology, reaction, perfusion, histology, or viability solver |
 | Adaptive orientation candidate and material/visibility sidecar | Static; no gravity | None except coarse UI selection on the detached root | Replacement/visibility/material transition only; no deformation, physiology, anxiety-response, or sensor-driven motion |
+| SwiftUI/RealityKit attachments and procedural focus rings | App/UI-owned; no gravity | Native input target or hit region only | Camera-readable placement and reversible emphasis only; no anatomical surface, measurement, lesion boundary, or clinical result meaning |
 
 Implementation rules:
 
@@ -1039,7 +1190,7 @@ Implementation rules:
 ### 9.1 Non-destructive working layout
 
 1. Work in Solaris/LOPs and keep each asset as a referenced or payloaded
-   component. Do not merge the 135 release packages into one destructive mesh.
+   component. Do not merge the 145 release packages into one destructive mesh.
 2. Prefer the source USDC interchange file when available. If only a USDZ is
    present in this repository, unpack it to a temporary working directory with
    USD tooling; never edit the committed package in place.
@@ -1056,12 +1207,13 @@ Implementation rules:
 8. Use payloads for phase-specific heavy anatomy/review packages and references
    for lightweight always-needed components. A payload load decision must not
    change clinical meaning.
-9. Keep six explicit composition domains: `MACRO_HEAD` for registered
+9. Keep seven explicit composition domains: `MACRO_HEAD` for registered
    generic atlas anatomy, `MESO_VESSEL` for magnified wall/device teaching,
    `MICRO_CELLULAR` for M-series presentation models, `EVT_TOOLS` for the gated
    endovascular branch, `OPEN_TOOLS` for the separately gated open branch, and
    `ADAPTIVE_PRESENTATION` for detached, review-gated orientation replacements
-   and app-owned material/visibility sidecars.
+   and app-owned material/visibility sidecars, plus `OPTIONAL_ENVIRONMENT` for
+   the independently registered synthetic consultation-room components.
    Never pass a display scale, viewer-fit transform, tool placement, or state
    between incompatible domains.
 
@@ -1096,12 +1248,14 @@ Recommended layer stack:
 ```text
 00_source_payloads.usdc      # immutable geometry and semantic/source metadata
 10_registration.usda         # project-frame or approved patient-frame xforms
+15_optional_environment.usda # disabled-by-default room assembly/components
 20_look.usda                 # reviewed materials; no clinical state
 25_tool_placement.usda       # illustrative static/kinematic tool poses only
 30_presentation.usda         # cutaways, visibility variants, qualitative cues
 32_adaptive_presentation.usda # approved comfort-profile sidecars; no geometry rewrite
 35_tool_states.usda          # gated EVT/OPEN variants; no device commands
 40_lesson.usda               # IDs, captions/warnings, pathway bindings
+45_interface_bindings.usda   # anchor IDs only; UI/media remain app resources
 90_master.usda               # composition only; no copied geometry
 ```
 
@@ -1124,7 +1278,37 @@ variant, not merely rely on a default-off checkbox. Preserve HRA ontology/source
 properties and Z-Anatomy `userProperties:anatomical_name`; do not flatten
 semantic children or bind interaction to vertex indices.
 
-#### 9.1.1 Surgical-tool payload and state slots
+Environment composition additionally requires
+`environmentMode={systemOrSimulator,syntheticConsultationRoom}` and
+`consultationRoom={components,assembly}`. The default authors no room payload.
+The synthetic variant must reference record 147 **or** a selection of records
+138–146 at their unchanged shared-floor transform. Keep
+`45_interface_bindings.usda` limited to stable anchor identifiers; case data,
+portrait paths, display copy, evidence, accessibility, and SF Symbols stay in
+native app resources and must not be baked into USD.
+
+#### 9.1.1 Optional environment and interface anchor handoff
+
+| Solaris path | Runtime owner | Content / rule |
+|---|---|---|
+| `/World/OptionalEnvironment/RoomShell` | `OptionalEnvironmentRoot` | Record 138; optional coarse proxy collision only after device/safe-space review. |
+| `/World/OptionalEnvironment/FeatureWall` | `OptionalEnvironmentRoot` | Record 139; central surface remains free of baked interface content. |
+| `/World/OptionalEnvironment/Furniture` | `OptionalEnvironmentRoot` | Records 140–143; static composition only, no physical-seating affordance. |
+| `/World/OptionalEnvironment/Decor` | `OptionalEnvironmentRoot` | Records 144–146; lazy-load and unload before core architecture under pressure. |
+| `/World/OptionalEnvironment/Assembly` | `OptionalEnvironmentRoot` | Record 147; transitive replacement for all component paths. |
+| `/World/InterfaceAnchors/Welcome` | App `InterfaceAttachmentRoot` | Stable identifier for optional orientation brain and role-choice attachment; not a baked panel. |
+| `/World/InterfaceAnchors/CaseCarousel` | App `InterfaceAttachmentRoot` | Stable identifier only; portraits and fictional case data remain application resources. |
+| `/World/InterfaceAnchors/HeroHead` | `HeadRegisteredRoot` outer placement | Places the existing registered head composition without editing anatomy transforms. |
+| `/World/InterfaceAnchors/Guidance` | App `InterfaceAttachmentRoot` | Guidance/evidence/topic attachments; all content remains review-gated. |
+| `/World/InterfaceAnchors/MagnifiedVignette` | `TeachingVignetteRoot` | Detached vessel or micro stage with persistent scale warning. |
+
+Do not invent anatomical attachment transforms in Houdini. The committed
+`spatial_annotation_anchor_map_v1.json` contains null selectors, transforms,
+and copy intentionally. Fill a request only after binding it to the exact USDZ
+hash and reviewed local entity selector; clinical and accessibility reviewers
+then approve structural copy and spatial readability for that revision.
+
+#### 9.1.2 Surgical-tool payload and state slots
 
 Reference source tool geometry without modification and author only reviewed
 presentation transforms in `25_tool_placement.usda`. Room-scale support props
@@ -1368,6 +1552,26 @@ coverage, missing-anatomy audit, and replacement rationale are in
 20. Apply recipes on the main actor as reversible sidecars, atomically swap
     visible states, preserve accessible full information, and make Show Less,
     Show More, Pause, Exit/Return, and Restore Original persistent.
+21. Decode `asset_manifest_spatial_interface_v1.json` separately from USDZ
+    manifests. Verify every resource byte count/hash and validate every scene
+    dependency against the current release catalog before exposing a preset.
+22. Decode `asset_manifest_spatial_care_environment_v1.json`, but resolve no
+    package unless the explicit synthetic-room developer/review state is true.
+    Enforce assembly XOR components before file resolution.
+23. Keep all room assets under `OptionalEnvironmentRoot` at their shared floor
+    origin. Use the manifest anchor slots only as tested starting positions;
+    orient attachments for the current viewer and system safety state.
+24. Build cards, tools, labels, glass, warnings, scale badges, portal frames,
+    and topic rails with native SwiftUI/RealityKit. Resolve SF Symbols at
+    runtime and provide localized text fallbacks.
+25. Treat all case records/portraits as fictional demo data. Require the
+    fictional-case badge; never accept real identifiers through this pack.
+26. Render no evidence claim or anatomical annotation until its complete
+    fail-closed approval tuple passes. Null selector/anchor/copy fields mean
+    nothing is displayed—not “use the model centre.”
+27. Use system hand presence, gaze privacy, natural input, passthrough,
+    boundaries, and Simulator scene. Do not load custom hand/cursor/safety
+    meshes to imitate system behavior.
 
 The application, not a USD file, owns:
 
@@ -1382,10 +1586,15 @@ The application, not a USD file, owns:
   licence-hold, and clinical-boundary warnings;
 - scale-domain routing and release-manifest filtering;
 - EVT/open branch gates, stage/category eligibility, technique and closure
-  variants, conditional EVD approval, and all tool assembly/overlap exclusions.
+  variants, conditional EVD approval, and all tool assembly/overlap exclusions;
 - explicit visual-detail/motion preference, policy/version validation,
   adaptation disclosure, family authorization/privacy, semantic group mapping,
   and patient-display approval state;
+- interface mode, environment mode, case badge/privacy state, native glass,
+  layout, Dynamic Type, VoiceOver, system-symbol fallback, attachment
+  readability, evidence/annotation review gates, and global Exit/Return; and
+- application-owned IBL/lights, exposure, progressive room loading, and unload
+  behavior.
 
 The USD/Houdini layer owns:
 
@@ -1393,6 +1602,11 @@ The USD/Houdini layer owns:
 - authored registration transforms;
 - simple reviewed animation clips or state variants;
 - asset-level provenance/licensing metadata.
+
+The optional environment USD layer owns only static room geometry, authored
+materials, common-floor transforms, and semantic component IDs. It does not own
+light emission, safe-space geometry, UI, user roles, privacy, case data,
+accessibility, interaction, or clinical meaning.
 
 ## 11. Performance and loading budget
 
@@ -1404,7 +1618,7 @@ The USD/Houdini layer owns:
 - Also budget the whole active scene, not each file, around Apple's approximate
   Shared Space guidance of 250 draw calls/250,000 visible vertices and Full
   Space guidance of 500 draw calls/500,000 visible vertices.
-- Do not preload all 135 release assets or display combined review assemblies with
+- Do not preload all 145 release assets or display combined review assemblies with
   their individual components.
 - `layered_head_cutaway_registered_v2` is 333,642 triangles and
   `thrombectomy_registered_hero_v2` is 440,648 triangles. Either asset alone is
@@ -1426,6 +1640,15 @@ The USD/Houdini layer owns:
   release approval it replaces the detailed brain view rather than adding to
   the visible triangle budget; profile its four-model package and transition on
   physical Vision Pro hardware.
+- `spatial_care_consultation_environment_assembly_v1` is 88,908 triangles,
+  2,618,451 bytes, and loaded as 226 RealityKit model/material-bearing entities
+  in desktop validation. It replaces all nine environment components. Start a
+  component-mode demo with shell + feature wall + dais, lazy-load decor, and
+  profile the final lighting/shadow configuration separately.
+- The five ImageGen PNGs are interface/support media, not USDZ geometry. Decode
+  portraits at the case-card display size, avoid keeping off-screen cards at
+  full 1254 × 1254 resolution, and keep the storyboard out of the runtime
+  bundle unless a developer design-review build explicitly needs it.
 - The held `cranial_support_registered_assembly_v3` build record is 333,360
   triangles, but its binary is not a performance option because it is not in
   the release tree.
@@ -1488,6 +1711,23 @@ These are hard failures:
   released content, or restored by a developer fallback path.
 - No broad white-matter parent and detailed pathway layer presented as disjoint
   tissue compartments.
+- No synthetic consultation-room assembly co-loaded with any of its nine
+  components, and no room asset loaded by default in passthrough, Simulator
+  scene, window, or volume presentation.
+- No virtual wall, floor, furniture, rug, dais, marker, or collider described
+  or used as verified physical clearance, seating, leaning support, tracked
+  calibration, or a replacement for visionOS boundaries.
+- No custom hand, gaze cursor, pinch mesh, hover surrogate, or passthrough
+  texture used to imitate system-owned natural input or privacy behavior.
+- No generated portrait or fictional case presented as a real person, real
+  patient, clinical record, demographic evidence, diagnosis, recommendation,
+  eligibility decision, timeline, or prognosis.
+- No generated storyboard wording implemented as clinical or evidence copy.
+- No left-MCA label with `ischemic_mca_clot_v2` or the current baked right-MCA
+  flow animation; no mirrored model used to create unreviewed laterality.
+- No annotation rendered from a guessed name, colour, raw bounds, centroid, or
+  null selector/transform/copy field. No evidence placeholder promoted without
+  its complete reviewed source/content tuple.
 - No patient scan, identifier, record, or outcome data introduced without a
   separately approved privacy, security, clinical, and regulatory workflow.
 - No raw DICOM, patient-derived mesh, identifiable facial surface, or PHI in
@@ -1528,6 +1768,13 @@ assert not (neural review assembly visible with any N01–N14 component)
 assert not (cranial-nerve assembly visible with any C01–C09 component)
 assert not (micro teaching set visible with any M01–M11 component)
 assert not (major white-matter regions visible with detailed pathways)
+assert not (optional environment assembly visible with any environment component)
+assert systemOrSimulator environment mode has zero spatial_care_environment_v1 assets
+assert no custom mesh claims system hand, gaze, pinch, passthrough, or safety-boundary ownership
+assert every demo case is fictional, contains_phi == false, and shows the fictional-case badge
+assert not (ischemic_mca_clot_v2 visible and displayed laterality != right M1)
+assert every visible annotation has exact package hash + selector + local anchor + approved copy + review record
+assert every visible evidence card has approved claim + source + version + locale + accessible copy + expiry + review record
 assert every microscopic_conceptual_separate asset is parented under MicroScaleRoot
 assert every active micro view keeps magnification/conceptual/non-patient warnings visible
 assert exported generic assets contain no DICOM identifiers or private paths
@@ -1569,8 +1816,8 @@ Every generated or modified asset must pass all applicable gates:
   content, and resolvable texture references.
 - RealityKit loads the package and exposes nonzero renderable bounds.
 - An animated package exposes the expected animation resource(s).
-- The release catalog contains 135 unique IDs and paths across 12 manifests;
-  the full build map contains 137 IDs; neither held build ID
+- The release catalog contains 145 unique IDs and paths across 13 manifests;
+  the full build map contains 147 IDs; neither held build ID
   nor binary is present.
 - Every aggregate/exclusion graph is known, acyclic, recursively expanded, and
   tested against each other active asset.
@@ -1585,6 +1832,13 @@ Every generated or modified asset must pass all applicable gates:
   examples parse; dependency-free tests cover biometric rejection, framing,
   permissions, privacy-safe logs, display gates, reversible controls, family
   privacy, deterministic demos, and generated-draft isolation.
+- All ten environment packages match their manifest hashes/bytes/budgets,
+  contain no Camera or Light prim, use metres/Y-up, load with finite nonzero
+  RealityKit bounds, and keep the synthetic-room default disabled.
+- All 14 interface resources match their non-geometry manifest hashes/bytes;
+  all JSON/SVG parses; every scene dependency resolves to one of the 145
+  release IDs; all portrait dimensions/hashes match; no private path or
+  metadata survives; storyboard/evidence/annotation display gates remain false.
 
 ### Visual/interaction gate
 
@@ -1604,11 +1858,24 @@ Every generated or modified asset must pass all applicable gates:
   Reduce Motion/static behavior, atomic replacement, persistent disclosure and
   controls, one-action restoration, family authorization/privacy, and failure
   of every unapproved candidate/draft on device.
+- The four interface states are inspected with real native glass/attachments,
+  not baked panels; right-M1 copy matches the loaded assets; Dynamic Type,
+  VoiceOver, Increase Contrast, Reduce Transparency, Reduce Motion, seated
+  reach, label occlusion, Pause, Reset, and Exit/Return pass.
+- Default passthrough/Simulator mode loads zero room assets. The gated synthetic
+  mode shows either the complete room or components, never both; transitions
+  back to system presentation unload the room without losing lesson state.
+- Generated storyboard wording is excluded from release copy. Fictional case
+  badges remain visible and every incomplete evidence/annotation request stays
+  hidden.
 
 ### Clinical/release gate
 
 - Interventional neuroradiology reviews arterial laterality, ICA/MCA route,
   right-M1 teaching marker, and thrombectomy sequence.
+- Clinical, privacy, accessibility, and human-factors reviewers approve the
+  exact right-M1 lesson copy, fictional-case framing, audience/family policy,
+  annotation anchors, evidence cards, and information-density modes together.
 - Stroke neurology reviews mechanism, uncertainty, urgency, alternatives,
   risks, and recovery language.
 - Neurosurgery reviews every open-cranial/haemorrhage sequence that is included.
@@ -1662,7 +1929,7 @@ An agent or Houdini artist implementing the combined experience must deliver:
 11. If patient replacement is in scope, the controlled DICOM frame/registration
     record and all acceptance-gate evidence—never the patient data itself in
     this repository.
-12. A 137-record build map / 135-file release map and deterministic tests for
+12. A 147-record build map / 145-file release map and deterministic tests for
     every `EVT-*`/`OPEN-*` tool-stage gate, technique/closure/EVD variant,
     assembly exclusion, legacy-overlap replacement, and representative-set
     warning, using the
@@ -1673,6 +1940,18 @@ An agent or Houdini artist implementing the combined experience must deliver:
     privacy gates, reversible-control tests, Reduce Motion evidence, and a test
     proving all biometric/anxiety inputs and unapproved candidate/draft display
     attempts fail closed.
+14. A validated 13th USDZ manifest containing ten optional environment packages,
+    an assembly/component exclusion test, progressive loading/unloading,
+    system-default zero-load proof, and simulator plus physical-device
+    composition/performance evidence.
+15. The 14-resource `spatial_interface_v1` pack integrated through native
+    SwiftUI/RealityKit: four deterministic presets, fictional-case badge,
+    right-M1 laterality guard, null-by-default annotation/evidence gates,
+    Dynamic Type/VoiceOver/contrast/motion behavior, and no custom system-hand
+    or passthrough surrogate.
+16. A screenshot/evidence bundle that clearly distinguishes the ImageGen target
+    board, Apple Vision Pro Simulator captures, and physical-device captures;
+    none may be relabelled as another evidence class.
 
 The work is **not done** merely because the master scene opens. It is done only
 when the selected assets fit without duplicate geometry, every state is

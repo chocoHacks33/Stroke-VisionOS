@@ -1,0 +1,85 @@
+{
+  "schema_version": "1.0.0",
+  "resource_id": "spatial_ui_design_tokens_v1",
+  "module_id": "spatial_interface_v1",
+  "status": "developer_preview_starting_points",
+  "patient_display_authorized": false,
+  "implementation_boundary": "App-owned SwiftUI and RealityKit presentation only. These values carry no anatomical, diagnostic, treatment, comfort, or performance meaning.",
+  "native_material_policy": {
+    "preferred": "SwiftUI glassBackgroundEffect or the deployment target's reviewed native glass equivalent",
+    "baked_glass_meshes_allowed": false,
+    "stacked_transparent_anatomy_allowed": false,
+    "reduce_transparency_fallback": "Replace glass with an opaque high-contrast system background while preserving hierarchy and controls."
+  },
+  "panel_roles": {
+    "landing_action": {
+      "surface": "native_glass_regular",
+      "corner_radius_pt": 28,
+      "padding_pt": 20
+    },
+    "case_card": {
+      "surface": "native_glass_regular",
+      "corner_radius_pt": 22,
+      "padding_pt": 20
+    },
+    "fact_panel": {
+      "surface": "native_glass_thin",
+      "corner_radius_pt": 18,
+      "padding_pt": 16
+    },
+    "evidence_placeholder": {
+      "surface": "opaque_review_blocked",
+      "corner_radius_pt": 18,
+      "padding_pt": 16
+    },
+    "toolbar": {
+      "surface": "native_glass_regular",
+      "corner_radius_pt": 24,
+      "padding_pt": 12
+    }
+  },
+  "typography": {
+    "hero": {"swiftui_text_style": "largeTitle", "weight": "semibold", "maximum_lines": 3},
+    "panel_title": {"swiftui_text_style": "title2", "weight": "semibold", "maximum_lines": 2},
+    "section": {"swiftui_text_style": "headline", "weight": "semibold", "maximum_lines": 2},
+    "body": {"swiftui_text_style": "body", "weight": "regular", "maximum_lines": 0},
+    "label": {"swiftui_text_style": "callout", "weight": "medium", "maximum_lines": 3},
+    "caption": {"swiftui_text_style": "caption", "weight": "regular", "maximum_lines": 3}
+  },
+  "spacing_pt": [4, 8, 12, 16, 20, 24, 32, 40],
+  "corner_radii_pt": [12, 18, 22, 28],
+  "semantic_colors": {
+    "accent_orientation": {"light_hex": "#2E756F", "dark_hex": "#83D5C9", "meaning": "Navigation and selection only"},
+    "accent_focus": {"light_hex": "#9B5D1E", "dark_hex": "#F2B56F", "meaning": "Selected teaching focus; never the only pathology cue"},
+    "warning": {"light_hex": "#8A4B00", "dark_hex": "#FFBF69", "meaning": "Review, conceptual-scale, or safety warning"},
+    "blocked": {"light_hex": "#9C2F2F", "dark_hex": "#FF8B8B", "meaning": "Unavailable or display-blocked state"},
+    "success_state": {"light_hex": "#2C6E49", "dark_hex": "#78D6A3", "meaning": "Completed interface action only; never treatment success"}
+  },
+  "contrast_targets": {
+    "normal_text_ratio": 4.5,
+    "large_text_ratio": 3.0,
+    "non_text_controls_ratio": 3.0,
+    "policy": "Design targets only. Verify the assembled view in light and dark environments, Increase Contrast, Reduce Transparency, and on physical hardware."
+  },
+  "depth_and_attachment_starting_points": {
+    "starting_panel_distance_m": 1.0,
+    "annotation_surface_offset_m": 0.015,
+    "panel_layer_step_m": 0.02,
+    "minimum_inter_panel_gap_m": 0.06,
+    "policy": "Starting points, not comfort guarantees. Clamp placement, avoid face-locked motion, and replace these values after physical-device accessibility and human-factors QA."
+  },
+  "motion": {
+    "default_transition_seconds": 0.28,
+    "reduced_motion_transition_seconds": 0.0,
+    "continuous_ui_pulse_allowed": false,
+    "policy": "Respect system Reduce Motion and the explicit viewer motion preference. No motion may imply physiology or urgency."
+  },
+  "accessibility_requirements": [
+    "Never encode state by color alone.",
+    "Use Dynamic Type-compatible native styles and allow body copy to expand.",
+    "Supply VoiceOver labels, values, hints, and an ordered reading path.",
+    "Keep warnings available in text when a visual tier hides optional detail.",
+    "Provide Pause, Show Less, Show More, Exit or Return, and Restore Original where adaptation is enabled.",
+    "Verify seated and reclined reach, contrast, focus order, and label occlusion on physical Apple Vision Pro hardware."
+  ]
+}
