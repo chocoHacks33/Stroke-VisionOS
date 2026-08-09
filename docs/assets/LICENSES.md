@@ -4,13 +4,22 @@ This repository does not currently apply one blanket licence to every asset.
 Use each runtime package under the terms recorded below and retain the adjacent
 source, attribution, and modification records when redistributing it.
 
-## Original project assets
+## Project-controlled original geometry and derivatives
 
-Ninety-one of the 145 release-catalog USDZ packages are original project work:
+Ninety-three of the 150 release-catalog USDZ packages are in the
+project-controlled licence bucket: the previous 91 original-project packages
+plus the two Page 2 pathology packages derived from earlier project-authored
+conceptual geometry. The previous 91 comprise
 43 baseline packages, 12 conceptual micro-detail packages, 26 surgical-tool
 packages, and 10 optional spatial-care environment packages. No
 repository-wide licence has yet been selected for those files, so public access
 to the repository must not be interpreted as an additional licence grant.
+
+The remaining 57 release packages contain NIH/HRA or Z-Anatomy/BodyParts3D
+source material and remain derivatives under the applicable attribution and/or
+ShareAlike terms. This is a licence-source partition, not a claim that every
+package in the 93-package project bucket was modeled from scratch in its current
+revision.
 
 The generated material maps and preview images are supporting project artwork.
 They are generic educational visuals, not patient data, histology, diagnostic
@@ -51,10 +60,26 @@ terms. The storyboard is supporting non-runtime artwork and must not be
 redistributed as a medical claim, anatomy source, Simulator capture, or evidence
 figure.
 
+The ten-resource `figma_page2_surgical_interface_v1` pack is original
+project-authored JSON, Markdown, and Python validation logic. It contains no
+Figma export, Figma artwork, third-party icon asset, copied clinical copy,
+portrait, stock asset, or generated image. The source design remains external
+and grants no redistribution right through this repository.
+
+### Page 2 pathology derivatives
+
+`intracerebral_hematoma_registered_conceptual_v1.usdz` and
+`cerebral_edema_registered_conceptual_v1.usdz` refine earlier project-authored
+conceptual geometry. Their changed registration, scale, smoothing, colour, and
+context exclusions do not introduce third-party geometry, but the repository's
+unresolved project licence still applies. They are concepts, not segmentations
+or clinical evidence.
+
 ## NIH 3D and Human Reference Atlas derivatives — CC BY 4.0
 
 The baseline 11 packages below, all 15 neural-detail-v3 packages, and the
-adaptive visual derivative include geometry derived from NIH 3D / Human
+adaptive visual derivative, plus the three Page 2 access/closure packages,
+include geometry derived from NIH 3D / Human
 Reference Atlas sources under
 [CC BY 4.0](https://creativecommons.org/licenses/by/4.0/):
 
@@ -70,6 +95,16 @@ Reference Atlas sources under
 - `dura_mater_cutaway_conceptual_v2.usdz`
 - `layered_head_cutaway_registered_v2.usdz`
 - `brain_orientation_calm_educational_v1.usdz`
+- `scalp_access_closure_registered_conceptual_v1.usdz`
+- `cranial_bone_access_closure_registered_conceptual_v1.usdz`
+- `dural_access_closure_registered_conceptual_v1.usdz`
+
+The Page 2 scalp package derives from HRA Skin Male `3DPX-021016` v2; the
+cranial-bone package derives from Visible Human Male Skull and Eyes
+`3DPX-020591` v1.03. The conceptual dura package derives from the existing
+project-authored HRA-registered dura, so preserve both the project notice and
+underlying HRA attribution. Their exact modifications are recorded in
+[FIGMA_PAGE2_SURGICAL_STATES_SOURCE_PROVENANCE_V1.md](../../RealityKitContent/Assets/vision_pro_stroke_kit_v2/FIGMA_PAGE2_SURGICAL_STATES_SOURCE_PROVENANCE_V1.md).
 
 The 15 neural-detail packages are listed individually in the
 [v3 catalog](INTRACRANIAL_ASSET_CATALOG_V3.md#neural-detail--14-hra-packages-plus-one-assembly)
@@ -144,3 +179,8 @@ geometry is replaced with a verified source.
 
 Preview images and combined assemblies inherit the relevant terms of the assets
 they depict or contain. A combined package is not a relicensing mechanism.
+
+The Page 2 holographic-linework PNG is project supporting artwork generated
+with built-in ImageGen and governed by its adjacent provenance record. It is not
+runtime anatomy, not embedded in a USDZ, and grants no clinical, evidentiary,
+trademark, Figma, or third-party redistribution rights.

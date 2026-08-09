@@ -1,8 +1,8 @@
 # MASTER — scene assembly, behavior, and Houdini handoff
 
 This document is the implementation contract for assembling the repository's
-145 release-catalog runtime assets into one coherent Apple Vision Pro
-educational experience. The full source build has 147 unique package records;
+150 release-catalog runtime assets into one coherent Apple Vision Pro
+educational experience. The full source build has 152 unique package records;
 two inner-ear-containing records are licence-held and not present as runtime
 binaries in this publishing tree.
 It is written for a coding agent, technical artist, Houdini artist, or
@@ -21,7 +21,7 @@ must be validated before a patient-facing pilot.
 
 When files disagree, use this order:
 
-1. The thirteen release JSON manifests are authoritative for asset IDs, package paths,
+1. The fourteen release JSON manifests are authoritative for asset IDs, package paths,
    units, up axis, provenance notes, and prohibited combinations.
 2. This file is authoritative for assembly, state, interaction, and pathway
    rules.
@@ -62,6 +62,15 @@ When files disagree, use this order:
     evidence placeholders, annotation scaffold, UI tokens, and icon mappings
     remain developer-preview/application resources—not clinical approval or a
     substitute for native visionOS implementation.
+11. The
+    [Page 2 surgical-state manifest](RealityKitContent/Assets/vision_pro_stroke_kit_v2/asset_manifest_figma_page2_surgical_states_v1.json)
+    is authoritative for the five registered state layers, eight composition
+    recipes, named flap entities, source-identity closure pose, source licences,
+    and open-neurosurgery gate.
+12. The
+    [Page 2 interface manifest](RealityKitContent/InterfaceMedia/figma_page2_surgical_interface_v1/asset_manifest_figma_page2_surgical_interface_v1.json)
+    is authoritative for its ten non-geometry resources and fail-closed pathway,
+    copy, anchor, attachment, icon, token, and integrity contracts.
 
 The word **must** below means a release-blocking requirement. **Should** means
 the default implementation unless a reviewed design decision says otherwise.
@@ -121,6 +130,14 @@ the default implementation unless a reviewed design decision says otherwise.
   `EndovascularToolRoot` stage. Open-cranial packages stay under
   `LegacyHeadRoot/OpenCranialRoot`, unloaded in ordinary EVT, and require the
   explicit `clinician_selected_hemorrhage_or_decompression_only` gate.
+- The five `figma_page2_surgical_states_v1` packages use the generic v2 head
+  registration frame. Route scalp, cranial bone, and conceptual dura beneath
+  `HeadRegisteredRoot/RegisteredOpenCranialAnatomyRoot` and its exposure,
+  bone, and dura state children; route reviewed pathology context to
+  `HeadRegisteredRoot/PathologyRoot`. Never normalize these layers separately,
+  infer an access site, inherit a legacy-tool transform, or resolve any of them
+  in ordinary EVT. Tools remain under the separately placed legacy open root and
+  require an explicit reviewed tool-to-anatomy transform when shown together.
 - The prototype-v1 room and body assets are staging aids, not a verified
   registration frame for v2 head anatomy. Align them visually under a separate
   parent and record the chosen transform.
@@ -161,6 +178,10 @@ flowchart TD
     H --> EN["EndocrineRoot"]
     H --> AW["AirwayRoot"]
     H --> MU["MuscleRoot"]
+    H --> RO["RegisteredOpenCranialAnatomyRoot"]
+    RO --> REX["RegisteredExposureStateRoot"]
+    RO --> RBO["RegisteredBoneStateRoot"]
+    RO --> RDU["RegisteredDuralStateRoot"]
     LH --> O["OpenCranialRoot"]
     PT --> PR["ProcedureToolRoot"]
     PR --> EVT["EndovascularToolRoot"]
@@ -214,6 +235,10 @@ Recommended engine names and responsibilities:
 | `EndocrineRoot` | Source-backed anterior/posterior pituitary context | Static; no hormone or disease behavior |
 | `AirwayRoot` | Nasal/paranasal and pharyngeal orientation context | Static; no airflow, swallowing, aspiration, or drainage solver |
 | `MuscleRoot` | Mastication and selected head/neck orientation muscles | Static; no contraction, force, or tissue deformation |
+| `RegisteredOpenCranialAnatomyRoot` | Page 2 scalp, cranial-bone, and conceptual-dura replacement layers registered to the generic v2 head frame | Child of `HeadRegisteredRoot`; preserve authored transforms; never inherit placement from legacy tools |
+| `RegisteredExposureStateRoot` | Page 2 scalp access/closure replacement | Exactly one base/replacement scalp state; open-neurosurgery gate required |
+| `RegisteredBoneStateRoot` | Page 2 cranial-bone access/closure replacement | Branch-correct craniotomy-replace versus decompressive-leave-off state |
+| `RegisteredDuralStateRoot` | Page 2 conceptual-dura access/closure replacement | Exactly one base/replacement dura state; no tissue/closure mechanics |
 | `ProcedureToolRoot` | Authored in-patient guidewire/catheter/tool poses | Kinematic narrative motion only; must have a reviewed placement |
 | `EndovascularToolRoot` | Stage-gated EVT access, guide, imaging, delivery, retrieval-support, and access-hemostasis categories | Enabled only for the ischemic-EVT branch; each optional category follows its reviewed `EVT-*` association |
 | `AccessSupportRoot` | Access needle/wire/sheath and access review variants | Detached or reviewed access-context placement; not a route, puncture, depth, or size specification |
@@ -263,6 +288,21 @@ assembly is a **replacement view**, not another layer to stack on top:
 | `cranial_access_tools_review_assembly_open_neurosurgery_v3.usdz` | The five surface-marking, soft-tissue exposure, retraction/hemostat, perforator/craniotome, and bone-fixation component sets |
 | `intradural_closure_tools_review_assembly_open_neurosurgery_v3.usdz` | The six dural-instrument, bipolar/irrigation, suction/microdissector, brain-retractor, microinstrument-tray, and dural-closure component sets; conditional CSF access is intentionally excluded |
 | `brain_orientation_calm_educational_v1.usdz` | The active detailed brain/orientation view only after an external governed release approves the exact asset and adaptive policy; it is never an additive anatomy layer |
+
+The Page 2 state packages are also replacement layers, not a transparent stack:
+
+| Page 2 asset | Replaces while active |
+|---|---|
+| `scalp_access_closure_registered_conceptual_v1.usdz` | Intact/cutaway scalp variants for the gated open state |
+| `cranial_bone_access_closure_registered_conceptual_v1.usdz` | `skull_semantic_realistic_v2` in the gated access/closure state |
+| `dural_access_closure_registered_conceptual_v1.usdz` | Intact/cutaway conceptual dura variants in the gated open state |
+| `intracerebral_hematoma_registered_conceptual_v1.usdz` | Any other primary pathology context selected for that reviewed Page 2 treatment state |
+| `cerebral_edema_registered_conceptual_v1.usdz` | Any other primary pathology context selected for that reviewed Page 2 treatment state |
+
+The current `figma_page2_open_branch_treatment` recipe permits zero or one of
+the two pathology contexts. This is a fail-closed presentation rule, not a claim
+that hematoma and edema cannot coexist clinically. A future combined state needs
+its own reviewed composition, copy, anchors, and manifest revision.
 
 `cranial_support_registered_assembly_v3` would contain all 16 cranial
 components and transitively overlap the nerve assembly, but it is a held
@@ -367,15 +407,16 @@ stateDiagram-v2
 The app must require an explicit pathway choice before enabling intervention
 assets. Changing pathway performs a full state reset.
 
-## 5. Master relationship map — 147 build records / 145 release assets
+## 5. Master relationship map — 152 build records / 150 release assets
 
 The `Parent` column is the canonical scene slot. `Relationship / rule` tells an
 agent how each package fits into the constructed experience. Records 1–65 are
 the original release baseline; records 66–110 are the intracranial-detail v3
 expansion; and records 111–136 are the surgical-tool v3 expansion. Records 92
 and 98 are held audit records with no published binary; record 137 is the
-adaptive visual derivative, and records 138–147 are the optional environment
-module, leaving 145 release assets. Asset IDs, not sequence
+adaptive visual derivative, records 138–147 are the optional environment
+module, and records 148–152 are the Page 2 surgical-state module, leaving 150
+release assets. Asset IDs, not sequence
 numbers, are the runtime keys.
 
 ### 5.1 Realistic v2 core anatomy
@@ -496,7 +537,7 @@ numbers, are the runtime keys.
 ### 5.11 Neural-detail v3 — build records 66–80
 
 These 15 packages are release-eligible generic HRA atlas layers. Build numbers
-remain stable across the complete 147-record build map; runtime code must use the
+remain stable across the complete 152-record build map; runtime code must use the
 asset ID, not the number.
 
 | Build # | Asset ID | Parent | Relationship / rule |
@@ -640,7 +681,22 @@ replacement for all nine components, never an additional layer.
 | 146 | `ambient_lighting_fixture_set_v1` | `OptionalEnvironmentRoot/Decor/Fixtures` | Non-emissive lamp, ring, and sconce meshes. App-owned IBL/RealityKit lights determine actual illumination and must be profiled separately. |
 | 147 | `spatial_care_consultation_environment_assembly_v1` | `OptionalEnvironmentRoot/ReviewAssembly` | Complete registered room replacing records 138–146. Use for the simplest gated demo or whole-room authoring review; unload all component packages first. |
 
-### 5.18 Known gaps and omission rule
+### 5.18 Figma Page 2 surgical states — build records 148–152
+
+These five packages are generic registered presentation layers. Records
+148–150 require the open-neurosurgery gate; records 151–152 require a separately
+reviewed pathology context and remain prohibited in ordinary EVT. They are not
+steps, plans, targets, measurements, or training content by themselves.
+
+| Build # | Asset ID | Parent | Relationship / rule |
+|---:|---|---|---|
+| 148 | `scalp_access_closure_registered_conceptual_v1` | `HeadRegisteredRoot/RegisteredOpenCranialAnatomyRoot/RegisteredExposureStateRoot` | HRA-derived scalp remainder and named source-surface flap. Replaces other scalp variants for the gated state. Opening is not an incision or patient marking; flap motion is host-only rigid interpolation to source identity. |
+| 149 | `cranial_bone_access_closure_registered_conceptual_v1` | `HeadRegisteredRoot/RegisteredOpenCranialAnatomyRoot/RegisteredBoneStateRoot` | Visible-Human-derived cranial-bone state with named detached flap. Replaces the semantic skull while active. Replaced-flap closure is craniotomy-only and prohibited in decompressive leave-off state. |
+| 150 | `dural_access_closure_registered_conceptual_v1` | `HeadRegisteredRoot/RegisteredOpenCranialAnatomyRoot/RegisteredDuralStateRoot` | Registered conceptual dura with named source-surface flap. Replaces other dura variants. Its opening and thickness are conceptual; no corridor, tissue mechanics, or watertight closure is encoded. |
+| 151 | `intracerebral_hematoma_registered_conceptual_v1` | `HeadRegisteredRoot/PathologyRoot` | Refined legacy project hematoma concept registered to the generic v2 brain frame. Zero-or-one reviewed Page 2 pathology alternative; not a segmentation, volume, target, or outcome cue. |
+| 152 | `cerebral_edema_registered_conceptual_v1` | `HeadRegisteredRoot/PathologyRoot` | Refined legacy project edema concept registered to the generic v2 brain frame. Gated to reviewed edema/decompression context; no extent, mass-effect, pressure, or prognosis meaning. |
+
+### 5.19 Known gaps and omission rule
 
 The surgical-tool set is representative, not exhaustive. The current build has
 no dedicated access-ultrasound prop, diagnostic or balloon-guide catheter
@@ -716,6 +772,30 @@ count these non-USDZ resources as 3D runtime assets.
 5. Before leaving the immersive demo—or whenever system safety requires—unload
    the room, restore system passthrough/Simulator presentation, and retain an
    immediate native Exit/Return control.
+
+#### 6.0.3 Figma Page 2 six-step composition
+
+The Page 2 interface pack preserves the supplied composition as design intent
+while failing closed on anatomy anchors and clinical copy. The open walkthrough
+is reachable only after `OPEN_CRANIOTOMY` is selected and the clinician open
+gate is true. `DECOMPRESSIVE_CRANIECTOMY` has a separate closure sequence, and
+ordinary `EVT` never enters this table.
+
+| UI step | Interface scene ID | USDZ/state recipe | Native attachment responsibility |
+|---:|---|---|---|
+| 1 | `OPEN_CONFIRM_SITE` / `OPEN_CONFIRM_POSITION` | `figma_page2_craniotomy_position_planning`; realistic brain + registered scalp + cranial-bone state, with only reviewed generic orientation highlights | Title pill, open-branch badge, content warning, timeline, reviewed hotspot, Pause/Reset/Exit |
+| 2 | `OPEN_ESTABLISH_CRANIAL_ACCESS` / `OPEN_CREATE_ACCESS` | Scalp + cranial-bone access layers; visibility and named-flap pose are app state | Layer controls and conceptual-motion disclosure; no drill/cut physics or patient-plan wording |
+| 3 | `OPEN_ESTABLISH_DURAL_ACCESS` / `OPEN_DURAL_ACCESS` | `figma_page2_dura_access`; add realistic brain and conceptual dura layer | Non-graphic disclosure, reviewed label/hotspot, previous/next controls |
+| 4 | `OPEN_TREAT_REVIEWED_CONDITION` / `OPEN_TREAT_CONDITION` | `figma_page2_open_branch_treatment`; clinician selects zero or one reviewed pathology context | Variant chooser, non-training disclosure, warning and reviewed detail card; no inferred procedure |
+| 5 | `OPEN_REPLACE_AND_FIX_BONE_FLAP` / `OPEN_CLOSE_DURA_SKULL` | `figma_page2_dura_bone_flap_closure` for craniotomy only; host may restore named flaps toward source identity | Closure-variant disclosure and timeline. Decompressive leave-off must use its separate scene and no fixation |
+| 6 | `OPEN_POST_CLOSURE_REVIEW` / `OPEN_CHECK_RESULT` | `figma_page2_final_closed_result`; unload access layers and return to existing closed assets | Outcome-uncertainty disclosure, reviewed comparison, Return to Overview/Reset/Exit |
+
+Figma-intent labels above are identifiers, not approved localized display copy.
+Use the ten-resource pack's copy catalog and anchor map: any null title, body,
+voiceover, accessibility label, citation, locale, asset revision, selector,
+transform, or review ID means **render nothing**. The title pill, left sticker
+rail, right topic/detail cards, warning, hotspots, and bottom timeline remain
+native SwiftUI/RealityKit attachments under `InterfaceAttachmentRoot`.
 
 ### 6.1 Orientation and layer reveal
 
@@ -956,6 +1036,30 @@ enum BoneClosure: String, Codable {
     case notApplicable, craniotomyReplace, decompressiveLeaveOff
 }
 
+enum Page2Pathway: String, Codable {
+    case none, evt, openCraniotomy, decompressiveCraniectomy, optionalEVD
+}
+
+enum Page2SceneState: String, Codable {
+    case headOrientation = "figma_page2_head_orientation"
+    case strokeFlowExplanation = "figma_page2_stroke_flow_explanation"
+    case craniotomyPositionPlanning = "figma_page2_craniotomy_position_planning"
+    case duraAccess = "figma_page2_dura_access"
+    case openBranchTreatment = "figma_page2_open_branch_treatment"
+    case duraBoneFlapClosure = "figma_page2_dura_bone_flap_closure"
+    case finalClosedResult = "figma_page2_final_closed_result"
+    case authoringReview = "figma_page2_authoring_review"
+}
+
+enum Page2OpenStep: Int, Codable {
+    case confirmPosition = 1, createAccess, duralAccess, treatCondition
+    case closeDuraSkull, checkResult
+}
+
+enum Page2Pathology: String, Codable {
+    case none, hematomaConcept, edemaConcept
+}
+
 struct StrokeExperienceState: Equatable {
     var interfaceMode: SpatialInterfaceMode = .landing
     var environmentMode: EnvironmentPresentationMode = .systemPassthroughOrSimulatorScene
@@ -972,6 +1076,10 @@ struct StrokeExperienceState: Equatable {
     var openStage: OpenStage = .none
     var openApproach: OpenApproach = .none
     var boneClosure: BoneClosure = .notApplicable
+    var page2Pathway: Page2Pathway = .none
+    var page2SceneState: Page2SceneState? = nil
+    var page2OpenStep: Page2OpenStep? = nil
+    var page2Pathology: Page2Pathology = .none
     var clinicalOpenSelectionConfirmed = false
     var clinicalEVDSelectionConfirmed = false
     var magnifiedViewIsActive = false
@@ -1041,6 +1149,21 @@ if pathway changes:
     stop all animations
     clear device/clot/open-cranial states
     restore the reviewed default layer set
+
+if page2Pathway == evt:
+    reject every figma_page2_surgical_states_v1 asset before file resolution
+    require page2SceneState is headOrientation or strokeFlowExplanation or finalClosedResult
+
+if page2Pathway == openCraniotomy:
+    require clinicalOpenSelectionConfirmed
+    require page2OpenStep maps to the reviewed OPEN_CRANIOTOMY scene
+
+if page2Pathway == decompressiveCraniectomy:
+    reject duraBoneFlapClosure when it would restore/fix the bone flap
+    use the separate decompressive scene catalog and boneClosure == decompressiveLeaveOff
+
+if any Page 2 copy or anchor field is null or display_authorized == false:
+    render no associated attachment, hotspot, evidence, or clinical copy
 
 if an aggregate becomes visible:
     recursively expand its containedLeafAssetIDs
@@ -1149,6 +1272,8 @@ simulation.
 | v3 open-cranial instrument sets | Static; detached pickup may use a kinematic presentation proxy | Coarse UI picking only; never anatomy/tool contact | Stage visibility, highlight, exploded comparison, or return-to-tray pose only; no marking, cutting, drilling, retraction, suction, irrigation, energy, fixation, closure, CSF access, or tissue simulation |
 | v3 micro cells, thrombus, BBB, myelin, synapse, CSF interface, and tissue zones | Static; illustrative markers may be kinematic | None except coarse UI picking | Separate-stage visibility or qualitative cue motion only; no fluid, diffusion, electrophysiology, reaction, perfusion, histology, or viability solver |
 | Adaptive orientation candidate and material/visibility sidecar | Static; no gravity | None except coarse UI selection on the detached root | Replacement/visibility/material transition only; no deformation, physiology, anxiety-response, or sensor-driven motion |
+| Page 2 scalp, cranial-bone, and dural state layers | Static package; named flap may use an app-owned kinematic presentation proxy | Coarse input proxy only; never anatomy/tool contact | Interpolate authored open pose toward source-identity closed pose only; no gravity, cutting, deformation, collision response, trajectory, technique, timing, watertightness, or fixation claim |
+| Page 2 hematoma and edema contexts | Static; no gravity | None except reviewed selection proxy | Visibility/highlight only; no growth, evacuation, pressure, mass effect, tissue response, or outcome solver |
 | SwiftUI/RealityKit attachments and procedural focus rings | App/UI-owned; no gravity | Native input target or hit region only | Camera-readable placement and reversible emphasis only; no anatomical surface, measurement, lesion boundary, or clinical result meaning |
 
 Implementation rules:
@@ -1184,13 +1309,17 @@ Implementation rules:
 - A future Houdini FLIP, FEM, Vellum, wire, or tissue solve is an **offline
   visual authoring aid only** until independently validated. It must be reduced
   to a supported baked representation and retain the conceptual label.
+- The three Page 2 flap entities have no authored time samples. The host app
+  owns duration, easing, pause, replay, Reduce Motion, interruption, and reset.
+  A static cross-fade/visibility swap must be available; progress never means
+  procedure completion or success.
 
 ## 9. Houdini / Solaris assembly instructions
 
 ### 9.1 Non-destructive working layout
 
 1. Work in Solaris/LOPs and keep each asset as a referenced or payloaded
-   component. Do not merge the 145 release packages into one destructive mesh.
+   component. Do not merge the 150 release packages into one destructive mesh.
 2. Prefer the source USDC interchange file when available. If only a USDZ is
    present in this repository, unpack it to a temporary working directory with
    USD tooling; never edit the committed package in place.
@@ -1207,13 +1336,15 @@ Implementation rules:
 8. Use payloads for phase-specific heavy anatomy/review packages and references
    for lightweight always-needed components. A payload load decision must not
    change clinical meaning.
-9. Keep seven explicit composition domains: `MACRO_HEAD` for registered
+9. Keep eight explicit composition domains: `MACRO_HEAD` for registered
    generic atlas anatomy, `MESO_VESSEL` for magnified wall/device teaching,
    `MICRO_CELLULAR` for M-series presentation models, `EVT_TOOLS` for the gated
    endovascular branch, `OPEN_TOOLS` for the separately gated open branch, and
    `ADAPTIVE_PRESENTATION` for detached, review-gated orientation replacements
    and app-owned material/visibility sidecars, plus `OPTIONAL_ENVIRONMENT` for
-   the independently registered synthetic consultation-room components.
+   the independently registered synthetic consultation-room components, and
+   `PAGE2_OPEN_STATES` for the separately gated registered access/closure and
+   pathology presentation layers.
    Never pass a display scale, viewer-fit transform, tool placement, or state
    between incompatible domains.
 
@@ -1249,6 +1380,7 @@ Recommended layer stack:
 00_source_payloads.usdc      # immutable geometry and semantic/source metadata
 10_registration.usda         # project-frame or approved patient-frame xforms
 15_optional_environment.usda # disabled-by-default room assembly/components
+17_page2_open_states.usda     # gated access/closure/pathology payloads; no UI
 20_look.usda                 # reviewed materials; no clinical state
 25_tool_placement.usda       # illustrative static/kinematic tool poses only
 30_presentation.usda         # cutaways, visibility variants, qualitative cues
@@ -1287,6 +1419,17 @@ The synthetic variant must reference record 147 **or** a selection of records
 portrait paths, display copy, evidence, accessibility, and SF Symbols stay in
 native app resources and must not be baked into USD.
 
+Page 2 composition additionally requires
+`page2Pathway={off,evt,openCraniotomy,decompressiveCraniectomy,optionalEVD}`,
+`page2OpenStep={off,confirmPosition,createAccess,duralAccess,treatCondition,closeDuraSkull,checkResult}`,
+`scalpState={base,accessOpen,sourceIdentityClosed}`,
+`cranialBoneState={base,accessOpen,craniotomyReplaced,decompressiveLeaveOff}`,
+`duraState={base,accessOpen,sourceIdentityClosed}`, and
+`page2Pathology={none,hematomaConcept,edemaConcept}`. Author no variant that
+places Page 2 open payloads in `evt`; author no decompressive variant that
+restores or fixes the bone flap. Keep interface strings, cards, progress,
+hotspots, and anchor transforms out of `17_page2_open_states.usda`.
+
 #### 9.1.1 Optional environment and interface anchor handoff
 
 | Solaris path | Runtime owner | Content / rule |
@@ -1308,7 +1451,29 @@ and copy intentionally. Fill a request only after binding it to the exact USDZ
 hash and reviewed local entity selector; clinical and accessibility reviewers
 then approve structural copy and spatial readability for that revision.
 
-#### 9.1.2 Surgical-tool payload and state slots
+#### 9.1.2 Page 2 surgical-state handoff
+
+| Solaris path | Canonical root | Content / rule |
+|---|---|---|
+| `/World/Patient/Head/RegisteredOpenCranial/Exposure/Page2ScalpState` | `RegisteredExposureStateRoot` | Record 148; replace base scalp in the v2 head frame. Preserve the named flap child and source-identity closed pose. |
+| `/World/Patient/Head/RegisteredOpenCranial/Bone/Page2CranialBoneState` | `RegisteredBoneStateRoot` | Record 149; replace base skull in the v2 head frame. Craniotomy replacement and decompressive leave-off are mutually exclusive. |
+| `/World/Patient/Head/RegisteredOpenCranial/Dura/Page2DuralState` | `RegisteredDuralStateRoot` | Record 150; replace base dura in the v2 head frame. Preserve named flap; no tissue or watertightness solver. |
+| `/World/Patient/Head/Pathology/Page2HematomaConcept` | `PathologyRoot` | Record 151; zero-or-one reviewed Page 2 pathology alternative. |
+| `/World/Patient/Head/Pathology/Page2EdemaConcept` | `PathologyRoot` | Record 152; zero-or-one reviewed Page 2 pathology alternative. |
+| `/World/InterfaceAnchors/Page2/*` | App `InterfaceAttachmentRoot` | Stable reviewed IDs only. Copy, cards, icons, timeline, warning and transforms remain app resources and fail closed while null. |
+
+Reference each package as an immutable payload. Put only variant opinions and
+host-owned rigid flap transforms in `17_page2_open_states.usda`; keep clinical
+branch/copy/authorization state in `40_lesson.usda` or the app contract. Do not
+copy the five payloads into a combined head/review asset.
+
+Legacy open tools remain under `/World/OpenCranial` / `LegacyHeadRoot` and do
+not inherit the registered anatomy transform. If a reviewed scene shows a tool
+with Page 2 anatomy, author an explicit, versioned tool-to-anatomy placement in
+`25_tool_placement.usda`; never derive it from proximity, bounds, or a Figma
+image and never treat it as a trajectory or navigation transform.
+
+#### 9.1.3 Surgical-tool payload and state slots
 
 Reference source tool geometry without modification and author only reviewed
 presentation transforms in `25_tool_placement.usda`. Room-scale support props
@@ -1343,7 +1508,7 @@ events such as `path.safe`, `device.success`, `reperfusion.achieved`,
 `hemostasis.complete`, or `evd.correct`. Stage timing belongs in the lesson/app
 layer and may not destructively alter payload geometry.
 
-#### 9.1.2 Adaptive presentation handoff
+#### 9.1.4 Adaptive presentation handoff
 
 - Reference the immutable source asset and, if approved, the calm orientation
   candidate as separate payloads. Never build the candidate by modifying the
@@ -1572,6 +1737,23 @@ coverage, missing-anatomy audit, and replacement rationale are in
 27. Use system hand presence, gaze privacy, natural input, passthrough,
     boundaries, and Simulator scene. Do not load custom hand/cursor/safety
     meshes to imitate system behavior.
+28. Decode `asset_manifest_figma_page2_surgical_states_v1.json` as the 14th
+    USDZ manifest. Validate all eight recipe dependencies against the 150-ID
+    release catalog, reject open-scoped records before file resolution in EVT,
+    and route records 148–152 to their canonical roots.
+    Records 148–150 inherit `HeadRegisteredRoot`; they never inherit
+    `LegacyHeadRoot/OpenCranialRoot`. A co-present legacy tool needs a separately
+    reviewed placement transform.
+29. Decode the ten-resource `figma_page2_surgical_interface_v1` manifest
+    separately. Verify byte counts/hashes; preserve null-by-default asset,
+    anchor, transform, copy, citation, locale, accessibility, and review fields.
+30. Key Page 2 flap motion by the three exact named child entities. Keep the
+    source identity as the closed pose, stop/restart interpolation
+    deterministically, provide a static Reduce Motion alternative, and restore
+    the authored open/closed state on Reset.
+31. Build the Page 2 title pill, rails, cards, warning, hotspots, leader lines,
+    and timeline as native attachments. Starting dimensions/distances are
+    design inputs only and require physical-device human-factors review.
 
 The application, not a USD file, owns:
 
@@ -1594,7 +1776,12 @@ The application, not a USD file, owns:
   layout, Dynamic Type, VoiceOver, system-symbol fallback, attachment
   readability, evidence/annotation review gates, and global Exit/Return; and
 - application-owned IBL/lights, exposure, progressive room loading, and unload
-  behavior.
+  behavior;
+- Page 2 pathway, six-step navigation, named-flap pose, zero-or-one pathology
+  selection, progress semantics, native attachment layout, null-binding failure,
+  and patient-display authorization; and
+- separate open-craniotomy, decompressive-craniectomy, EVT, and optional-EVD
+  scene catalogs with no automatic cross-pathway transition.
 
 The USD/Houdini layer owns:
 
@@ -1618,7 +1805,7 @@ accessibility, interaction, or clinical meaning.
 - Also budget the whole active scene, not each file, around Apple's approximate
   Shared Space guidance of 250 draw calls/250,000 visible vertices and Full
   Space guidance of 500 draw calls/500,000 visible vertices.
-- Do not preload all 145 release assets or display combined review assemblies with
+- Do not preload all 150 release assets or display combined review assemblies with
   their individual components.
 - `layered_head_cutaway_registered_v2` is 333,642 triangles and
   `thrombectomy_registered_hero_v2` is 440,648 triangles. Either asset alone is
@@ -1649,6 +1836,16 @@ accessibility, interaction, or clinical meaning.
   portraits at the case-card display size, avoid keeping off-screen cards at
   full 1254 × 1254 resolution, and keep the storyboard out of the runtime
   bundle unless a developer design-review build explicitly needs it.
+- The Page 2 state module adds 120,461 triangles and 17,779,140 USDZ bytes across
+  five independently loadable packages. The three access layers account for
+  119,381 triangles; load only the current replacement layers and unload them
+  for `figma_page2_final_closed_result`. Their desktop RealityKit load probes
+  are structural evidence, not Vision Pro timing budgets; the exact observed
+  values remain in the module validation record and may vary between runs.
+- The Page 2 interface pack's ten JSON/Markdown/Python resources are not render
+  geometry. Parse the runtime JSON once, keep the validator/provenance/readme out
+  of the app bundle unless required, and create only attachments visible in the
+  current state. Do not precreate all pathway cards/hotspots.
 - The held `cranial_support_registered_assembly_v3` build record is 333,360
   triangles, but its binary is not a performance option because it is not in
   the release tree.
@@ -1748,6 +1945,16 @@ These are hard failures:
   conditional CSF-access set without separate approval; no detailed access,
   drill, suction/forceps, or EVD close-up stacked with its overlapping legacy
   view.
+- No Page 2 scalp, bone, dura, hematoma, or edema package resolved in ordinary
+  EVT; no open walkthrough reached from the EVT scene catalog.
+- No Page 2 generic opening, detached flap, hotspot, or timeline described as a
+  patient access site, incision, plan, navigation target, operative progress,
+  completion, success, or outcome.
+- No Page 2 Figma-intent label, generated look-development image, null copy
+  slot, or null anchor promoted to clinical copy, anatomy, evidence, or runtime
+  texture.
+- No Page 2 craniotomy closure recipe reused for decompressive craniectomy; no
+  cross-pathway auto-advance and no EVD content without its separate gate.
 
 Required automated guards should fail closed:
 
@@ -1800,6 +2007,11 @@ assert not (calm orientation candidate visible with detailed source, pathology, 
 assert overview blood_and_particles opacity == 0 and procedure motion is disabled
 assert Show Less, Show More, Pause, Exit/Return, Restore Original, adaptation badge, and changed-property disclosure are available
 assert family adaptation requires patient participation/authorization and privacy confirmation
+assert not (page2Pathway == evt and any figma_page2_surgical_states_v1 asset resolved)
+assert not (page2Pathway == decompressiveCraniectomy and bone flap restored or fixation visible)
+assert page2Pathology in {none, hematomaConcept, edemaConcept}
+assert every visible Page 2 attachment has reviewed copy/anchor fields and display_authorized == true
+assert Page 2 progress means interface navigation only
 ```
 
 ## 13. Validation gates
@@ -1816,8 +2028,8 @@ Every generated or modified asset must pass all applicable gates:
   content, and resolvable texture references.
 - RealityKit loads the package and exposes nonzero renderable bounds.
 - An animated package exposes the expected animation resource(s).
-- The release catalog contains 145 unique IDs and paths across 13 manifests;
-  the full build map contains 147 IDs; neither held build ID
+- The release catalog contains 150 unique IDs and paths across 14 manifests;
+  the full build map contains 152 IDs; neither held build ID
   nor binary is present.
 - Every aggregate/exclusion graph is known, acyclic, recursively expanded, and
   tested against each other active asset.
@@ -1836,9 +2048,16 @@ Every generated or modified asset must pass all applicable gates:
   contain no Camera or Light prim, use metres/Y-up, load with finite nonzero
   RealityKit bounds, and keep the synthetic-room default disabled.
 - All 14 interface resources match their non-geometry manifest hashes/bytes;
-  all JSON/SVG parses; every scene dependency resolves to one of the 145
+  all JSON/SVG parses; every scene dependency resolves to one of the 150
   release IDs; all portrait dimensions/hashes match; no private path or
   metadata survives; storyboard/evidence/annotation display gates remain false.
+- All five Page 2 surgical-state packages match manifest bytes/hashes, pass
+  strict ARKit USD and RealityKit load/bounds probes, expose the required flap
+  entities, contain no camera/light/UI/physics/time samples, and remain
+  `patient_display_authorized=false`.
+- All ten Page 2 interface resources match their manifest bytes/hashes and parse;
+  pathway separation, null copy/anchor bindings, cross-pathway lockout, native
+  UI ownership, zero-PHI, and patient-display block remain intact.
 
 ### Visual/interaction gate
 
@@ -1868,6 +2087,10 @@ Every generated or modified asset must pass all applicable gates:
 - Generated storyboard wording is excluded from release copy. Fictional case
   badges remain visible and every incomplete evidence/annotation request stays
   hidden.
+- Page 2 tests exercise all six open steps, previous/next/pause/reset/exit,
+  static Reduce Motion closure, interruption and reset of host flap animation,
+  attachment occlusion/readability, and rejection of every ordinary-EVT open
+  asset request. Simulator evidence remains distinct from physical-device proof.
 
 ### Clinical/release gate
 
@@ -1879,6 +2102,10 @@ Every generated or modified asset must pass all applicable gates:
 - Stroke neurology reviews mechanism, uncertainty, urgency, alternatives,
   risks, and recovery language.
 - Neurosurgery reviews every open-cranial/haemorrhage sequence that is included.
+- Neurosurgery, stroke neurology, neuroanatomy, patient-education, accessibility,
+  privacy, and human-factors reviewers approve the exact Page 2 pathway, asset
+  revisions, selectors, transforms, six-step copy, uncertainty wording,
+  non-graphic presentation, and branch-correct closure together.
 - Interventional neuroradiology reviews each displayed endovascular support
   category, its stage association, route/technique conditionality, and overlap
   with existing device concepts. Neurosurgery reviews every displayed open-tool
@@ -1929,7 +2156,7 @@ An agent or Houdini artist implementing the combined experience must deliver:
 11. If patient replacement is in scope, the controlled DICOM frame/registration
     record and all acceptance-gate evidence—never the patient data itself in
     this repository.
-12. A 147-record build map / 145-file release map and deterministic tests for
+12. A 152-record build map / 150-file release map and deterministic tests for
     every `EVT-*`/`OPEN-*` tool-stage gate, technique/closure/EVD variant,
     assembly exclusion, legacy-overlap replacement, and representative-set
     warning, using the
@@ -1940,7 +2167,7 @@ An agent or Houdini artist implementing the combined experience must deliver:
     privacy gates, reversible-control tests, Reduce Motion evidence, and a test
     proving all biometric/anxiety inputs and unapproved candidate/draft display
     attempts fail closed.
-14. A validated 13th USDZ manifest containing ten optional environment packages,
+14. A validated USDZ environment manifest containing ten optional environment packages,
     an assembly/component exclusion test, progressive loading/unloading,
     system-default zero-load proof, and simulator plus physical-device
     composition/performance evidence.
@@ -1952,6 +2179,13 @@ An agent or Houdini artist implementing the combined experience must deliver:
 16. A screenshot/evidence bundle that clearly distinguishes the ImageGen target
     board, Apple Vision Pro Simulator captures, and physical-device captures;
     none may be relabelled as another evidence class.
+17. The five-package Page 2 module integrated through its eight recipes, exact
+    named-flap selectors, canonical roots, ordinary-EVT rejection,
+    craniotomy/decompressive closure split, zero-or-one pathology rule, and
+    static/Reset animation tests.
+18. The ten-resource Page 2 interface pack integrated through native
+    attachments, six user-controlled open steps, null-binding failure, pathway
+    lockout, accessibility/comfort tests, and a still-false patient-display gate.
 
 The work is **not done** merely because the master scene opens. It is done only
 when the selected assets fit without duplicate geometry, every state is

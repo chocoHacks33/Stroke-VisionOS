@@ -1,0 +1,350 @@
+{
+  "kit": "Vision Pro Stroke Patient Education Kit v2",
+  "module": "Figma Page 2 surgical-state presentation module v1",
+  "module_id": "figma_page2_surgical_states_v1",
+  "version": "1.0.0",
+  "generated_with": "Blender 5.2.0 LTS",
+  "units": "meters",
+  "usd_up_axis": "Y",
+  "asset_count": 5,
+  "state_recipe_count": 8,
+  "patient_specific": false,
+  "clinical_review_status": "REQUIRES_SPECIALIST_AND_HUMAN_FACTORS_REVIEW",
+  "patient_display_authorized": false,
+  "architecture": "lean scene-state recipes compose existing runtime assets; no duplicate full-head assemblies",
+  "ui_contract": "SwiftUI/RealityKit attachments own all glass panels, text, labels, progress bars, and hotspots; none are baked into these USDZ files.",
+  "material_contract": "Runtime packages use restrained opaque cutaway materials by default. Wireframe, glow, alpha transitions, and anxiety-profile styling are app-owned and must avoid stacked transparency.",
+  "supporting_look_development": {
+    "image": "textures/source/figma_page2_v1/holographic_linework_emission_reference_v1.png",
+    "image_sha256": "913b00955ecf9b6458b260b9dc6f2c71e04f2d10cf7767505534bb643fa7f433",
+    "provenance": "textures/source/figma_page2_v1/image_generation_provenance_v1.json",
+    "provenance_sha256": "0512544c154a13c6cea34ff9ee890a409dcb968a1fe715168cd1687a09edf6fd",
+    "generator": "OpenAI built-in ImageGen",
+    "role": "Optional non-anatomical look-development reference only",
+    "used_in_final_runtime_materials": false,
+    "packed_into_usdz": false,
+    "clinical_authority": false
+  },
+  "source_registrations": [
+    {
+      "asset_id": "external_head_scalp_realistic_v2",
+      "source": "HRA Skin Male, NIH 3D 3DPX-021016 v2",
+      "license": "CC BY 4.0",
+      "derivative_change": "Generic circular boolean opening in registered scalp source; original source-surface patch retained as an independent flap without cutter caps.",
+      "material_reuse": "Preserved existing Scalp_Skin_PBR_v2 albedo, normal, and roughness maps."
+    },
+    {
+      "asset_id": "skull_semantic_realistic_v2",
+      "source": "Visible Human Male Skull and Eyes, NIH 3D 3DPX-020591 v1.03",
+      "license": "CC BY 4.0",
+      "derivative_change": "Generic circular boolean aperture in the registered parietal mesh; intersected source surface retained as an independent bone flap."
+    },
+    {
+      "asset_id": "dura_mater_conceptual_v2",
+      "source": "Existing project-authored conceptual dura derived from registered HRA brain hull",
+      "license": "Project-authored conceptual geometry; underlying HRA registration CC BY 4.0",
+      "derivative_change": "Generic circular boolean opening; original source-surface patch retained as an independent conceptual flap without cutter caps.",
+      "material_reuse": "Preserved existing Dura_Mater_PBR_v2 albedo, normal, and roughness maps."
+    },
+    {
+      "asset_id": "ich_hematoma",
+      "source": "Legacy project-authored conceptual hematoma geometry",
+      "license": "Project-authored original conceptual geometry",
+      "derivative_change": "Selected pathology lobes only; excluded old generic context and arrows; rescaled, repositioned, smoothed, and recolored in the v2 generic brain frame."
+    },
+    {
+      "asset_id": "edema_swelling",
+      "source": "Legacy project-authored conceptual edema geometry",
+      "license": "Project-authored original conceptual geometry",
+      "derivative_change": "Selected swelling volume only; excluded constraint ring and pressure arrows; rescaled, repositioned, softly lobulated, smoothed, and recolored in the v2 generic brain frame."
+    }
+  ],
+  "assets": [
+    {
+      "id": "scalp_access_closure_registered_conceptual_v1",
+      "title": "Registered generic scalp access and closure layer",
+      "kind": "source_derived_registered_conceptual_layer",
+      "scope": "open_neurosurgery_only",
+      "preview_context": "brain",
+      "description": "HRA-head-derived scalp shell with a generic presentation opening and independently transformable source-derived flap.",
+      "module": "figma_page2_surgical_states_v1",
+      "triangle_count": 61242,
+      "dimensions_m_source_xyz": [
+        0.197386,
+        0.242102,
+        0.279987
+      ],
+      "usdc": "exports/usdc/scalp_access_closure_registered_conceptual_v1.usdc",
+      "usdc_bytes": 2666600,
+      "usdc_sha256": "c64523f86db01deddddfa554eba2d112eb2213627eb0dd75a15b19706f5c018d",
+      "usdz": "exports/usdz/scalp_access_closure_registered_conceptual_v1.usdz",
+      "usdz_bytes": 7723532,
+      "usdz_sha256": "076f8d74c238c2158686ceeacf9de1e58d8fae81483e9d4dfecd96434855da35",
+      "preview": "previews/figma_page2_surgical_states_v1/scalp_access_closure_registered_conceptual_v1.png",
+      "patient_specific": false,
+      "diagnostic_use": false,
+      "treatment_planning_use": false,
+      "navigation_use": false,
+      "training_use": false,
+      "patient_display_authorized": false,
+      "clinical_review_status": "REQUIRES_SPECIALIST_AND_HUMAN_FACTORS_REVIEW",
+      "ui_geometry_authored": false,
+      "runtime_camera_or_light_authored": false
+    },
+    {
+      "id": "cranial_bone_access_closure_registered_conceptual_v1",
+      "title": "Registered generic cranial bone access and closure layer",
+      "kind": "source_derived_registered_conceptual_layer",
+      "scope": "open_neurosurgery_only",
+      "preview_context": "brain",
+      "description": "Visible-Human-derived skull with a generic presentation aperture and independently transformable source-derived bone flap.",
+      "module": "figma_page2_surgical_states_v1",
+      "triangle_count": 32912,
+      "dimensions_m_source_xyz": [
+        0.189072,
+        0.25791,
+        0.296716
+      ],
+      "usdc": "exports/usdc/cranial_bone_access_closure_registered_conceptual_v1.usdc",
+      "usdc_bytes": 3306856,
+      "usdc_sha256": "4568ff8f9e583053ffc94fad0968edbb66bac57b232e83f3de687cac85055fe0",
+      "usdz": "exports/usdz/cranial_bone_access_closure_registered_conceptual_v1.usdz",
+      "usdz_bytes": 3307150,
+      "usdz_sha256": "aca23f23d39187ba4b25d5bfb1acba4bc761236b9deae7bac06f2b1e4fb58322",
+      "preview": "previews/figma_page2_surgical_states_v1/cranial_bone_access_closure_registered_conceptual_v1.png",
+      "patient_specific": false,
+      "diagnostic_use": false,
+      "treatment_planning_use": false,
+      "navigation_use": false,
+      "training_use": false,
+      "patient_display_authorized": false,
+      "clinical_review_status": "REQUIRES_SPECIALIST_AND_HUMAN_FACTORS_REVIEW",
+      "ui_geometry_authored": false,
+      "runtime_camera_or_light_authored": false
+    },
+    {
+      "id": "dural_access_closure_registered_conceptual_v1",
+      "title": "Registered conceptual dural access and closure layer",
+      "kind": "source_derived_registered_conceptual_layer",
+      "scope": "open_neurosurgery_only",
+      "preview_context": "brain",
+      "description": "Existing conceptual dura with a generic presentation opening and independently transformable source-derived flap.",
+      "module": "figma_page2_surgical_states_v1",
+      "triangle_count": 25227,
+      "dimensions_m_source_xyz": [
+        0.158117,
+        0.173276,
+        0.173963
+      ],
+      "usdc": "exports/usdc/dural_access_closure_registered_conceptual_v1.usdc",
+      "usdc_bytes": 1205219,
+      "usdc_sha256": "d7dd39150d498f6275f80048761b3075c5d5cfa93b3c41554ea46ce2fddccb20",
+      "usdz": "exports/usdz/dural_access_closure_registered_conceptual_v1.usdz",
+      "usdz_bytes": 6693170,
+      "usdz_sha256": "02c6075a2bf5adc960774fc59caf3969b9aabd7387fd7670fc977361587238e2",
+      "preview": "previews/figma_page2_surgical_states_v1/dural_access_closure_registered_conceptual_v1.png",
+      "patient_specific": false,
+      "diagnostic_use": false,
+      "treatment_planning_use": false,
+      "navigation_use": false,
+      "training_use": false,
+      "patient_display_authorized": false,
+      "clinical_review_status": "REQUIRES_SPECIALIST_AND_HUMAN_FACTORS_REVIEW",
+      "ui_geometry_authored": false,
+      "runtime_camera_or_light_authored": false
+    },
+    {
+      "id": "intracerebral_hematoma_registered_conceptual_v1",
+      "title": "Registered conceptual intracerebral hematoma",
+      "kind": "registered_conceptual_pathology_context",
+      "scope": "clinician_selected_hemorrhage_context_only",
+      "preview_context": "pathology",
+      "description": "Refined and rescaled legacy project hematoma concept registered inside the generic v2 brain frame.",
+      "module": "figma_page2_surgical_states_v1",
+      "triangle_count": 240,
+      "dimensions_m_source_xyz": [
+        0.042059,
+        0.0292,
+        0.04024
+      ],
+      "usdc": "exports/usdc/intracerebral_hematoma_registered_conceptual_v1.usdc",
+      "usdc_bytes": 14500,
+      "usdc_sha256": "30cd2dffd42bb12c2b9c6503f6760a0311ff0bde2bfc5e5aa4226861498cf256",
+      "usdz": "exports/usdz/intracerebral_hematoma_registered_conceptual_v1.usdz",
+      "usdz_bytes": 14794,
+      "usdz_sha256": "acd4f4195eca205ae686d10e2e69910ea34a69fdb252ea25a31b1fd7c958b5b4",
+      "preview": "previews/figma_page2_surgical_states_v1/intracerebral_hematoma_registered_conceptual_v1.png",
+      "patient_specific": false,
+      "diagnostic_use": false,
+      "treatment_planning_use": false,
+      "navigation_use": false,
+      "training_use": false,
+      "patient_display_authorized": false,
+      "clinical_review_status": "REQUIRES_SPECIALIST_AND_HUMAN_FACTORS_REVIEW",
+      "ui_geometry_authored": false,
+      "runtime_camera_or_light_authored": false
+    },
+    {
+      "id": "cerebral_edema_registered_conceptual_v1",
+      "title": "Registered conceptual cerebral edema volume",
+      "kind": "registered_conceptual_pathology_context",
+      "scope": "clinician_selected_edema_or_decompression_context_only",
+      "preview_context": "pathology",
+      "description": "Refined and rescaled legacy project edema concept registered inside the generic v2 brain frame.",
+      "module": "figma_page2_surgical_states_v1",
+      "triangle_count": 840,
+      "dimensions_m_source_xyz": [
+        0.074695,
+        0.076168,
+        0.071748
+      ],
+      "usdc": "exports/usdc/cerebral_edema_registered_conceptual_v1.usdc",
+      "usdc_bytes": 40200,
+      "usdc_sha256": "c4073f45cda520f8c38e1d6a9f73255cf46ff13fbb22ae1d6eb5878d9e1d3d70",
+      "usdz": "exports/usdz/cerebral_edema_registered_conceptual_v1.usdz",
+      "usdz_bytes": 40494,
+      "usdz_sha256": "7d5ae7a5a9e55de679d9e7e5e364715d8ecd05d851813a83e81988a80450c5a9",
+      "preview": "previews/figma_page2_surgical_states_v1/cerebral_edema_registered_conceptual_v1.png",
+      "patient_specific": false,
+      "diagnostic_use": false,
+      "treatment_planning_use": false,
+      "navigation_use": false,
+      "training_use": false,
+      "patient_display_authorized": false,
+      "clinical_review_status": "REQUIRES_SPECIALIST_AND_HUMAN_FACTORS_REVIEW",
+      "ui_geometry_authored": false,
+      "runtime_camera_or_light_authored": false
+    }
+  ],
+  "state_recipes": [
+    {
+      "state_id": "figma_page2_head_orientation",
+      "figma_intent": "head orientation and make-space state",
+      "load_asset_ids": [
+        "external_head_scalp_realistic_v2",
+        "brain_anatomy_realistic_v2"
+      ],
+      "default_visibility": {
+        "external_head_scalp_realistic_v2": false,
+        "brain_anatomy_realistic_v2": true
+      },
+      "review_blocked_alternative_candidate_asset_id": "brain_orientation_calm_educational_v1",
+      "alternative_gate": "Requires separate specialist and human-factors approval; replace the default brain rather than overlaying it.",
+      "procedure_scope": "all_pathways",
+      "app_presentation_contract": "Use opaque visibility swaps by default; use native RealityKit rotation affordance and SwiftUI attachments. Do not rely on stacked alpha."
+    },
+    {
+      "state_id": "figma_page2_stroke_flow_explanation",
+      "figma_intent": "demonstrate occlusion and blood-flow change",
+      "load_asset_ids": [
+        "brain_anatomy_realistic_v2",
+        "cerebral_arteries_realistic_v2",
+        "ischemic_mca_clot_v2",
+        "circle_of_willis_flow_overlay_v2"
+      ],
+      "review_blocked_alternative_candidate_asset_id": "brain_orientation_calm_educational_v1",
+      "alternative_gate": "Requires separate specialist and human-factors approval; replace the default brain rather than overlaying it.",
+      "procedure_scope": "ischemic_education_or_clinician_selected_context",
+      "content_note": "The existing registered vascular overlay carries the flow explanation; animate opacity or material parameters in the host app."
+    },
+    {
+      "state_id": "figma_page2_craniotomy_position_planning",
+      "figma_intent": "confirm generic access-area orientation",
+      "load_asset_ids": [
+        "brain_anatomy_realistic_v2",
+        "scalp_access_closure_registered_conceptual_v1",
+        "cranial_bone_access_closure_registered_conceptual_v1"
+      ],
+      "procedure_scope": "open_neurosurgery_only",
+      "default_thrombectomy_pathway_allowed": false,
+      "narrative_gate": "clinician_selected_hemorrhage_or_decompression_only",
+      "safety_note": "Generic atlas registration only; the app may highlight the registered flap entity but must not portray a patient plan, marking, or navigation target."
+    },
+    {
+      "state_id": "figma_page2_dura_access",
+      "figma_intent": "open the protective covering",
+      "load_asset_ids": [
+        "brain_anatomy_realistic_v2",
+        "scalp_access_closure_registered_conceptual_v1",
+        "cranial_bone_access_closure_registered_conceptual_v1",
+        "dural_access_closure_registered_conceptual_v1"
+      ],
+      "procedure_scope": "open_neurosurgery_only",
+      "default_thrombectomy_pathway_allowed": false,
+      "narrative_gate": "clinician_selected_hemorrhage_or_decompression_only"
+    },
+    {
+      "state_id": "figma_page2_open_branch_treatment",
+      "figma_intent": "clinician-led explanation of a selected open treatment branch",
+      "load_asset_ids": [
+        "brain_anatomy_realistic_v2",
+        "cerebral_arteries_realistic_v2",
+        "scalp_access_closure_registered_conceptual_v1",
+        "cranial_bone_access_closure_registered_conceptual_v1",
+        "dural_access_closure_registered_conceptual_v1",
+        "bipolar_forceps_irrigation_set_open_neurosurgery_v3",
+        "suction_microdissector_set_open_neurosurgery_v3"
+      ],
+      "alternative_pathology_asset_ids": [
+        "intracerebral_hematoma_registered_conceptual_v1",
+        "cerebral_edema_registered_conceptual_v1"
+      ],
+      "alternative_selection_rule": "Clinician selects zero or one reviewed pathology context; the app must never infer a procedure from rendered shape or size.",
+      "procedure_scope": "open_neurosurgery_only",
+      "default_thrombectomy_pathway_allowed": false,
+      "narrative_gate": "clinician_selected_hemorrhage_or_decompression_only",
+      "safety_note": "Pathology volumes are non-quantitative concepts; tools remain explanatory side objects and must not prescribe technique."
+    },
+    {
+      "state_id": "figma_page2_dura_bone_flap_closure",
+      "figma_intent": "close the dura and restore the source-derived bone flap",
+      "load_asset_ids": [
+        "brain_anatomy_realistic_v2",
+        "scalp_access_closure_registered_conceptual_v1",
+        "cranial_bone_access_closure_registered_conceptual_v1",
+        "dural_access_closure_registered_conceptual_v1",
+        "dural_closure_suture_patch_set_open_neurosurgery_v3",
+        "bone_flap_fixation_set_open_neurosurgery_v3"
+      ],
+      "procedure_scope": "open_neurosurgery_only",
+      "default_thrombectomy_pathway_allowed": false,
+      "narrative_gate": "clinician_selected_hemorrhage_or_decompression_only",
+      "animation_contract": {
+        "dural_flap_entity": "Registered_Source_Derived_Conceptual_Dural_Flap_Open",
+        "bone_flap_entity": "Registered_Source_Derived_Bone_Flap_Detached",
+        "scalp_flap_entity": "Registered_Source_Derived_Scalp_Flap_Open",
+        "closed_pose_is_source_identity": true,
+        "host_animation_only": true,
+        "no_physics_or_trajectory_claim": true
+      }
+    },
+    {
+      "state_id": "figma_page2_final_closed_result",
+      "figma_intent": "check the generic closed result",
+      "load_asset_ids": [
+        "external_head_scalp_realistic_v2",
+        "brain_anatomy_realistic_v2",
+        "skull_semantic_realistic_v2",
+        "cerebral_arteries_realistic_v2"
+      ],
+      "procedure_scope": "all_pathways",
+      "safety_note": "Completion halo is a presentation state only and does not claim treatment success or predict outcome."
+    },
+    {
+      "state_id": "figma_page2_authoring_review",
+      "figma_intent": "optional scene-state review",
+      "load_asset_ids": [],
+      "app_presentation_contract": "Reuse the seven recipes above as app-managed miniatures; do not duplicate clinical geometry into a review USDZ.",
+      "procedure_scope": "authoring_review_only",
+      "patient_display_allowed": false
+    }
+  ],
+  "warnings": [
+    "Generic educational prototype only; no asset is patient-specific.",
+    "Open-cranial assets are prohibited in the default ordinary ischemic mechanical-thrombectomy pathway.",
+    "Load open-cranial states only after a clinician selects an applicable hemorrhage, decompression, or other open-neurosurgery narrative.",
+    "The scalp opening, cranial aperture, dural opening, detached poses, hematoma, and edema are presentation concepts, not measurements, plans, trajectories, pressure models, technique, or outcome claims.",
+    "Do not use for diagnosis, treatment planning, navigation, device sizing, surgical training, or outcome prediction.",
+    "Specialist, accessibility, privacy, human-factors, and representative-user review is required before any patient/family display."
+  ]
+}

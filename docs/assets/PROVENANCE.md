@@ -2,12 +2,13 @@
 
 ## Scope
 
-The committed release catalog contains 145 unique, manifest-backed runtime USDZ
-packages: the original 65 (36 higher-detail v2 and 29 prototype-v1), 43
+The committed release catalog contains 150 unique, manifest-backed runtime USDZ
+packages: the baseline 65 (36 higher-detail v2 and 29 prototype-v1), 43
 non-held v3 detail packages, 26 v3 surgical-tool packages, and one adaptive
 visual derivative, plus ten original optional consultation-environment
-packages. The complete source build produced 71 v3 packages plus the adaptive
-derivative and environment module, for 147 unique build records, but the two inner-ear-containing
+packages and five Page 2 surgical-state packages. The complete source build
+produced 71 v3 packages plus the adaptive derivative, environment module, and
+Page 2 module, for 152 unique build records, but the two inner-ear-containing
 packages are on a licence hold and are deliberately absent from this publishing
 tree. The unmanifested `stroke_kit_asset_gallery.usdz` review composite remains
 excluded because it duplicates prototype geometry.
@@ -188,6 +189,42 @@ responsibilities. See
 [SPATIAL_INTERFACE_V1_NOTES.md](source-notes/SPATIAL_INTERFACE_V1_NOTES.md)
 and
 [SPATIAL_INTERFACE_V1_VALIDATION.md](validation/SPATIAL_INTERFACE_V1_VALIDATION.md).
+
+## Figma Page 2 surgical states v1
+
+The new geometry module refines registered sources already in the kit:
+
+- `scalp_access_closure_registered_conceptual_v1` derives from HRA Skin Male,
+  NIH 3D `3DPX-021016` v2 (CC BY 4.0); a generic source-surface opening/flap
+  was derived and the existing scalp PBR maps were preserved.
+- `cranial_bone_access_closure_registered_conceptual_v1` derives from Visible
+  Human Male Skull and Eyes, NIH 3D `3DPX-020591` v1.03 (CC BY 4.0); a generic
+  parietal aperture/source-derived flap was created.
+- `dural_access_closure_registered_conceptual_v1` derives from the existing
+  project-authored conceptual HRA-registered dura; a generic opening/flap was
+  derived and the existing dura PBR maps were preserved. Underlying HRA terms
+  remain applicable.
+- `intracerebral_hematoma_registered_conceptual_v1` and
+  `cerebral_edema_registered_conceptual_v1` refine earlier project-authored
+  conceptual geometry by excluding old labels/arrows/context, then rescaling,
+  registering, smoothing, and recolouring it in the generic v2 brain frame.
+
+No FAB, stock, commercial CAD, patient scan, Figma export, or unattributed
+geometry is used. The built-in ImageGen linework PNG is an optional
+non-anatomical look-development reference only; its exact provenance/hash is in
+the manifest, it is not packed into a USDZ, and it is not used by final runtime
+materials. Exact transformation and attribution records are in
+[FIGMA_PAGE2_SURGICAL_STATES_SOURCE_PROVENANCE_V1.md](../../RealityKitContent/Assets/vision_pro_stroke_kit_v2/FIGMA_PAGE2_SURGICAL_STATES_SOURCE_PROVENANCE_V1.md).
+
+## Figma Page 2 interface contract v1
+
+The ten-resource non-geometry pack is project-authored JSON, Markdown, and
+Python validation logic. The supplied Figma page and interface image informed
+composition/interaction intent only. No Figma export, artwork, copied clinical
+copy, anatomy, portrait, stock asset, ImageGen output, PHI, or patient record is
+included. All scene bindings, anchors, clinical copy, citations, locales, and
+review records fail closed pending approval. See the pack's
+[provenance record](../../RealityKitContent/InterfaceMedia/figma_page2_surgical_interface_v1/figma_page2_surgical_interface_provenance_v1.json).
 
 ## Clinical meaning boundary
 

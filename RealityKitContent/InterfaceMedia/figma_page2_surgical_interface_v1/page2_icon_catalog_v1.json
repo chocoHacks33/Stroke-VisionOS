@@ -1,0 +1,29 @@
+{
+  "schema_version": "1.0.0",
+  "resource_id": "page2_icon_catalog_v1",
+  "module_id": "figma_page2_surgical_interface_v1",
+  "status": "developer_preview",
+  "patient_display_authorized": false,
+  "policy": "Resolve SF Symbols in the host app and always show a localized text equivalent. No copied Figma or vendor icon artwork is included.",
+  "icons": [
+    {"id": "case_select", "symbol_candidates": ["person.crop.rectangle.stack", "rectangle.stack.person.crop"], "fallback_label": "Choose a fictional case"},
+    {"id": "orientation", "symbol_candidates": ["view.3d", "rotate.3d"], "fallback_label": "Orient the model"},
+    {"id": "reviewed_hotspot", "symbol_candidates": ["circle.fill", "scope"], "fallback_label": "Reviewed point"},
+    {"id": "open_branch", "symbol_candidates": ["cross.case.fill", "cross.case"], "fallback_label": "Open-neurosurgery branch"},
+    {"id": "previous_step", "symbol_candidates": ["chevron.backward", "arrow.left"], "fallback_label": "Previous step"},
+    {"id": "next_step", "symbol_candidates": ["chevron.forward", "arrow.right"], "fallback_label": "Next step"},
+    {"id": "pause", "symbol_candidates": ["pause.fill", "pause"], "fallback_label": "Pause"},
+    {"id": "replay", "symbol_candidates": ["arrow.counterclockwise", "gobackward"], "fallback_label": "Replay"},
+    {"id": "show_less", "symbol_candidates": ["eye.slash", "minus.magnifyingglass"], "fallback_label": "Show less"},
+    {"id": "show_more", "symbol_candidates": ["eye", "plus.magnifyingglass"], "fallback_label": "Show more"},
+    {"id": "reset", "symbol_candidates": ["house.fill", "arrow.uturn.backward"], "fallback_label": "Reset view"},
+    {"id": "exit", "symbol_candidates": ["xmark.circle.fill", "door.left.hand.open"], "fallback_label": "Exit or return"},
+    {"id": "conceptual_warning", "symbol_candidates": ["exclamationmark.triangle.fill", "info.circle.fill"], "fallback_label": "Conceptual educational view"},
+    {"id": "fictional_case", "symbol_candidates": ["person.crop.circle.badge.questionmark", "person.crop.circle"], "fallback_label": "Fictional educational scenario"}
+  ],
+  "prohibited_meanings": [
+    "No icon indicates diagnosis, eligibility, surgical recommendation, urgency, risk score, procedural competence, treatment completion, or outcome.",
+    "A completed timeline dot means only that the viewer visited an interface step.",
+    "The open-branch badge cannot be used as a recommendation or imply that craniotomy is part of ordinary thrombectomy."
+  ]
+}

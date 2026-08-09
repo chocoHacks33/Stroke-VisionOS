@@ -1,22 +1,23 @@
 # Asset validation record
 
-Validated on 2026-08-08 and 2026-08-09 in macOS using Apple's USD tools and
+Validated on 2026-08-08, 2026-08-09, and 2026-08-10 in macOS using Apple's USD tools and
 RealityKit. Module reports retain their exact validation dates.
 
 ## Catalog integrity
 
-- 145 release runtime USDZ packages: 65 original plus 43 non-held v3 detail
+- 150 release runtime USDZ packages: 65 baseline plus 43 non-held v3 detail
   packages, 26 v3 surgical-tool packages, one adaptive visual derivative, and
-  ten optional environment packages.
-- 145 unique release-manifest IDs, basenames, and paths. All 69 v3 records, the
+  ten optional environment packages plus five Page 2 surgical-state packages.
+- 150 unique release-manifest IDs, basenames, and paths. All 69 v3 records, the
   adaptive derivative, and all ten environment records carry
   verified byte counts and SHA-256 values; the original package validation
   retains its payload-integrity evidence.
-- Thirteen manifests: five v2, one prototype-v1, five v3 module manifests, one
-  adaptive-visual manifest, and one spatial-care-environment manifest.
+- Fourteen manifests: five v2, one prototype-v1, five v3 module manifests, one
+  adaptive-visual manifest, one spatial-care-environment manifest, and one
+  Page 2 surgical-state manifest.
 - No missing manifest-backed packages.
 - `stroke_kit_asset_gallery.usdz` intentionally excluded.
-- Runtime payload: 280,889,899 bytes (267.88 MiB).
+- Runtime payload: 298,669,039 bytes (284.83 MiB).
 - Largest package: 32,482,833 bytes; no selected file exceeds 50 MiB.
 - The original 65 repository packages passed
   `/usr/bin/usdchecker --arkit --strict`: 65 pass, 0 fail.
@@ -28,6 +29,8 @@ RealityKit. Module reports retain their exact validation dates.
   `/usr/bin/usdchecker --arkit --strict`: 1 pass, 0 fail.
 - Strict validation of the optional environment module:
   `/usr/bin/usdchecker --arkit --strict`: 10 pass, 0 fail.
+- Strict validation of the Page 2 surgical-state module:
+  `/usr/bin/usdchecker --arkit --strict`: 5 pass, 0 fail.
 
 ## v2 technical gate
 
@@ -153,6 +156,35 @@ RealityKit. Module reports retain their exact validation dates.
 - Detailed evidence is retained in
   [SPATIAL_INTERFACE_V1_VALIDATION.md](validation/SPATIAL_INTERFACE_V1_VALIDATION.md).
 
+## Figma Page 2 surgical-state and interface gates
+
+- Five USDZ packages: 5/5 strict ARKit USD PASS and 5/5 desktop RealityKit
+  load/model/material/finite-bounds PASS; exact manifest byte/SHA-256 integrity
+  PASS.
+- All packages use `/Asset`, metres, and Y-up; each contains one embedded stage
+  and no missing/external package reference, Camera, Light, Physics, time-sampled
+  animation, glass/text/UI, or hotspot prim.
+- Required named scalp, bone, and dura flap entities are present. The source
+  identity is the closed pose; animation remains host-owned and non-physical.
+- Five 1600 × 1200 previews exist. Module contract checks cover exact IDs/eight
+  recipes, realistic-brain defaults, open-scope/gate enforcement, zero-or-one
+  pathology alternatives, closure entities, source classifications, look-dev
+  hashes/non-runtime use, and `patient_display_authorized=false`: PASS.
+- The ten-resource `figma_page2_surgical_interface_v1` pack passes exact
+  byte/SHA-256 validation, JSON parsing, pathway separation, cross-pathway
+  lockout, null copy/anchor binding, zero-PHI, native-UI ownership, and
+  patient-display block: 10/10 PASS.
+- Step 1's frozen composition resolves `brain_anatomy_realistic_v2`, registered
+  scalp, and registered cranial bone. The three registered access layers inherit
+  `HeadRegisteredRoot`; legacy tools require a separately reviewed placement.
+- Technical passes do not establish anatomical/procedural validity, approved
+  clinical copy, patient comprehension, Simulator/physical-device integration,
+  performance, comfort, accessibility, privacy, hospital readiness, or patient
+  display.
+- Detailed module evidence is retained in
+  [FIGMA_PAGE2_SURGICAL_STATES_VALIDATION_V1.md](../../RealityKitContent/Assets/vision_pro_stroke_kit_v2/validation/FIGMA_PAGE2_SURGICAL_STATES_VALIDATION_V1.md);
+  the interface pack's own validator reports its narrower integrity result.
+
 ## Viewer integration evidence
 
 The prior 108-asset release catalog was also exercised in the separate local
@@ -165,8 +197,8 @@ visually checked for a neural-detail assembly, the cranial-nerve assembly, and
 the blood-brain-barrier micro vignette. The micro view retained its persistent
 “not to anatomical scale” warning.
 
-That simulator evidence predates the 26 tool packages. The tools have
-package-level USD and RealityKit validation, but the complete 145-package
+That simulator evidence predates the 26 tool packages. The tools and Page 2
+module have package-level USD and RealityKit validation, but the complete 150-package
 catalog has not yet been bundled into or visually exercised by that viewer.
 
 That production viewer is not the repository-owned Xcode application scaffold,
@@ -184,5 +216,8 @@ Detailed module reports are retained in [`validation`](validation).
   review.
 - On-device RealityKit Trace profiling of the final assembled experience.
 - Patient-facing language and sequencing approval.
+- Exact Page 2 pathway/copy/anchor/attachment review, Simulator integration,
+  physical-device comfort/accessibility testing, and registered-anatomy versus
+  legacy-tool placement review.
 - Inner-ear source/licence clearance or replacement before either held build
   package can enter a release tree.

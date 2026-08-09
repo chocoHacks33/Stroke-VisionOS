@@ -1,0 +1,53 @@
+{
+  "schema_version": "1.0.0",
+  "resource_id": "surgical_walkthrough_copy_catalog_v1",
+  "module_id": "figma_page2_surgical_interface_v1",
+  "status": "review_blocked_empty_clinical_copy",
+  "patient_specific": false,
+  "contains_phi": false,
+  "patient_display_authorized": false,
+  "policy": "This catalog defines pathway-separated copy slots only. Every clinical, accessibility, voiceover, citation, locale, and approval field is intentionally null or empty. The host app must hide unresolved slots and must never fall back to Figma text, generated pixels, placeholder prose, or another pathway's copy.",
+  "required_review_domains": [
+    "clinical specialty",
+    "neuroanatomy and laterality",
+    "evidence and citations",
+    "health literacy",
+    "patient and family human factors",
+    "accessibility and VoiceOver",
+    "localization",
+    "legal and quality"
+  ],
+  "copy_slots": [
+    {"id": "EVT_BRANCH_DISCLOSURE", "pathway_id": "EVT", "scene_id": null, "title": null, "short_label": null, "body": null, "voiceover": null, "accessibility_label": null, "source_citation": null, "locale": null, "review_ids": [], "display_authorized": false},
+    {"id": "EVT_REVIEW_VASCULAR_PATH_COPY", "pathway_id": "EVT", "scene_id": "EVT_REVIEW_VASCULAR_PATH", "title": null, "short_label": null, "body": null, "voiceover": null, "accessibility_label": null, "source_citation": null, "locale": null, "review_ids": [], "display_authorized": false},
+    {"id": "EVT_REVIEW_OCCLUSION_COPY", "pathway_id": "EVT", "scene_id": "EVT_REVIEW_OCCLUSION", "title": null, "short_label": null, "body": null, "voiceover": null, "accessibility_label": null, "source_citation": null, "locale": null, "review_ids": [], "display_authorized": false},
+    {"id": "EVT_REVIEW_CONDITIONAL_DEVICE_CONCEPT_COPY", "pathway_id": "EVT", "scene_id": "EVT_REVIEW_CONDITIONAL_DEVICE_CONCEPT", "title": null, "short_label": null, "body": null, "voiceover": null, "accessibility_label": null, "source_citation": null, "locale": null, "review_ids": [], "display_authorized": false},
+    {"id": "EVT_REVIEW_POST_TREATMENT_COMPARISON_COPY", "pathway_id": "EVT", "scene_id": "EVT_REVIEW_POST_TREATMENT_COMPARISON", "title": null, "short_label": null, "body": null, "voiceover": null, "accessibility_label": null, "source_citation": null, "locale": null, "review_ids": [], "display_authorized": false},
+    {"id": "OPEN_CRANIOTOMY_BRANCH_DISCLOSURE", "pathway_id": "OPEN_CRANIOTOMY", "scene_id": null, "title": null, "short_label": null, "body": null, "voiceover": null, "accessibility_label": null, "source_citation": null, "locale": null, "review_ids": [], "display_authorized": false},
+    {"id": "OPEN_CONFIRM_SITE_COPY", "pathway_id": "OPEN_CRANIOTOMY", "scene_id": "OPEN_CONFIRM_SITE", "title": null, "short_label": null, "body": null, "voiceover": null, "accessibility_label": null, "source_citation": null, "locale": null, "review_ids": [], "display_authorized": false},
+    {"id": "OPEN_ESTABLISH_CRANIAL_ACCESS_COPY", "pathway_id": "OPEN_CRANIOTOMY", "scene_id": "OPEN_ESTABLISH_CRANIAL_ACCESS", "title": null, "short_label": null, "body": null, "voiceover": null, "accessibility_label": null, "source_citation": null, "locale": null, "review_ids": [], "display_authorized": false},
+    {"id": "OPEN_ESTABLISH_DURAL_ACCESS_COPY", "pathway_id": "OPEN_CRANIOTOMY", "scene_id": "OPEN_ESTABLISH_DURAL_ACCESS", "title": null, "short_label": null, "body": null, "voiceover": null, "accessibility_label": null, "source_citation": null, "locale": null, "review_ids": [], "display_authorized": false},
+    {"id": "OPEN_TREAT_REVIEWED_CONDITION_COPY", "pathway_id": "OPEN_CRANIOTOMY", "scene_id": "OPEN_TREAT_REVIEWED_CONDITION", "title": null, "short_label": null, "body": null, "voiceover": null, "accessibility_label": null, "source_citation": null, "locale": null, "review_ids": [], "display_authorized": false},
+    {"id": "OPEN_REPLACE_AND_FIX_BONE_FLAP_COPY", "pathway_id": "OPEN_CRANIOTOMY", "scene_id": "OPEN_REPLACE_AND_FIX_BONE_FLAP", "title": null, "short_label": null, "body": null, "voiceover": null, "accessibility_label": null, "source_citation": null, "locale": null, "review_ids": [], "display_authorized": false},
+    {"id": "OPEN_POST_CLOSURE_REVIEW_COPY", "pathway_id": "OPEN_CRANIOTOMY", "scene_id": "OPEN_POST_CLOSURE_REVIEW", "title": null, "short_label": null, "body": null, "voiceover": null, "accessibility_label": null, "source_citation": null, "locale": null, "review_ids": [], "display_authorized": false},
+    {"id": "DECOMPRESSIVE_CRANIECTOMY_BRANCH_DISCLOSURE", "pathway_id": "DECOMPRESSIVE_CRANIECTOMY", "scene_id": null, "title": null, "short_label": null, "body": null, "voiceover": null, "accessibility_label": null, "source_citation": null, "locale": null, "review_ids": [], "display_authorized": false},
+    {"id": "DECOMP_CONFIRM_SITE_COPY", "pathway_id": "DECOMPRESSIVE_CRANIECTOMY", "scene_id": "DECOMP_CONFIRM_SITE", "title": null, "short_label": null, "body": null, "voiceover": null, "accessibility_label": null, "source_citation": null, "locale": null, "review_ids": [], "display_authorized": false},
+    {"id": "DECOMP_ESTABLISH_CRANIAL_ACCESS_COPY", "pathway_id": "DECOMPRESSIVE_CRANIECTOMY", "scene_id": "DECOMP_ESTABLISH_CRANIAL_ACCESS", "title": null, "short_label": null, "body": null, "voiceover": null, "accessibility_label": null, "source_citation": null, "locale": null, "review_ids": [], "display_authorized": false},
+    {"id": "DECOMP_REVIEW_PRESSURE_RELIEF_CONCEPT_COPY", "pathway_id": "DECOMPRESSIVE_CRANIECTOMY", "scene_id": "DECOMP_REVIEW_PRESSURE_RELIEF_CONCEPT", "title": null, "short_label": null, "body": null, "voiceover": null, "accessibility_label": null, "source_citation": null, "locale": null, "review_ids": [], "display_authorized": false},
+    {"id": "DECOMP_CLOSE_WITHOUT_REPLACING_BONE_FLAP_COPY", "pathway_id": "DECOMPRESSIVE_CRANIECTOMY", "scene_id": "DECOMP_CLOSE_WITHOUT_REPLACING_BONE_FLAP", "title": null, "short_label": null, "body": null, "voiceover": null, "accessibility_label": null, "source_citation": null, "locale": null, "review_ids": [], "display_authorized": false},
+    {"id": "DECOMP_POST_CLOSURE_REVIEW_COPY", "pathway_id": "DECOMPRESSIVE_CRANIECTOMY", "scene_id": "DECOMP_POST_CLOSURE_REVIEW", "title": null, "short_label": null, "body": null, "voiceover": null, "accessibility_label": null, "source_citation": null, "locale": null, "review_ids": [], "display_authorized": false},
+    {"id": "OPTIONAL_EVD_BRANCH_DISCLOSURE", "pathway_id": "OPTIONAL_EVD", "scene_id": null, "title": null, "short_label": null, "body": null, "voiceover": null, "accessibility_label": null, "source_citation": null, "locale": null, "review_ids": [], "display_authorized": false},
+    {"id": "EVD_OPTIONALITY_REVIEW_COPY", "pathway_id": "OPTIONAL_EVD", "scene_id": "EVD_OPTIONALITY_REVIEW", "title": null, "short_label": null, "body": null, "voiceover": null, "accessibility_label": null, "source_citation": null, "locale": null, "review_ids": [], "display_authorized": false},
+    {"id": "EVD_REVIEW_VENTRICULAR_PATH_COPY", "pathway_id": "OPTIONAL_EVD", "scene_id": "EVD_REVIEW_VENTRICULAR_PATH", "title": null, "short_label": null, "body": null, "voiceover": null, "accessibility_label": null, "source_citation": null, "locale": null, "review_ids": [], "display_authorized": false},
+    {"id": "EVD_REVIEW_EXTERNAL_SYSTEM_COPY", "pathway_id": "OPTIONAL_EVD", "scene_id": "EVD_REVIEW_EXTERNAL_SYSTEM", "title": null, "short_label": null, "body": null, "voiceover": null, "accessibility_label": null, "source_citation": null, "locale": null, "review_ids": [], "display_authorized": false},
+    {"id": "EVD_REVIEW_POST_PLACEMENT_STATE_COPY", "pathway_id": "OPTIONAL_EVD", "scene_id": "EVD_REVIEW_POST_PLACEMENT_STATE", "title": null, "short_label": null, "body": null, "voiceover": null, "accessibility_label": null, "source_citation": null, "locale": null, "review_ids": [], "display_authorized": false}
+  ],
+  "authorization_rule": "A slot may be displayed only when every text field required by the host UI, citation, locale, accessibility record, exact scene and asset revisions, and all review IDs are present and approved. The module-level patient_display_authorized flag must also be true in a separately approved release; it is false here.",
+  "prohibited_fallbacks": [
+    "Figma text or OCR",
+    "generated-image text",
+    "developer placeholder prose",
+    "machine-generated clinical copy without the complete review workflow",
+    "copy from another pathway, scene, laterality, locale, or asset revision"
+  ]
+}

@@ -1,0 +1,68 @@
+{
+  "schema_version": "1.0.0",
+  "resource_id": "figma_page2_surgical_interface_provenance_v1",
+  "module_id": "figma_page2_surgical_interface_v1",
+  "created_date": "2026-08-10",
+  "status": "developer_handoff_provenance",
+  "patient_specific": false,
+  "contains_phi": false,
+  "patient_display_authorized": false,
+  "authorship": "Project-authored JSON, Markdown, and Python validation logic.",
+  "source_references": [
+    {
+      "type": "user_supplied_figma_page",
+      "included_in_repository": false,
+      "use": "Composition and interaction-intent inspection only.",
+      "excluded_authority": [
+        "clinical copy",
+        "anatomy",
+        "laterality",
+        "procedure",
+        "device selection or operation",
+        "timing",
+        "treatment recommendation",
+        "outcome"
+      ]
+    },
+    {
+      "type": "user_supplied_spatial_interface_reference_image",
+      "included_in_repository": false,
+      "use": "Broad warm-room and native-glass visual direction only.",
+      "excluded_authority": [
+        "runtime UI copy",
+        "patient identity",
+        "clinical evidence",
+        "anatomy",
+        "device or Simulator verification"
+      ]
+    }
+  ],
+  "external_artwork_or_assets_used": false,
+  "figma_export_used": false,
+  "image_generation_used": false,
+  "stock_asset_used": false,
+  "copied_clinical_copy_used": false,
+  "anatomy_or_device_geometry_included": false,
+  "files_authored_for_this_pack": [
+    "page2_interaction_contract_v1.json",
+    "page2_attachment_layout_v1.json",
+    "page2_ui_tokens_v1.json",
+    "page2_icon_catalog_v1.json",
+    "surgical_walkthrough_scene_catalog_v1.json",
+    "surgical_walkthrough_anchor_map_v1.json",
+    "surgical_walkthrough_copy_catalog_v1.json",
+    "README.md",
+    "validate_figma_page2_surgical_interface_v1.py",
+    "asset_manifest_figma_page2_surgical_interface_v1.json"
+  ],
+  "safety_decisions": [
+    "Separated EVT, open craniotomy, decompressive craniectomy, and optional-EVD content into explicit pathway IDs.",
+    "Kept all scene asset bindings null until exact release-manifest review.",
+    "Kept every anchor source revision, selector, transform, and display-copy field null until review.",
+    "Kept all actual clinical, voiceover, accessibility, citation, and locale copy null and display-blocked.",
+    "Declared patient_display_authorized=false at module-resource level.",
+    "Excluded Figma artwork, screenshots, exports, anatomy, PHI, and generated image assets."
+  ],
+  "licensing_note": "The pack contains only project-authored data, documentation, and validation code. It does not redistribute Figma or third-party artwork.",
+  "release_boundary": "Integrity validation is not authorization. Clinical, evidence, accessibility, human-factors, privacy, legal, quality, Simulator, and physical-device gates remain external and incomplete."
+}

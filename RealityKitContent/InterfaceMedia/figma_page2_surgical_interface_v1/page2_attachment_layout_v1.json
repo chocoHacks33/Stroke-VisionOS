@@ -1,0 +1,90 @@
+{
+  "schema_version": "1.0.0",
+  "resource_id": "page2_attachment_layout_v1",
+  "module_id": "figma_page2_surgical_interface_v1",
+  "status": "developer_preview_starting_points",
+  "patient_display_authorized": false,
+  "coordinate_space": "ExperiencePlacementRoot local metres; -Z forward, +Y up, +X right.",
+  "layout_policy": "Native SwiftUI/RealityKit attachments only. Do not bake cards, labels, timelines, dots, stickers, hands, or glass into USDZ geometry.",
+  "model_envelope": {
+    "target_max_extent_m": 0.58,
+    "minimum_viewing_distance_m": 0.70,
+    "preferred_viewing_distance_m": 1.00,
+    "maximum_viewing_distance_m": 1.40,
+    "policy": "Starting points only; clamp and replace after physical-device human-factors review."
+  },
+  "slots": [
+    {
+      "id": "title_pill",
+      "owner": "SwiftUI attachment",
+      "normalized_view_position": [0.50, 0.10],
+      "preferred_size_m": [0.34, 0.07],
+      "depth_offset_m": 0.04,
+      "collision": "none"
+    },
+    {
+      "id": "left_sticker_rail",
+      "owner": "SwiftUI attachment",
+      "normalized_view_position": [0.12, 0.52],
+      "preferred_size_m": [0.19, 0.48],
+      "depth_offset_m": 0.06,
+      "collision": "app_control_bounds_only"
+    },
+    {
+      "id": "right_topic_pill",
+      "owner": "SwiftUI attachment",
+      "normalized_view_position": [0.82, 0.27],
+      "preferred_size_m": [0.20, 0.06],
+      "depth_offset_m": 0.05,
+      "collision": "app_control_bounds_only"
+    },
+    {
+      "id": "right_detail_card",
+      "owner": "SwiftUI attachment",
+      "normalized_view_position": [0.83, 0.49],
+      "preferred_size_m": [0.29, 0.27],
+      "depth_offset_m": 0.07,
+      "collision": "app_control_bounds_only"
+    },
+    {
+      "id": "bottom_step_timeline",
+      "owner": "SwiftUI attachment",
+      "normalized_view_position": [0.50, 0.89],
+      "preferred_size_m": [0.68, 0.08],
+      "depth_offset_m": 0.06,
+      "collision": "app_control_bounds_only"
+    },
+    {
+      "id": "content_warning",
+      "owner": "SwiftUI attachment",
+      "normalized_view_position": [0.50, 0.18],
+      "preferred_size_m": [0.42, 0.08],
+      "depth_offset_m": 0.08,
+      "collision": "app_control_bounds_only"
+    },
+    {
+      "id": "patient_card_carousel",
+      "owner": "SwiftUI window or volumetric attachment",
+      "normalized_view_position": [0.50, 0.52],
+      "preferred_size_m": [0.86, 0.48],
+      "depth_offset_m": 0.00,
+      "collision": "app_control_bounds_only"
+    }
+  ],
+  "hotspot_anchors": {
+    "owner": "RealityKit attachment entities bound to exact reviewed selectors",
+    "surface_offset_m": 0.015,
+    "leader_line_max_length_m": 0.35,
+    "minimum_separation_m": 0.05,
+    "unresolved_selector_behavior": "do_not_render",
+    "occluded_behavior": "reposition_label_without_moving_the_anatomical_anchor"
+  },
+  "responsive_rules": [
+    "Never face-lock a moving control to the user's head.",
+    "Prefer a stable world-anchored composition with bounded recentering.",
+    "Collapse the left rail before allowing it to overlap the model or right detail card.",
+    "When Reduce Transparency is enabled, replace glass with an opaque high-contrast surface.",
+    "When Dynamic Type expands content, scroll the card; do not shrink text below the reviewed size.",
+    "Keep Pause, Exit or Return, and Reset visible without opening another panel."
+  ]
+}

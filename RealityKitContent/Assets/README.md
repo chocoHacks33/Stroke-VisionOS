@@ -1,6 +1,6 @@
 # Stroke VisionOS asset catalog
 
-This directory contains **145 unique, manifest-backed runtime USDZ assets**:
+This directory contains **150 unique, manifest-backed runtime USDZ assets**:
 
 - **69 release-eligible v3 assets** across five manifests: 43 anatomy/detail
   packages and 26 representative surgical-tool packages.
@@ -8,7 +8,10 @@ This directory contains **145 unique, manifest-backed runtime USDZ assets**:
 - **29 prototype-v1 assets** in one manifest.
 - **1 comfort-oriented adaptive visual** in one manifest.
 - **10 original optional spatial-care environment assets** in one manifest.
-- **280,889,899 bytes** of runtime USDZ payload.
+- **5 Page 2 registered surgical-state presentation assets** in one manifest.
+- **298,669,039 bytes** (284.83 MiB) of runtime USDZ payload.
+
+Together these are indexed by **14 USDZ release manifests**.
 
 “Release-eligible” here means only that a package is not on the known
 inner-ear licence hold and is present in the publishing catalog. It does not
@@ -21,14 +24,15 @@ not counted as additional runtime assets. Composite assemblies are counted
 because they are separately loadable packages, although they duplicate geometry
 from their component layers.
 
-The complete source build has **147 unique package records**: 65 original, 71
-v3, one adaptive visual derivative, and ten environment records. The two inner-ear-containing v3
+The complete source build has **152 unique package records**: 65 baseline, 71
+v3, one adaptive visual derivative, ten environment records, and five Page 2
+surgical-state records. The two inner-ear-containing v3
 packages are licence-held and their binaries are deliberately absent here, so
-the release catalog contains 145 packages.
+the release catalog contains 150 packages.
 
 The historical review-only `stroke_kit_asset_gallery.usdz` is deliberately not
 included. It is an unmanifested composite of prototype geometry, not an
-additional 146th release asset or a 148th source-build package.
+additional 151st release asset or a 153rd source-build package.
 
 For the canonical scene hierarchy, all component/assembly relationships,
 procedure state logic, interaction physics, and Houdini/RealityKit handoff, see
@@ -68,7 +72,8 @@ Assets/
     ├── asset_manifest_open_cranial_tools_v3.json
     ├── asset_manifest_adaptive_visuals_v1.json
     ├── asset_manifest_spatial_care_environment_v1.json
-    ├── exports/usdz/                 # 36 v2 + 69 v3 + 1 adaptive + 10 environment
+    ├── asset_manifest_figma_page2_surgical_states_v1.json
+    ├── exports/usdz/                 # 36 v2 + 69 v3 + 1 adaptive + 10 environment + 5 Page 2
     ├── previews/                     # supporting v2/v3 renders
     └── textures/source/              # supporting material maps
 ```
@@ -293,7 +298,7 @@ static, with optional qualitative kinematic pickup/rotation; there is no force,
 depth, trajectory, pressure, flow, energy, device sizing, compatibility,
 navigation, tissue interaction, or training model.
 
-The tool release-number column occupies entries 109–134 in the 145-file
+The tool release-number column occupies entries 109–134 in the 150-file
 publishing index. The same packages are full-build records 111–136 in
 [`MASTER.md`](../../MASTER.md), which retains held records 92 and 98 in the
 build sequence.
@@ -397,12 +402,38 @@ selected components or the complete assembly—never both.
 | 144 | [ambient_lighting_fixture_set_v1.usdz](vision_pro_stroke_kit_v2/exports/usdz/ambient_lighting_fixture_set_v1.usdz) | **Ambient fixture geometry.** Two floor lamps, ceiling rings, and wall sconces. Meshes are non-emissive; the host app owns IBL, RealityKit lights, exposure, and device profiling. |
 | 145 | [spatial_care_consultation_environment_assembly_v1.usdz](vision_pro_stroke_kit_v2/exports/usdz/spatial_care_consultation_environment_assembly_v1.usdz) | **Registered full-room assembly.** Review/demo convenience package containing all nine components at the shared floor origin. It transitively excludes every component and is not the default patient environment. |
 
-The module manifest also supplies suggested anchors for landing, case carousel,
-hero head, guidance/evidence attachments, topic rail, magnified vignette, and
-comfort controls. These are authoring starting points, not comfort or safety
-guarantees. See the [environment notes](vision_pro_stroke_kit_v2/SPATIAL_CARE_ENVIRONMENT_ASSET_NOTES_V1.md),
+The environment manifest also supplies suggested anchors for landing, case
+carousel, hero head, guidance/evidence attachments, topic rail, magnified
+vignette, and comfort controls. These are authoring starting points, not comfort
+or safety guarantees. See the [environment notes](vision_pro_stroke_kit_v2/SPATIAL_CARE_ENVIRONMENT_ASSET_NOTES_V1.md),
 [provenance](vision_pro_stroke_kit_v2/SPATIAL_CARE_ENVIRONMENT_SOURCE_PROVENANCE_V1.md),
 and [validation](vision_pro_stroke_kit_v2/validation/SPATIAL_CARE_ENVIRONMENT_VALIDATION_V1.md).
+
+## Figma Page 2 surgical-state assets (5 release packages)
+
+These registered, generic presentation layers support the separately gated
+Page 2 open-neurosurgery walkthrough without duplicating a full-head assembly.
+They are not patient anatomy, measurements, incisions, operative plans,
+navigation targets, pressure models, technique, or outcome evidence. Release
+numbers 146–150 correspond to build records 148–152 because held build records
+92 and 98 remain absent from the publishing tree.
+
+| Release # | Runtime file | Description and runtime rule |
+|---:|---|---|
+| 146 | [scalp_access_closure_registered_conceptual_v1.usdz](vision_pro_stroke_kit_v2/exports/usdz/scalp_access_closure_registered_conceptual_v1.usdz) | **Registered scalp access/closure state.** HRA-derived scalp remainder plus named source-surface flap. Parent under `HeadRegisteredRoot/RegisteredOpenCranialAnatomyRoot/RegisteredExposureStateRoot`; replace intact/cutaway scalp for the gated state. The generic opening is not an incision or marking plan. |
+| 147 | [cranial_bone_access_closure_registered_conceptual_v1.usdz](vision_pro_stroke_kit_v2/exports/usdz/cranial_bone_access_closure_registered_conceptual_v1.usdz) | **Registered cranial-bone access/closure state.** Visible-Human-derived skull with generic parietal aperture and named detached flap. Parent under `HeadRegisteredRoot/RegisteredOpenCranialAnatomyRoot/RegisteredBoneStateRoot`; replace the semantic skull in this state. Never use its replaced-flap pose for decompressive craniectomy. |
+| 148 | [dural_access_closure_registered_conceptual_v1.usdz](vision_pro_stroke_kit_v2/exports/usdz/dural_access_closure_registered_conceptual_v1.usdz) | **Registered conceptual dural access/closure state.** Existing conceptual dura plus named source-surface flap. Parent under `HeadRegisteredRoot/RegisteredOpenCranialAnatomyRoot/RegisteredDuralStateRoot`; replace other dura variants. Thickness and opening are non-physiologic concepts. |
+| 149 | [intracerebral_hematoma_registered_conceptual_v1.usdz](vision_pro_stroke_kit_v2/exports/usdz/intracerebral_hematoma_registered_conceptual_v1.usdz) | **Conceptual registered hematoma context.** Refined legacy project geometry in the generic v2 brain frame. Parent under `HeadRegisteredRoot/PathologyRoot`; zero or one reviewed Page 2 pathology context may be selected. It is not a segmentation or volume measurement. |
+| 150 | [cerebral_edema_registered_conceptual_v1.usdz](vision_pro_stroke_kit_v2/exports/usdz/cerebral_edema_registered_conceptual_v1.usdz) | **Conceptual registered edema context.** Refined legacy project swelling volume in the generic v2 brain frame. Parent under `HeadRegisteredRoot/PathologyRoot`; gated to reviewed edema/decompression context. It carries no edema extent, mass-effect, pressure, or prognosis meaning. |
+
+All five packages are metre/Y-up `/Asset` components with no camera, light,
+UI, physics, or time-sampled animation. The scalp, bone, and dura packages expose
+one named movable flap each; the host app may interpolate between the authored
+open pose and source-identity closed pose only as a qualitative, reversible
+presentation. Exact recipes, entities, bytes, hashes, bounds, previews, and
+review flags are in the
+[Page 2 manifest](vision_pro_stroke_kit_v2/asset_manifest_figma_page2_surgical_states_v1.json)
+and [asset notes](vision_pro_stroke_kit_v2/FIGMA_PAGE2_SURGICAL_STATES_ASSET_NOTES_V1.md).
 
 ### Full-build records excluded from release (2)
 
@@ -442,6 +473,7 @@ full gap and duplication analysis.
 - [Open-cranial-tools-v3 manifest](vision_pro_stroke_kit_v2/asset_manifest_open_cranial_tools_v3.json)
 - [Adaptive-visuals-v1 manifest](vision_pro_stroke_kit_v2/asset_manifest_adaptive_visuals_v1.json)
 - [Spatial-care-environment-v1 manifest](vision_pro_stroke_kit_v2/asset_manifest_spatial_care_environment_v1.json)
+- [Figma-Page-2-surgical-states-v1 manifest](vision_pro_stroke_kit_v2/asset_manifest_figma_page2_surgical_states_v1.json)
 
 Manifest `usdz` paths are relative to the corresponding kit directory. Keep
 the package layout intact or rewrite paths intentionally in the app's catalog
@@ -477,6 +509,20 @@ synthetic fully immersive mode, load the assembly or selected components at
 the shared floor origin; generate only deliberate coarse static collisions and
 never treat virtual walls, floors, furniture, rug, or dais as verified real
 space. All interface panels and runtime lighting remain app-owned.
+
+Route `figma_page2_surgical_states_v1` through its app-managed recipes. Reject
+all five packages in ordinary EVT. Scalp, bone, and dura state packages require
+the explicit clinician-selected open-neurosurgery gate and replace their
+corresponding base layer while active. Hematoma and edema are zero-or-one
+reviewed alternatives in the current Page 2 treatment recipe. Render title
+pills, cards, hotspots, warnings, and progress as native attachments; null
+copy/anchor bindings in the separate ten-resource interface pack render
+nothing.
+
+Records 146–148 inherit the generic v2 `HeadRegisteredRoot` transform. Do not
+parent them under the legacy open-tool root. Any legacy tool shown beside them
+needs an explicit reviewed tool-to-anatomy placement transform; neither root's
+transform may be guessed from bounds or the Figma composition.
 
 Do not apply another axis correction: the exported USD stages already use Y-up
 and metres. Center inspection views using visual bounds. Load combined hero

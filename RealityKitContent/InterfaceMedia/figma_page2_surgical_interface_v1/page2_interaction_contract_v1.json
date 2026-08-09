@@ -1,0 +1,106 @@
+{
+  "schema_version": "1.0.0",
+  "resource_id": "page2_interaction_contract_v1",
+  "module_id": "figma_page2_surgical_interface_v1",
+  "status": "developer_preview_contract",
+  "patient_display_authorized": false,
+  "source_reference": "User-supplied Figma Page 2 walkthrough inspected in Safari on 2026-08-09/10.",
+  "purpose": "Deterministic interaction contract for the case carousel, transparent-head orientation, stroke explanation, and the separately gated six-step open-cranial walkthrough.",
+  "common_states": [
+    {
+      "id": "CASE_SELECT",
+      "title_key": "page2.case_select.title",
+      "required_ui": ["patient_card_carousel", "fictional_case_badge", "enter_case_action"],
+      "allowed_actions": ["select_previous_case", "select_next_case", "enter_selected_case", "exit"],
+      "medical_state_change": false
+    },
+    {
+      "id": "ORIENT_HEAD",
+      "title_key": "page2.orient_head.title",
+      "required_ui": ["orientation_hotspots", "confirm_problem_and_plan_attachment", "reset", "exit"],
+      "allowed_actions": ["orbit", "zoom_with_bounds", "select_reviewed_hotspot", "continue", "reset", "exit"],
+      "medical_state_change": false
+    },
+    {
+      "id": "EXPLAIN_STROKE",
+      "title_key": "page2.explain_stroke.title",
+      "required_ui": ["qualitative_flow_disclosure", "affected_region_disclosure", "pause", "replay", "show_less", "show_more", "exit"],
+      "allowed_actions": ["orbit", "zoom_with_bounds", "pause", "replay", "show_less", "show_more", "choose_reviewed_pathway", "reset", "exit"],
+      "medical_state_change": false
+    }
+  ],
+  "open_cranial_walkthrough": {
+    "activation_gate": "clinician_selected_hemorrhage_or_decompression_only",
+    "open_neurosurgery_only": true,
+    "prohibited_when": ["ordinary_ischemic_evt", "default_endovascular_thrombectomy"],
+    "steps": [
+      {
+        "index": 1,
+        "id": "OPEN_CONFIRM_POSITION",
+        "figma_intent": "Confirm the position",
+        "required_ui": ["step_title", "step_timeline", "open_branch_badge", "content_warning", "pause", "exit"],
+        "allowed_actions": ["orbit", "select_reviewed_hotspot", "next", "previous", "pause", "reset", "exit"]
+      },
+      {
+        "index": 2,
+        "id": "OPEN_CREATE_ACCESS",
+        "figma_intent": "Create the skull opening",
+        "required_ui": ["step_title", "step_timeline", "open_branch_badge", "conceptual_motion_disclosure", "pause", "exit"],
+        "allowed_actions": ["orbit", "show_or_hide_access_layers", "next", "previous", "pause", "reset", "exit"]
+      },
+      {
+        "index": 3,
+        "id": "OPEN_DURAL_ACCESS",
+        "figma_intent": "Open the protective covering",
+        "required_ui": ["step_title", "step_timeline", "open_branch_badge", "non_graphic_disclosure", "pause", "exit"],
+        "allowed_actions": ["orbit", "show_or_hide_access_layers", "next", "previous", "pause", "reset", "exit"]
+      },
+      {
+        "index": 4,
+        "id": "OPEN_TREAT_CONDITION",
+        "figma_intent": "Treat the stroke complication",
+        "required_ui": ["step_title", "step_timeline", "open_branch_badge", "conceptual_non_training_disclosure", "pause", "exit"],
+        "allowed_actions": ["orbit", "select_reviewed_treatment_variant", "next", "previous", "pause", "reset", "exit"]
+      },
+      {
+        "index": 5,
+        "id": "OPEN_CLOSE_DURA_SKULL",
+        "figma_intent": "Close the dura and skull",
+        "required_ui": ["step_title", "step_timeline", "open_branch_badge", "closure_variant_disclosure", "pause", "exit"],
+        "allowed_actions": ["orbit", "select_reviewed_closure_variant", "next", "previous", "pause", "reset", "exit"]
+      },
+      {
+        "index": 6,
+        "id": "OPEN_CHECK_RESULT",
+        "figma_intent": "Check the result",
+        "required_ui": ["step_title", "step_timeline", "open_branch_badge", "outcome_uncertainty_disclosure", "return_to_overview", "exit"],
+        "allowed_actions": ["orbit", "compare_reviewed_states", "previous", "return_to_overview", "reset", "exit"]
+      }
+    ]
+  },
+  "progress_contract": {
+    "user_controlled": true,
+    "auto_advance_allowed": false,
+    "completed_step_meaning": "Interface progress only; never procedural success, treatment success, or outcome prediction.",
+    "restore_original_available_in_every_state": true
+  },
+  "hotspot_contract": {
+    "states": ["available", "focused", "visited"],
+    "available_remains_visible_until_selected": true,
+    "focused_requires_text_equivalent": true,
+    "color_alone_allowed": false,
+    "unreviewed_anchor_behavior": "hidden"
+  },
+  "input_contract": {
+    "system_owned": ["gaze_privacy", "hand_presence", "pinch_gesture", "hover_effect"],
+    "app_owned": ["selection_state", "step_state", "reset", "pause", "show_less", "show_more", "exit"],
+    "custom_hand_mesh_allowed": false,
+    "biometric_anxiety_inference_allowed": false
+  },
+  "release_gates": [
+    "Exact clinical copy, variants, and asset composition are reviewed together.",
+    "All anchor selectors are bound to exact package revisions and fail closed.",
+    "The six open-cranial steps are unreachable from ordinary endovascular thrombectomy.",
+    "Simulator and physical-device tests verify legibility, comfort, occlusion, input, Reduce Motion, Reduce Transparency, and restoration."
+  ]
+}

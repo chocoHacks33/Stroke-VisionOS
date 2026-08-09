@@ -1,0 +1,59 @@
+{
+  "schema_version": "1.0.0",
+  "resource_id": "page2_ui_tokens_v1",
+  "module_id": "figma_page2_surgical_interface_v1",
+  "status": "developer_preview_starting_points",
+  "patient_display_authorized": false,
+  "visual_direction": "Warm, restrained spatial glass framing source-backed anatomy with cyan-violet orientation accents and sparse amber focus cues.",
+  "native_surface_policy": {
+    "preferred": "SwiftUI glassBackgroundEffect or target-SDK native glass",
+    "baked_glass_mesh_allowed": false,
+    "stacked_transparent_anatomy_allowed": false,
+    "reduce_transparency_fallback": "opaque_system_background_with_accessible_contrast"
+  },
+  "semantic_colors": {
+    "orientation_cyan": {"light_hex": "#1D6F77", "dark_hex": "#7ADBE3", "meaning": "orientation and selection"},
+    "structure_violet": {"light_hex": "#6650A4", "dark_hex": "#C7B8FF", "meaning": "secondary structural context"},
+    "focus_amber": {"light_hex": "#8A531E", "dark_hex": "#F3B66F", "meaning": "current teaching focus, never the only pathology cue"},
+    "pathology_coral": {"light_hex": "#8C3D43", "dark_hex": "#FF9A9F", "meaning": "reviewed conceptual pathology with mandatory text disclosure"},
+    "open_branch_blue": {"light_hex": "#2E5E8A", "dark_hex": "#8EC7FF", "meaning": "clinician-selected open-neurosurgery branch"},
+    "blocked_red": {"light_hex": "#8B2E2E", "dark_hex": "#FF9898", "meaning": "unavailable or review-blocked"}
+  },
+  "panel_roles": {
+    "title_pill": {"surface": "native_glass_regular", "corner_radius_pt": 28, "padding_pt": 16},
+    "sticker_rail": {"surface": "native_glass_thin", "corner_radius_pt": 24, "padding_pt": 12},
+    "detail_card": {"surface": "native_glass_regular", "corner_radius_pt": 22, "padding_pt": 18},
+    "step_timeline": {"surface": "native_glass_thin", "corner_radius_pt": 22, "padding_pt": 12},
+    "branch_badge": {"surface": "opaque_high_contrast", "corner_radius_pt": 16, "padding_pt": 10},
+    "patient_card": {"surface": "native_glass_regular", "corner_radius_pt": 26, "padding_pt": 20}
+  },
+  "typography": {
+    "step_title": {"swiftui_text_style": "title2", "weight": "semibold", "maximum_lines": 2},
+    "panel_title": {"swiftui_text_style": "headline", "weight": "semibold", "maximum_lines": 2},
+    "body": {"swiftui_text_style": "body", "weight": "regular", "maximum_lines": 0},
+    "label": {"swiftui_text_style": "callout", "weight": "medium", "maximum_lines": 3},
+    "disclosure": {"swiftui_text_style": "caption", "weight": "regular", "maximum_lines": 4}
+  },
+  "spacing_pt": [4, 8, 12, 16, 20, 24, 32, 40],
+  "corner_radii_pt": [12, 16, 22, 24, 26, 28],
+  "motion": {
+    "card_focus_seconds": 0.30,
+    "layer_reveal_seconds": 0.45,
+    "step_transition_seconds": 0.32,
+    "reduced_motion_seconds": 0.0,
+    "continuous_pulse_allowed": false,
+    "auto_camera_motion_allowed": false,
+    "policy": "Motion is qualitative presentation only and cannot imply blood velocity, force, urgency, tissue mechanics, treatment progress, or outcome."
+  },
+  "accessibility": {
+    "normal_text_contrast_target": 4.5,
+    "large_text_contrast_target": 3.0,
+    "non_text_control_contrast_target": 3.0,
+    "color_only_state_allowed": false,
+    "dynamic_type_required": true,
+    "voiceover_required": true,
+    "reduce_motion_required": true,
+    "reduce_transparency_required": true,
+    "persistent_controls": ["pause", "show_less", "show_more", "reset", "exit_or_return"]
+  }
+}

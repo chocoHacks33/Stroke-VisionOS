@@ -1,0 +1,272 @@
+{
+  "schema_version": "1.0.0",
+  "resource_id": "surgical_walkthrough_scene_catalog_v1",
+  "module_id": "figma_page2_surgical_interface_v1",
+  "status": "developer_preview_review_blocked",
+  "patient_specific": false,
+  "contains_phi": false,
+  "patient_display_authorized": false,
+  "purpose": "Fail-closed scene-state catalog for implementing the Page 2 composition without treating the supplied design as clinical, anatomical, procedural, timing, or outcome authority.",
+  "source_boundary": "The user-supplied Figma Page 2 was inspected only for composition and interaction intent. No Figma artwork, text, icons, anatomy, coordinates, or export is included in this resource.",
+  "runtime_ownership": {
+    "anatomy_and_devices": "Separately manifested, reviewed RealityKit assets selected by the host app.",
+    "glass_panels_text_controls_and_timeline": "Native SwiftUI attachments.",
+    "hotspots_and_leader_lines": "RealityKit attachment entities bound only through the reviewed anchor map.",
+    "hands_gaze_hover_and_pinch": "visionOS system input; never custom hand geometry or biometric inference."
+  },
+  "global_release_contract": {
+    "default_pathway_id": null,
+    "default_scene_id": null,
+    "auto_advance_allowed": false,
+    "cross_pathway_transition_allowed": false,
+    "unreviewed_scene_behavior": "do_not_render",
+    "unresolved_asset_behavior": "do_not_render",
+    "unresolved_copy_behavior": "do_not_render",
+    "unresolved_anchor_behavior": "do_not_render",
+    "requires_restore_original": true,
+    "requires_pause_exit_and_reset": true
+  },
+  "pathways": [
+    {
+      "id": "EVT",
+      "internal_label": "Endovascular thrombectomy educational branch",
+      "activation_gate": "clinician_selected_reviewed_evt_scenario_only",
+      "default_enabled": false,
+      "mutually_exclusive_with": ["OPEN_CRANIOTOMY", "DECOMPRESSIVE_CRANIECTOMY"],
+      "optional_companion_pathways": [],
+      "required_copy_slot_ids": ["EVT_BRANCH_DISCLOSURE"],
+      "prohibited_content": [
+        "scalp incision",
+        "craniotomy or craniectomy",
+        "bone flap",
+        "open dura",
+        "exposed brain",
+        "EVD as a routine or required EVT step"
+      ],
+      "scenes": [
+        {
+          "id": "EVT_REVIEW_VASCULAR_PATH",
+          "sequence_index": 1,
+          "display_copy": null,
+          "copy_slot_id": "EVT_REVIEW_VASCULAR_PATH_COPY",
+          "asset_binding": null,
+          "anchor_request_ids": ["EVT_VASCULAR_PATH_FOCUS"],
+          "allowed_actions": ["orbit", "bounded_zoom", "pause", "next", "reset", "exit"]
+        },
+        {
+          "id": "EVT_REVIEW_OCCLUSION",
+          "sequence_index": 2,
+          "display_copy": null,
+          "copy_slot_id": "EVT_REVIEW_OCCLUSION_COPY",
+          "asset_binding": null,
+          "anchor_request_ids": ["EVT_OCCLUSION_FOCUS"],
+          "allowed_actions": ["orbit", "bounded_zoom", "select_reviewed_hotspot", "pause", "next", "previous", "reset", "exit"]
+        },
+        {
+          "id": "EVT_REVIEW_CONDITIONAL_DEVICE_CONCEPT",
+          "sequence_index": 3,
+          "display_copy": null,
+          "copy_slot_id": "EVT_REVIEW_CONDITIONAL_DEVICE_CONCEPT_COPY",
+          "asset_binding": null,
+          "anchor_request_ids": ["EVT_DEVICE_CONCEPT_FOCUS"],
+          "allowed_actions": ["orbit", "bounded_zoom", "select_reviewed_variant", "pause", "next", "previous", "reset", "exit"]
+        },
+        {
+          "id": "EVT_REVIEW_POST_TREATMENT_COMPARISON",
+          "sequence_index": 4,
+          "display_copy": null,
+          "copy_slot_id": "EVT_REVIEW_POST_TREATMENT_COMPARISON_COPY",
+          "asset_binding": null,
+          "anchor_request_ids": ["EVT_COMPARISON_FOCUS"],
+          "allowed_actions": ["orbit", "bounded_zoom", "compare_reviewed_states", "pause", "previous", "return_to_overview", "reset", "exit"]
+        }
+      ]
+    },
+    {
+      "id": "OPEN_CRANIOTOMY",
+      "internal_label": "Open craniotomy educational branch",
+      "activation_gate": "clinician_selected_reviewed_open_craniotomy_scenario_only",
+      "default_enabled": false,
+      "mutually_exclusive_with": ["EVT", "DECOMPRESSIVE_CRANIECTOMY"],
+      "optional_companion_pathways": ["OPTIONAL_EVD"],
+      "required_copy_slot_ids": ["OPEN_CRANIOTOMY_BRANCH_DISCLOSURE"],
+      "closure_state_contract": "A reviewed craniotomy scene may show the bone flap replaced and secured; it must not be reused for decompressive craniectomy.",
+      "scenes": [
+        {
+          "id": "OPEN_CONFIRM_SITE",
+          "sequence_index": 1,
+          "display_copy": null,
+          "copy_slot_id": "OPEN_CONFIRM_SITE_COPY",
+          "asset_binding": null,
+          "anchor_request_ids": ["OPEN_SITE_FOCUS"],
+          "allowed_actions": ["orbit", "bounded_zoom", "select_reviewed_hotspot", "pause", "next", "reset", "exit"]
+        },
+        {
+          "id": "OPEN_ESTABLISH_CRANIAL_ACCESS",
+          "sequence_index": 2,
+          "display_copy": null,
+          "copy_slot_id": "OPEN_ESTABLISH_CRANIAL_ACCESS_COPY",
+          "asset_binding": null,
+          "anchor_request_ids": ["OPEN_CRANIAL_ACCESS_FOCUS", "OPEN_BONE_FLAP_FOCUS"],
+          "allowed_actions": ["orbit", "bounded_zoom", "show_or_hide_reviewed_layers", "pause", "next", "previous", "reset", "exit"]
+        },
+        {
+          "id": "OPEN_ESTABLISH_DURAL_ACCESS",
+          "sequence_index": 3,
+          "display_copy": null,
+          "copy_slot_id": "OPEN_ESTABLISH_DURAL_ACCESS_COPY",
+          "asset_binding": null,
+          "anchor_request_ids": ["OPEN_DURAL_ACCESS_FOCUS"],
+          "allowed_actions": ["orbit", "bounded_zoom", "show_or_hide_reviewed_layers", "pause", "next", "previous", "reset", "exit"]
+        },
+        {
+          "id": "OPEN_TREAT_REVIEWED_CONDITION",
+          "sequence_index": 4,
+          "display_copy": null,
+          "copy_slot_id": "OPEN_TREAT_REVIEWED_CONDITION_COPY",
+          "asset_binding": null,
+          "anchor_request_ids": ["OPEN_TREATMENT_FIELD_FOCUS"],
+          "allowed_actions": ["orbit", "bounded_zoom", "select_reviewed_variant", "pause", "next", "previous", "reset", "exit"]
+        },
+        {
+          "id": "OPEN_REPLACE_AND_FIX_BONE_FLAP",
+          "sequence_index": 5,
+          "display_copy": null,
+          "copy_slot_id": "OPEN_REPLACE_AND_FIX_BONE_FLAP_COPY",
+          "asset_binding": null,
+          "anchor_request_ids": ["OPEN_DURAL_CLOSURE_FOCUS", "OPEN_BONE_FLAP_REPLACEMENT_FOCUS"],
+          "allowed_actions": ["orbit", "bounded_zoom", "select_reviewed_closure_variant", "pause", "next", "previous", "reset", "exit"]
+        },
+        {
+          "id": "OPEN_POST_CLOSURE_REVIEW",
+          "sequence_index": 6,
+          "display_copy": null,
+          "copy_slot_id": "OPEN_POST_CLOSURE_REVIEW_COPY",
+          "asset_binding": null,
+          "anchor_request_ids": ["OPEN_POST_CLOSURE_FOCUS"],
+          "allowed_actions": ["orbit", "bounded_zoom", "compare_reviewed_states", "pause", "previous", "return_to_overview", "reset", "exit"]
+        }
+      ]
+    },
+    {
+      "id": "DECOMPRESSIVE_CRANIECTOMY",
+      "internal_label": "Decompressive craniectomy educational branch",
+      "activation_gate": "clinician_selected_reviewed_decompressive_craniectomy_scenario_only",
+      "default_enabled": false,
+      "mutually_exclusive_with": ["EVT", "OPEN_CRANIOTOMY"],
+      "optional_companion_pathways": ["OPTIONAL_EVD"],
+      "required_copy_slot_ids": ["DECOMPRESSIVE_CRANIECTOMY_BRANCH_DISCLOSURE"],
+      "closure_state_contract": "The bone flap remains off in this educational end state. Never reuse a replaced-bone-flap craniotomy closure scene.",
+      "scenes": [
+        {
+          "id": "DECOMP_CONFIRM_SITE",
+          "sequence_index": 1,
+          "display_copy": null,
+          "copy_slot_id": "DECOMP_CONFIRM_SITE_COPY",
+          "asset_binding": null,
+          "anchor_request_ids": ["DECOMP_SITE_FOCUS"],
+          "allowed_actions": ["orbit", "bounded_zoom", "select_reviewed_hotspot", "pause", "next", "reset", "exit"]
+        },
+        {
+          "id": "DECOMP_ESTABLISH_CRANIAL_ACCESS",
+          "sequence_index": 2,
+          "display_copy": null,
+          "copy_slot_id": "DECOMP_ESTABLISH_CRANIAL_ACCESS_COPY",
+          "asset_binding": null,
+          "anchor_request_ids": ["DECOMP_CRANIAL_ACCESS_FOCUS", "DECOMP_BONE_FLAP_FOCUS"],
+          "allowed_actions": ["orbit", "bounded_zoom", "show_or_hide_reviewed_layers", "pause", "next", "previous", "reset", "exit"]
+        },
+        {
+          "id": "DECOMP_REVIEW_PRESSURE_RELIEF_CONCEPT",
+          "sequence_index": 3,
+          "display_copy": null,
+          "copy_slot_id": "DECOMP_REVIEW_PRESSURE_RELIEF_CONCEPT_COPY",
+          "asset_binding": null,
+          "anchor_request_ids": ["DECOMP_CONCEPT_FOCUS"],
+          "allowed_actions": ["orbit", "bounded_zoom", "show_or_hide_reviewed_layers", "pause", "next", "previous", "reset", "exit"]
+        },
+        {
+          "id": "DECOMP_CLOSE_WITHOUT_REPLACING_BONE_FLAP",
+          "sequence_index": 4,
+          "display_copy": null,
+          "copy_slot_id": "DECOMP_CLOSE_WITHOUT_REPLACING_BONE_FLAP_COPY",
+          "asset_binding": null,
+          "anchor_request_ids": ["DECOMP_BONE_GAP_FOCUS", "DECOMP_CLOSURE_FOCUS"],
+          "allowed_actions": ["orbit", "bounded_zoom", "select_reviewed_closure_variant", "pause", "next", "previous", "reset", "exit"]
+        },
+        {
+          "id": "DECOMP_POST_CLOSURE_REVIEW",
+          "sequence_index": 5,
+          "display_copy": null,
+          "copy_slot_id": "DECOMP_POST_CLOSURE_REVIEW_COPY",
+          "asset_binding": null,
+          "anchor_request_ids": ["DECOMP_POST_CLOSURE_FOCUS"],
+          "allowed_actions": ["orbit", "bounded_zoom", "compare_reviewed_states", "pause", "previous", "return_to_overview", "reset", "exit"]
+        }
+      ]
+    },
+    {
+      "id": "OPTIONAL_EVD",
+      "internal_label": "Optional external ventricular drain educational companion",
+      "activation_gate": "clinician_selected_reviewed_evd_scenario_only",
+      "default_enabled": false,
+      "mutually_exclusive_with": [],
+      "optional_companion_pathways": ["OPEN_CRANIOTOMY", "DECOMPRESSIVE_CRANIECTOMY"],
+      "required_copy_slot_ids": ["OPTIONAL_EVD_BRANCH_DISCLOSURE"],
+      "prohibited_content": [
+        "routine or universal use",
+        "placement parameters",
+        "drainage level",
+        "flow rate",
+        "pressure target",
+        "duration",
+        "operating instructions"
+      ],
+      "scenes": [
+        {
+          "id": "EVD_OPTIONALITY_REVIEW",
+          "sequence_index": 1,
+          "display_copy": null,
+          "copy_slot_id": "EVD_OPTIONALITY_REVIEW_COPY",
+          "asset_binding": null,
+          "anchor_request_ids": ["EVD_OPTIONALITY_FOCUS"],
+          "allowed_actions": ["orbit", "bounded_zoom", "pause", "next", "reset", "exit"]
+        },
+        {
+          "id": "EVD_REVIEW_VENTRICULAR_PATH",
+          "sequence_index": 2,
+          "display_copy": null,
+          "copy_slot_id": "EVD_REVIEW_VENTRICULAR_PATH_COPY",
+          "asset_binding": null,
+          "anchor_request_ids": ["EVD_VENTRICULAR_PATH_FOCUS"],
+          "allowed_actions": ["orbit", "bounded_zoom", "select_reviewed_hotspot", "pause", "next", "previous", "reset", "exit"]
+        },
+        {
+          "id": "EVD_REVIEW_EXTERNAL_SYSTEM",
+          "sequence_index": 3,
+          "display_copy": null,
+          "copy_slot_id": "EVD_REVIEW_EXTERNAL_SYSTEM_COPY",
+          "asset_binding": null,
+          "anchor_request_ids": ["EVD_EXTERNAL_SYSTEM_FOCUS"],
+          "allowed_actions": ["orbit", "bounded_zoom", "select_reviewed_hotspot", "pause", "next", "previous", "reset", "exit"]
+        },
+        {
+          "id": "EVD_REVIEW_POST_PLACEMENT_STATE",
+          "sequence_index": 4,
+          "display_copy": null,
+          "copy_slot_id": "EVD_REVIEW_POST_PLACEMENT_STATE_COPY",
+          "asset_binding": null,
+          "anchor_request_ids": ["EVD_POST_PLACEMENT_FOCUS"],
+          "allowed_actions": ["orbit", "bounded_zoom", "compare_reviewed_states", "pause", "previous", "return_to_overview", "reset", "exit"]
+        }
+      ]
+    }
+  ],
+  "prohibited_interpretations": [
+    "The pathway order is not a surgical instruction, protocol, checklist, timing estimate, recommendation, or prediction.",
+    "EVT is endovascular and must never inherit open-cranial geometry or wording.",
+    "Open craniotomy and decompressive craniectomy have distinct reviewed closure states.",
+    "Optional EVD content is conditional and is never a routine step in any other branch.",
+    "A visited or completed interface step indicates navigation only, not treatment completion or success."
+  ]
+}

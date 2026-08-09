@@ -1,0 +1,122 @@
+{
+  "schema_version": "1.0.0",
+  "module_id": "figma_page2_surgical_interface_v1",
+  "version": "1.0.0",
+  "title": "Figma Page 2 surgical-interface fail-closed contract pack",
+  "resource_count": 10,
+  "patient_specific": false,
+  "contains_phi": false,
+  "patient_display_authorized": false,
+  "clinical_review_status": "REQUIRES_CLINICAL_EVIDENCE_NEUROANATOMY_HUMAN_FACTORS_ACCESSIBILITY_PRIVACY_QUALITY_SIMULATOR_AND_PHYSICAL_DEVICE_REVIEW",
+  "intended_use": "Developer-preview native visionOS interface contract scaffold for a Page 2-inspired educational walkthrough with explicit EVT, open craniotomy, decompressive craniectomy, and optional-EVD pathway separation.",
+  "runtime_boundary": "No anatomy, USDZ, Figma artwork, clinical copy, PHI, patient record, procedure instruction, device setting, recommendation, timing, or outcome claim is included. Every scene binding, anchor binding, and clinical copy slot fails closed pending review.",
+  "integrity_algorithm": "sha256",
+  "manifest_self_hash_policy": "The manifest does not include itself because a self-hash is recursive. Every other file in this isolated pack is manifested.",
+  "resources": [
+    {
+      "id": "page2_interaction_contract_v1",
+      "path": "page2_interaction_contract_v1.json",
+      "media_type": "application/json",
+      "resource_kind": "runtime_interaction_contract",
+      "bytes": 5307,
+      "sha256": "388ca9080be7bd2696b3c1557e4683a0862414275ee520159489c1ededbcf209",
+      "runtime_required": true
+    },
+    {
+      "id": "page2_attachment_layout_v1",
+      "path": "page2_attachment_layout_v1.json",
+      "media_type": "application/json",
+      "resource_kind": "runtime_attachment_layout_starting_points",
+      "bytes": 3372,
+      "sha256": "051b6e7c22ab357ce3e3dc60f99d1eec3e64acf9cddf1fc2db125e78c576b764",
+      "runtime_required": true
+    },
+    {
+      "id": "page2_ui_tokens_v1",
+      "path": "page2_ui_tokens_v1.json",
+      "media_type": "application/json",
+      "resource_kind": "runtime_native_ui_tokens_starting_points",
+      "bytes": 3432,
+      "sha256": "2f1006934f11b47e6787cfb7ee8a1f98012066d42eaf613268f377b542faf14f",
+      "runtime_required": true
+    },
+    {
+      "id": "page2_icon_catalog_v1",
+      "path": "page2_icon_catalog_v1.json",
+      "media_type": "application/json",
+      "resource_kind": "runtime_system_symbol_mapping",
+      "bytes": 2499,
+      "sha256": "b3d6cb14268d6442d7a854269f024add61cc7153cbd49671491732c6a07357c6",
+      "runtime_required": true
+    },
+    {
+      "id": "surgical_walkthrough_scene_catalog_v1",
+      "path": "surgical_walkthrough_scene_catalog_v1.json",
+      "media_type": "application/json",
+      "resource_kind": "runtime_review_blocked_scene_contract",
+      "bytes": 12704,
+      "sha256": "474132f796bb886bedbfc9f6f0f6fc2effdffc1d1db3c0ac0dfa7b429653836c",
+      "runtime_required": true
+    },
+    {
+      "id": "surgical_walkthrough_anchor_map_v1",
+      "path": "surgical_walkthrough_anchor_map_v1.json",
+      "media_type": "application/json",
+      "resource_kind": "runtime_review_blocked_anchor_scaffold",
+      "bytes": 8834,
+      "sha256": "a8cf08ec04e041f20864b48d4e8ec68aa894d17ee9c1913b1395c5adc11de796",
+      "runtime_required": true
+    },
+    {
+      "id": "surgical_walkthrough_copy_catalog_v1",
+      "path": "surgical_walkthrough_copy_catalog_v1.json",
+      "media_type": "application/json",
+      "resource_kind": "runtime_review_blocked_copy_scaffold",
+      "bytes": 8568,
+      "sha256": "3b05f0454365e5bf0ef4bcacdd1b0b3de544594377d922afc97ca9c8b63b4962",
+      "runtime_required": true
+    },
+    {
+      "id": "figma_page2_surgical_interface_provenance_v1",
+      "path": "figma_page2_surgical_interface_provenance_v1.json",
+      "media_type": "application/json",
+      "resource_kind": "source_and_authorship_provenance",
+      "bytes": 2870,
+      "sha256": "9a3167af95b8995c096cdbf2dfaf454346f94e068c1d2a2c010e8f222c48da2e",
+      "runtime_required": false
+    },
+    {
+      "id": "validate_figma_page2_surgical_interface_v1",
+      "path": "validate_figma_page2_surgical_interface_v1.py",
+      "media_type": "text/x-python",
+      "resource_kind": "deterministic_integrity_and_safety_validation",
+      "bytes": 10893,
+      "sha256": "62455707b8357493300f3cc3ba7e325d215320e4355e9e56c0e8d711832facc6",
+      "runtime_required": false
+    },
+    {
+      "id": "figma_page2_surgical_interface_readme_v1",
+      "path": "README.md",
+      "media_type": "text/markdown",
+      "resource_kind": "developer_handoff_documentation",
+      "bytes": 4134,
+      "sha256": "4c02c9cccffc4a2fb9695d4038699b04191b1155a909ee44254eb1002e9bc75d",
+      "runtime_required": false
+    }
+  ],
+  "pathway_separation": {
+    "required_pathways": ["EVT", "OPEN_CRANIOTOMY", "DECOMPRESSIVE_CRANIECTOMY", "OPTIONAL_EVD"],
+    "cross_pathway_transition_allowed": false,
+    "ordinary_evt_open_cranial_content_allowed": false,
+    "optional_evd_default_enabled": false
+  },
+  "prohibited_uses": [
+    "Patient or family display",
+    "Diagnosis, triage, consent, treatment recommendation, eligibility, prognosis, navigation, rehearsal, or procedural training",
+    "Inferring anchors, anatomy, laterality, procedural facts, or clinical copy from the supplied Figma or reference image",
+    "Mixing EVT with open-cranial visuals or copy",
+    "Replacing the bone flap in a decompressive-craniectomy end state",
+    "Presenting EVD as routine or exposing device parameters or operating instructions",
+    "Treating interface progress as treatment completion or success"
+  ]
+}

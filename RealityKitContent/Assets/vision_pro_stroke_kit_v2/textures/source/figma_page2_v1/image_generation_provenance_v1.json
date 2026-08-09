@@ -1,0 +1,34 @@
+{
+  "schema_version": "1.0.0",
+  "resource_id": "figma_page2_holographic_linework_generation_provenance_v1",
+  "generated_on": "2026-08-10",
+  "generator": "OpenAI built-in ImageGen",
+  "output": {
+    "path": "holographic_linework_emission_reference_v1.png",
+    "media_type": "image/png",
+    "pixel_width": 1254,
+    "pixel_height": 1254,
+    "sha256": "913b00955ecf9b6458b260b9dc6f2c71e04f2d10cf7767505534bb643fa7f433"
+  },
+  "references": [
+    {
+      "label": "User-supplied spatial-computing interface storyboard",
+      "sha256": "761dc35d9460db2a807b33fb51d5a2d1b2abf57df66bcf098337d4be418247b2",
+      "purpose": "Visual language only"
+    },
+    {
+      "label": "User Figma Page 2 Surgery 1 screenshot",
+      "sha256": "05f4d19aad499272171cefaa1cd59387c791ab007f649e350da7fb6c38957364",
+      "purpose": "Visual language only"
+    }
+  ],
+  "prompt": "Create a square, seamless, non-anatomical holographic medical-visualization emission texture reference inspired only by the supplied spatial-computing UI: very fine connected triangular wire lines, sparse luminous cyan and violet filaments, occasional subtle warm amber accent points, deep near-black transparent-looking field, elegant restrained clinical presentation, smooth low-noise detail, no organs, no skull, no brain, no body parts, no blood, no text, no symbols, no logos, no UI panels, no borders. The texture must tile cleanly on all edges and remain subtle enough to overlay approved 3D geometry. High resolution, polished, physically plausible glow reference.",
+  "runtime_role": "Optional non-anatomical look-development reference. It is not clinical anatomy, pathology, imaging, evidence, a segmentation, a simulator capture, or a patient-specific resource.",
+  "patient_display_authorized": false,
+  "restrictions": [
+    "Do not use this image as anatomical or clinical authority.",
+    "Do not let the texture obscure source-backed landmarks or approved disclosures.",
+    "Do not infer physiology, perfusion, urgency, diagnosis, treatment response, or outcome from its lines or glow.",
+    "Any runtime material using it requires on-device performance, accessibility, human-factors, and clinical presentation review."
+  ]
+}

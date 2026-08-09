@@ -63,10 +63,10 @@ Not part of the first slice: accounts, cloud sync, clinical decision support, pa
 
 ## Current 3D asset catalog
 
-The repository includes **145 uniquely named, manifest-backed USDZ runtime
+The repository includes **150 uniquely named, manifest-backed USDZ runtime
 assets**:
 
-- 65 original packages: 36 higher-detail v2 assets and 29 clearly labelled
+- 65 baseline packages: 36 higher-detail v2 assets and 29 clearly labelled
   low-poly prototype-v1 assets;
 - 43 release-eligible v3 detail packages: 15 HRA neural-detail assets, 16
   non-held cranial-support assets, and 12 scale-separated conceptual
@@ -77,7 +77,10 @@ assets**:
   patient/family orientation;
 - ten original spatial-care environment packages: nine independently loadable
   room components plus one registered review assembly;
-- 147 total build records: the detailed source build produced 82 additional
+- five Page 2 surgical-state presentation packages: registered scalp, cranial
+  bone, and conceptual dura access/closure layers plus conceptual registered
+  hematoma and edema context;
+- 152 total build records: the detailed source build produced 87 additional
   packages, but
   `middle_inner_ear_bilateral_v3` and
   `cranial_support_registered_assembly_v3` are on an inner-ear licence hold,
@@ -149,6 +152,13 @@ static or qualitatively kinematic: no force, depth, trajectory, pressure,
 energy, device sizing, compatibility, navigation, tissue interaction, or
 training meaning is encoded.
 
+The Page 2 surgical-state module is also open-branch-only except for its
+orientation, ischemic-flow explanation, and closed-result composition recipes.
+Its access layers are generic presentation geometry—not incisions, patient
+plans, navigation targets, pressure models, technique, or outcome evidence.
+Ordinary endovascular thrombectomy must reject all five new packages before
+file resolution.
+
 ## Spatial-care interface resource pack
 
 The supplied four-state interface reference is represented by a deliberately
@@ -192,6 +202,39 @@ its [one-by-one interface resource catalog](RealityKitContent/InterfaceMedia/spa
 explains all 14 supporting files, and its integration, ownership, state,
 exclusion, physics, and Houdini rules are defined in
 [`MASTER.md`](MASTER.md).
+
+## Figma Page 2 surgical walkthrough
+
+The inspected Page 2 composition is implemented as two deliberately separate
+modules:
+
+- five manifest-backed USDZ presentation layers in
+  [`figma_page2_surgical_states_v1`](RealityKitContent/Assets/vision_pro_stroke_kit_v2/asset_manifest_figma_page2_surgical_states_v1.json);
+- ten project-authored, non-geometry interface-contract resources in
+  [`figma_page2_surgical_interface_v1`](RealityKitContent/InterfaceMedia/figma_page2_surgical_interface_v1).
+
+The open-craniotomy design intent has six user-controlled interface steps:
+confirm position, establish cranial access, establish dural access, review a
+clinician-selected condition/treatment concept, review branch-correct closure,
+and review the closed result. These labels are design intent, not approved
+clinical copy or an operative checklist. `EVT`, `OPEN_CRANIOTOMY`,
+`DECOMPRESSIVE_CRANIECTOMY`, and conditional `OPTIONAL_EVD` remain distinct
+state-machine pathways; cross-pathway transitions are disabled.
+
+All title pills, glass cards, sticker/tool rails, hotspots, warnings, and the
+bottom timeline are native SwiftUI/RealityKit attachments. The ten-resource
+contract keeps every clinical-copy and anatomical-anchor binding null and
+display-blocked until the exact asset revision, selector, transform, wording,
+citation, locale, accessibility text, and review record are approved together.
+Every new USDZ and interface resource remains
+`patient_display_authorized=false`. See the
+[Page 2 handoff notes](docs/assets/source-notes/FIGMA_PAGE2_SURGICAL_STATES_V1_NOTES.md)
+for scene roots, state enums, animation ownership, Solaris composition,
+performance, exclusions, and validation gates.
+
+The three access/closure layers inherit the generic-v2 `HeadRegisteredRoot`.
+Legacy open tools remain under a separate root and may appear with them only
+through an explicit reviewed tool-to-anatomy placement transform.
 
 ## Adaptive visual-comfort endpoint
 
@@ -271,7 +314,7 @@ Stroke-VisionOS/
 │   ├── Components/                 # Reusable SwiftUI/RealityKit pieces
 │   └── Resources/                  # App-owned resources
 ├── RealityKitContent/
-│   ├── Assets/                     # 145 manifest-backed USDZ packages
+│   ├── Assets/                     # 150 manifest-backed USDZ packages
 │   └── InterfaceMedia/             # Fictional/demo UI media and scene config
 ├── Services/
 │   └── AdaptiveAssetService/       # Local visual-preference recipe endpoint
