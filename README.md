@@ -63,7 +63,7 @@ Not part of the first slice: accounts, cloud sync, clinical decision support, pa
 
 ## Current 3D asset catalog
 
-The repository includes **134 uniquely named, manifest-backed USDZ runtime
+The repository includes **135 uniquely named, manifest-backed USDZ runtime
 assets**:
 
 - 65 original packages: 36 higher-detail v2 assets and 29 clearly labelled
@@ -73,7 +73,10 @@ assets**:
   microanatomy teaching assets;
 - 26 release-eligible v3 surgical-tool packages: 12 endovascular support-tool
   packages and 14 open-cranial tool packages;
-- 136 total build records: the v3 source build produced 71 packages, but
+- one comfort-oriented, reduced-graphic HRA brain derivative for adaptive
+  patient/family orientation;
+- 137 total build records: the detailed source build produced 72 additional
+  packages, but
   `middle_inner_ear_bilateral_v3` and
   `cranial_support_registered_assembly_v3` are on an inner-ear licence hold,
   and their binaries are deliberately absent from this publishing tree.
@@ -90,6 +93,11 @@ interface, and conceptual ischemic-tissue zones. It also includes representative
 unbranded tool-recognition sets for gated endovascular and open-cranial lesson
 branches. The tool sets are not exhaustive trays, clinical sequences,
 instructions, device specifications, or training simulators.
+
+The adaptive derivative is a presentation alternative, not an extra anatomy
+layer. In its lowest-detail profile it replaces the detailed brain view; it
+must not be co-loaded over the source anatomy or used to hide
+clinician-approved facts.
 
 The complete one-by-one catalog, paths, descriptions, runtime notes, manifests,
 and loading guidance are in
@@ -114,6 +122,8 @@ cataloged one by one in
 
 ![Open-cranial access-tool review gallery](RealityKitContent/Assets/vision_pro_stroke_kit_v2/previews/open_cranial_tools_v3/01_cranial_access_tools_review_assembly_v3.png)
 
+![Comfort-oriented generic brain orientation](RealityKitContent/Assets/vision_pro_stroke_kit_v2/previews/adaptive_visuals_v1/01_brain_orientation_calm_educational_v1.png)
+
 These models are generic educational material—not patient-specific anatomy,
 histology, quantitative flow simulation, or clinical decision support. The
 micro-detail packages must always appear in a separate magnified teaching stage
@@ -129,6 +139,50 @@ static or qualitatively kinematic: no force, depth, trajectory, pressure,
 energy, device sizing, compatibility, navigation, tissue interaction, or
 training meaning is encoded.
 
+## Adaptive visual-comfort endpoint
+
+[`Services/AdaptiveAssetService`](Services/AdaptiveAssetService) provides a
+small local HTTP service for changing the presentation of a catalogued source asset
+without rewriting its USDZ. `POST /v1/visual-adaptations` returns an immediate,
+reversible RealityKit sidecar recipe for layer visibility, material intensity,
+motion, labels, and pacing. It may also report a display-blocked orientation
+candidate for later governed review. A compatibility alias is
+available at `/v1/adaptations`.
+
+```mermaid
+flowchart LR
+    A["Viewer chooses detail and motion"] --> B["POST /v1/visual-adaptations"]
+    B --> C{"Edit or generate?"}
+    C -->|"Edit — immediate"| D["Apply reversible RealityKit recipe"]
+    C -->|"Generate — asynchronous"| E["Create abstract USDA review draft"]
+    D --> F["Show active mode and Restore Original"]
+    E --> G["Clinician review required before display"]
+```
+
+The service deliberately does **not** infer or diagnose anxiety. It rejects
+pupil, gaze, joint-movement, biometric, and anxiety-score fields. Production
+selection comes from `self_report_preference` or a governed
+`clinician_override`; `simulated_demo` may make a seeded random choice only for
+clearly labelled demos. The evidence and privacy contract is in
+[`RESEARCH_AND_SAFETY.md`](docs/adaptive-visuals/RESEARCH_AND_SAFETY.md).
+
+Run the dependency-free development service:
+
+```bash
+cd Services/AdaptiveAssetService
+python3 -m adaptive_asset_service --port 8765
+python3 -m unittest discover -s tests -v
+```
+
+The fast path is intended for on-the-spot use and preserves the source model.
+In a local 250-request loopback check, the HTTP edit path measured 0.455 ms
+median and 0.813 ms p95; this is development-machine evidence, not a Vision Pro
+or production-network latency guarantee. Generated drafts are deterministic,
+abstract, non-anatomical review artifacts and remain display-blocked until an
+external authenticated clinical-review workflow approves them.
+The reproducible checks and remaining gates are recorded in
+[`ADAPTIVE_ENDPOINT_VALIDATION.md`](docs/adaptive-visuals/ADAPTIVE_ENDPOINT_VALIDATION.md).
+
 ## Intended Apple stack
 
 The implementation direction is native visionOS:
@@ -141,9 +195,11 @@ The implementation direction is native visionOS:
 
 Exact deployment target, Xcode version, project name, scheme, and package choices must be recorded after the initial Xcode scaffold is merged. Do not guess them in code or documentation.
 
-## Proposed repository layout
+## Repository layout and planned app scaffold
 
-The first scaffolding pull request may refine this layout, but it should keep feature ownership obvious:
+The adaptive service and asset/docs trees below exist now. A future Xcode app
+scaffolding pull request may refine the planned `StrokeVisionOS/` and `Tests/`
+directories while keeping feature ownership obvious:
 
 ```text
 Stroke-VisionOS/
@@ -161,6 +217,8 @@ Stroke-VisionOS/
 │   ├── Components/                 # Reusable SwiftUI/RealityKit pieces
 │   └── Resources/                  # App-owned resources
 ├── RealityKitContent/              # Reality Composer Pro package/assets
+├── Services/
+│   └── AdaptiveAssetService/       # Local visual-preference recipe endpoint
 ├── Tests/                          # Unit, contract, and UI tests
 └── docs/                           # Decisions, evidence, sources, and asset records
 ```
@@ -254,6 +312,7 @@ Before editing, claim a workstream in the team chat or GitHub issue. This is esp
 | Vessel explorer | Scene placement, transforms, cutaway, Reset/Home | `feature/carman-vessel-cutaway` |
 | Flow and clot states | Deterministic lesson states, visuals, transitions | `feature/name-clot-flow-states` |
 | Lesson UI | Gallery, step controls, labels, accessibility | `feature/name-guided-lesson-ui` |
+| Adaptive presentation | Explicit visual preferences, reversible recipes, privacy/display gates | `codex/adaptive-visual-comfort` |
 | Plans and report | Comparison surface and local learning summary | `feature/name-plan-report` |
 | 3D assets | Model cleanup, scale, materials, provenance | `asset/name-neurovascular-model` |
 | Verification | Unit tests, contract checks, build instructions | `test/name-experience-contract` |
@@ -339,8 +398,9 @@ the exact verification result, the nearest blocker, and one next safe action.
 ## Build and verification status
 
 The asset catalog has package-level USD/RealityKit validation documented in
-[`docs/assets/VALIDATION.md`](docs/assets/VALIDATION.md). No Xcode project or
-repository-owned app build command exists yet. The scaffolding pull request must
+[`docs/assets/VALIDATION.md`](docs/assets/VALIDATION.md). The adaptive service
+has the Python test command documented above and in its own README. No Xcode
+project or repository-owned app build command exists yet. The scaffolding pull request must
 replace this section with:
 
 - required macOS and Xcode versions;

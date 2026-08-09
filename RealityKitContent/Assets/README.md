@@ -1,12 +1,13 @@
 # Stroke VisionOS asset catalog
 
-This directory contains **134 unique, manifest-backed runtime USDZ assets**:
+This directory contains **135 unique, manifest-backed runtime USDZ assets**:
 
 - **69 release-eligible v3 assets** across five manifests: 43 anatomy/detail
   packages and 26 representative surgical-tool packages.
 - **36 higher-detail v2 assets** across five manifests.
 - **29 prototype-v1 assets** in one manifest.
-- **270,376,845 bytes** of runtime USDZ payload.
+- **1 comfort-oriented adaptive visual** in one manifest.
+- **275,619,913 bytes** of runtime USDZ payload.
 
 “Release-eligible” here means only that a package is not on the known
 inner-ear licence hold and is present in the publishing catalog. It does not
@@ -19,13 +20,14 @@ not counted as additional runtime assets. Composite assemblies are counted
 because they are separately loadable packages, although they duplicate geometry
 from their component layers.
 
-The complete source build has **136 unique package records**: 65 original plus
-71 v3. The two inner-ear-containing v3 packages are licence-held and their
-binaries are deliberately absent here, so the release catalog remains 134.
+The complete source build has **137 unique package records**: 65 original, 71
+v3, and one adaptive visual derivative. The two inner-ear-containing v3
+packages are licence-held and their binaries are deliberately absent here, so
+the release catalog contains 135 packages.
 
 The historical review-only `stroke_kit_asset_gallery.usdz` is deliberately not
-included. It is an unmanifested composite of prototype geometry, not a 135th
-release asset or a 137th source-build package.
+included. It is an unmanifested composite of prototype geometry, not an
+additional 136th release asset or a 138th source-build package.
 
 For the canonical scene hierarchy, all component/assembly relationships,
 procedure state logic, interaction physics, and Houdini/RealityKit handoff, see
@@ -40,7 +42,8 @@ migrate them to LFS in a coordinated follow-up.
 ## Naming and layout
 
 Runtime filenames use stable lowercase `snake_case` IDs. Higher-detail assets
-use the `_v2` or `_v3` suffix; combined review files say `assembly`, `hero`, or `set`;
+use a version suffix such as `_v1`, `_v2`, or `_v3`; combined review files say
+`assembly`, `hero`, or `set`;
 conceptual and educational files say so explicitly. The prototype filenames
 remain unchanged because their manifest and existing viewer code reference
 those exact IDs. Human-facing display names below provide readable labels
@@ -62,7 +65,8 @@ Assets/
     ├── asset_manifest_intracranial_micro_v3.json
     ├── asset_manifest_endovascular_tools_v3.json
     ├── asset_manifest_open_cranial_tools_v3.json
-    ├── exports/usdz/                 # 36 v2 + 69 release-eligible v3 packages
+    ├── asset_manifest_adaptive_visuals_v1.json
+    ├── exports/usdz/                 # 36 v2 + 69 v3 + 1 adaptive package
     ├── previews/                     # supporting v2/v3 renders
     └── textures/source/              # supporting material maps
 ```
@@ -287,9 +291,10 @@ static, with optional qualitative kinematic pickup/rotation; there is no force,
 depth, trajectory, pressure, flow, energy, device sizing, compatibility,
 navigation, tissue interaction, or training model.
 
-The release-number column continues the 134-file publishing index. The same
-packages are full-build records 111–136 in [`MASTER.md`](../../MASTER.md), which
-retains held records 92 and 98 in the build sequence.
+The tool release-number column occupies entries 109–134 in the 135-file
+publishing index. The same packages are full-build records 111–136 in
+[`MASTER.md`](../../MASTER.md), which retains held records 92 and 98 in the
+build sequence.
 
 ### Endovascular support tools (12)
 
@@ -338,6 +343,32 @@ CSF access are conditional branches rather than one inevitable sequence.
 | 133 | [cranial_access_tools_review_assembly_open_neurosurgery_v3.usdz](vision_pro_stroke_kit_v2/exports/usdz/cranial_access_tools_review_assembly_open_neurosurgery_v3.usdz) | **Cranial-access tools review assembly.** Review-table replacement for the five surface/exposure/bone-access component sets. Transitive exclusions are mandatory; layout is not a sterile tray, patient registration, or procedure sequence. |
 | 134 | [intradural_closure_tools_review_assembly_open_neurosurgery_v3.usdz](vision_pro_stroke_kit_v2/exports/usdz/intradural_closure_tools_review_assembly_open_neurosurgery_v3.usdz) | **Intradural and closure tools review assembly.** Review-table replacement for six dural/microsurgical/protection/tray/closure sets. It intentionally excludes conditional CSF access and encodes no required order or operative arrangement. |
 
+## Adaptive visual-comfort asset (1 release package)
+
+This package is a reduced-graphic orientation alternative for a viewer who
+explicitly requests less detail. It is generic educational media, not an
+anxiety treatment or diagnostic output. The muted pastel palette is a design
+hypothesis that requires representative-user and human-factors testing.
+
+| Release # | Runtime file | Description and runtime rule |
+|---:|---|---|
+| 135 | [brain_orientation_calm_educational_v1.usdz](vision_pro_stroke_kit_v2/exports/usdz/brain_orientation_calm_educational_v1.usdz) | **Comfort-oriented generic brain orientation.** External bilateral cortex, cerebellum, and brainstem with matte high-roughness materials and no vessels, blood, clot, lesion, incision, deep structures, instruments, or dense labels. It derives from `brain_anatomy_realistic_v2`, replaces rather than overlays the detailed brain while active, and must keep Restore Original and full clinician-approved information available. |
+
+The host application owns selection. Use an explicit self-reported preference
+or a governed facilitator choice; never derive a clinical anxiety label from
+pupil, gaze, or body movement. The
+[adaptive endpoint](../../Services/AdaptiveAssetService/README.md) returns
+transparent, reversible presentation recipes and reports this package only as
+a display-blocked review candidate for the `overview` tier until an external
+governed release approves the exact asset version.
+
+Release records:
+
+- [Asset notes](../../docs/assets/source-notes/ADAPTIVE_VISUALS_ASSET_NOTES_V1.md)
+- [Source provenance and CC BY change notice](../../docs/assets/research/ADAPTIVE_VISUALS_SOURCE_PROVENANCE_V1.md)
+- [Technical and visual validation](../../docs/assets/validation/ADAPTIVE_VISUALS_VALIDATION_V1.md)
+- [Endpoint research and safety contract](../../docs/adaptive-visuals/RESEARCH_AND_SAFETY.md)
+
 ### Full-build records excluded from release (2)
 
 | Build-record ID | Status | Publishing-tree rule |
@@ -374,6 +405,7 @@ full gap and duplication analysis.
 - [Intracranial-micro-v3 manifest](vision_pro_stroke_kit_v2/asset_manifest_intracranial_micro_v3.json)
 - [Endovascular-support-tools-v3 manifest](vision_pro_stroke_kit_v2/asset_manifest_endovascular_tools_v3.json)
 - [Open-cranial-tools-v3 manifest](vision_pro_stroke_kit_v2/asset_manifest_open_cranial_tools_v3.json)
+- [Adaptive-visuals-v1 manifest](vision_pro_stroke_kit_v2/asset_manifest_adaptive_visuals_v1.json)
 
 Manifest `usdz` paths are relative to the corresponding kit directory. Keep
 the package layout intact or rewrite paths intentionally in the app's catalog
@@ -392,6 +424,15 @@ import RealityKit
 let entity = try await Entity(contentsOf: assetURL)
 entity.name = manifestRecord.id
 ```
+
+Route `adaptive_visuals_v1` only to a detached
+`ExperiencePlacementRoot/AdaptivePresentationRoot`. Fail closed while either
+the endpoint or release record says `display_authorized: false`. After an
+external governed review approves the exact package and presentation policy,
+the calm orientation asset may temporarily replace—but never overlay or
+co-load with—the detailed source brain. Restore the source before medical
+detail is shown. Runtime material/visibility edits remain sidecars owned by the
+application; do not bake them destructively into the atlas USDZ.
 
 Do not apply another axis correction: the exported USD stages already use Y-up
 and metres. Center inspection views using visual bounds. Load combined hero

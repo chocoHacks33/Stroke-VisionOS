@@ -1,8 +1,8 @@
 # MASTER — scene assembly, behavior, and Houdini handoff
 
 This document is the implementation contract for assembling the repository's
-134 release-catalog runtime assets into one coherent Apple Vision Pro
-educational experience. The full source build has 136 unique package records;
+135 release-catalog runtime assets into one coherent Apple Vision Pro
+educational experience. The full source build has 137 unique package records;
 two inner-ear-containing records are licence-held and not present as runtime
 binaries in this publishing tree.
 It is written for a coding agent, technical artist, Houdini artist, or
@@ -21,7 +21,7 @@ must be validated before a patient-facing pilot.
 
 When files disagree, use this order:
 
-1. The eleven release JSON manifests are authoritative for asset IDs, package paths,
+1. The twelve release JSON manifests are authoritative for asset IDs, package paths,
    units, up axis, provenance notes, and prohibited combinations.
 2. This file is authoritative for assembly, state, interaction, and pathway
    rules.
@@ -45,6 +45,12 @@ When files disagree, use this order:
    Machine readers may use the adjacent
    [stage map](docs/assets/research/surgical_tool_stage_map_v3.json) only after
    validating its IDs against the two release manifests.
+8. The
+   [adaptive visual research and safety contract](docs/adaptive-visuals/RESEARCH_AND_SAFETY.md)
+   is authoritative for preference sources, biometric exclusions, progressive
+   disclosure, family privacy, and patient-display review gates. The endpoint
+   [OpenAPI contract](Services/AdaptiveAssetService/openapi.json) is
+   machine-readable transport documentation, not clinical approval.
 
 The word **must** below means a release-blocking requirement. **Should** means
 the default implementation unless a reviewed design decision says otherwise.
@@ -81,6 +87,11 @@ the default implementation unless a reviewed design decision says otherwise.
   presentation stage, not biological dimensions. It must be placed under
   `MicroScaleRoot`, never under `HeadRegisteredRoot`, and must keep a visible
   magnification/conceptual/non-patient warning for its entire display time.
+- `brain_orientation_calm_educational_v1` belongs to a detached presentation
+  domain under `AdaptivePresentationRoot`. Its authored metre/Y-up dimensions
+  are preserved, but it is an orientation replacement—not a registered layer
+  to overlay on the detailed brain. Never transfer its display transform,
+  material profile, or simplified silhouette back into atlas geometry.
 - Tool-v3 packages use metre/Y-up presentation frames but are not registered
   patient anatomy or measured products. Handheld/display bounds are plausible
   authoring dimensions only; no asset may supply device sizing, compatibility,
@@ -111,6 +122,7 @@ flowchart TD
     P --> E["EnvironmentRoot"]
     P --> PT["PatientContextRoot"]
     P --> G["SpatialGuidanceRoot"]
+    P --> AP["AdaptivePresentationRoot"]
     PT --> H["HeadRegisteredRoot"]
     PT --> LH["LegacyHeadRoot"]
     H --> X["ExteriorRoot"]
@@ -157,6 +169,7 @@ Recommended engine names and responsibilities:
 |---|---|---|
 | `StrokeExperienceRoot` | Lifecycle and lesson-state owner | Identity; never directly manipulated by gestures |
 | `ExperiencePlacementRoot` | World placement, global orbit, zoom, reset | Only user-controlled spatial transform |
+| `AdaptivePresentationRoot` | Detached low-intensity orientation replacement and app-owned presentation sidecars | Disabled by default; never co-load its calm brain candidate with the detailed source; no physics inheritance into anatomy |
 | `EnvironmentRoot` | Table, C-arm, monitor, IV pole, staff | World-scale; static or kinematic only |
 | `PatientContextRoot` | Supine patient and all patient-relative content | One reviewed visual alignment to room context |
 | `HeadRegisteredRoot` | All compatible v2 head-space content | Preserve authored child transforms |
@@ -222,6 +235,7 @@ assembly is a **replacement view**, not another layer to stack on top:
 | `endovascular_tools_workflow_review_assembly_v3.usdz` | All ten independent endovascular-support packages and the nested vascular-access review assembly |
 | `cranial_access_tools_review_assembly_open_neurosurgery_v3.usdz` | The five surface-marking, soft-tissue exposure, retraction/hemostat, perforator/craniotome, and bone-fixation component sets |
 | `intradural_closure_tools_review_assembly_open_neurosurgery_v3.usdz` | The six dural-instrument, bipolar/irrigation, suction/microdissector, brain-retractor, microinstrument-tray, and dural-closure component sets; conditional CSF access is intentionally excluded |
+| `brain_orientation_calm_educational_v1.usdz` | The active detailed brain/orientation view only after an external governed release approves the exact asset and adaptive policy; it is never an additive anatomy layer |
 
 `cranial_support_registered_assembly_v3` would contain all 16 cranial
 components and transitively overlap the nerve assembly, but it is a held
@@ -240,6 +254,14 @@ active asset. For example, the hero and layered-head aggregates both contain
 the brain even though neither is the other's direct component; the vascular
 assembly overlaps the expanded-veins aggregate; and the teaching set overlaps
 the complete cutaway. All three pairs must be rejected.
+
+The calm orientation candidate forms a replacement group with every detailed
+brain view it may stand in for. While it is active, disable the source brain,
+registered hero/review assemblies, pathology, vessels, blood/flow particles,
+and surgical tools. Restore the source before any medical-detail step. Because
+the current manifest and endpoint both require review, the runtime loader must
+fail closed before file resolution in patient mode; developer preview is a
+separate, visibly labelled state.
 
 Apply the same recursive rule to v3. The neural review assembly excludes
 N01–N14; the cranial-nerve assembly excludes C01–C09; the micro teaching set
@@ -318,14 +340,15 @@ stateDiagram-v2
 The app must require an explicit pathway choice before enabling intervention
 assets. Changing pathway performs a full state reset.
 
-## 5. Master relationship map — 136 build records / 134 release assets
+## 5. Master relationship map — 137 build records / 135 release assets
 
 The `Parent` column is the canonical scene slot. `Relationship / rule` tells an
 agent how each package fits into the constructed experience. Records 1–65 are
 the original release baseline; records 66–110 are the intracranial-detail v3
 expansion; and records 111–136 are the surgical-tool v3 expansion. Records 92
-and 98 are held audit records with no published binary, leaving 134
-release assets. Asset IDs, not sequence numbers, are the runtime keys.
+and 98 are held audit records with no published binary; record 137 is the
+adaptive visual derivative, leaving 135 release assets. Asset IDs, not sequence
+numbers, are the runtime keys.
 
 ### 5.1 Realistic v2 core anatomy
 
@@ -445,7 +468,7 @@ release assets. Asset IDs, not sequence numbers, are the runtime keys.
 ### 5.11 Neural-detail v3 — build records 66–80
 
 These 15 packages are release-eligible generic HRA atlas layers. Build numbers
-remain stable across the complete 136-record build map; runtime code must use the
+remain stable across the complete 137-record build map; runtime code must use the
 asset ID, not the number.
 
 | Build # | Asset ID | Parent | Relationship / rule |
@@ -563,7 +586,13 @@ open surgery is appropriate or that every category is required.
 | 135 | `cranial_access_tools_review_assembly_open_neurosurgery_v3` | `OpenCranialRoot/ReviewVariant/CranialAccess` | Review-only layout replacing assets 123–127. Transitive exclusions are mandatory; placement is not a sterile tray, patient registration, or sequence. |
 | 136 | `intradural_closure_tools_review_assembly_open_neurosurgery_v3` | `OpenCranialRoot/ReviewVariant/IntraduralClosure` | Review-only layout replacing assets 128–133 except asset 134, which is intentionally excluded. It encodes no required order or operative arrangement. |
 
-### 5.16 Known gaps and omission rule
+### 5.16 Adaptive visual-comfort derivative — build record 137
+
+| Build # | Asset ID | Parent | Relationship / rule |
+|---:|---|---|---|
+| 137 | `brain_orientation_calm_educational_v1` | `AdaptivePresentationRoot/OrientationCandidate` | Generic HRA-derived external brain orientation with matte pastel materials and no vessels, blood, pathology, incision, tools, or dense labels. It is a display-blocked candidate, not an anxiety treatment or approved patient asset. After exact asset + policy + mapping review, it may replace the detailed brain for orientation only; never co-load it, transfer its materials into clinical-detail views, or hide material facts. |
+
+### 5.17 Known gaps and omission rule
 
 The surgical-tool set is representative, not exhaustive. The current build has
 no dedicated access-ultrasound prop, diagnostic or balloon-guide catheter
@@ -597,6 +626,31 @@ technical/visual QA, specialist review, and an updated release count.
    optional inspection layers.
 6. Reset restores the intact exterior, default camera/placement transform,
    ischemic/haemorrhage choice to `none`, and all optional layers to off.
+
+#### 6.1.1 Adaptive visual-comfort presentation
+
+1. Ask the viewer directly for `overview`, `simplified`, `standard`, or
+   `clinical_detail`, plus `system_default`, `reduced`, or `static` motion.
+   Never turn pupil, gaze, hand-joint, or body movement into an anxiety score.
+2. Send only the manifest asset ID, audience, explicit preference source,
+   detail tier, and motion choice to `POST /v1/visual-adaptations`.
+3. In the current prototype, accept the returned recipe for developer preview
+   only. `patient_display_authorized` is always false until a governed external
+   release approves the exact source asset, semantic entity mapping, and
+   adaptive policy/profile together.
+4. Apply visibility, material, opacity, motion, label-density, and pacing values
+   as a non-destructive app-side presentation layer. If semantic groups do not
+   match, use the safe 2D/source fallback; never hide content silently.
+5. Treat `brain_orientation_calm_educational_v1` as a display-blocked
+   orientation candidate. After future exact-version approval, it may replace
+   the detailed brain under `AdaptivePresentationRoot`; never overlay it.
+6. Keep an adaptation badge, changed-property disclosure, Show Less, Show More,
+   Pause, Exit/Return, and Restore Original visible. Restore the source before
+   revealing pathology, vessels, procedures, or clinical detail.
+7. Preserve risks, benefits, alternatives, uncertainty, and all
+   clinician-approved material facts in accessible plain language regardless
+   of visual tier. A family view additionally requires patient participation or
+   authorization and privacy confirmation.
 
 ### 6.2 Ischemic thrombectomy educational path
 
@@ -745,6 +799,18 @@ enum FlowPresentation: String, Codable {
     case hidden, baselineIllustrative, restrictedIllustrative, restoredIllustrative
 }
 
+enum VisualDetailPreference: String, Codable {
+    case overview, simplified, standard, clinicalDetail
+}
+
+enum VisualMotionPreference: String, Codable {
+    case systemDefault, reduced, staticPresentation
+}
+
+enum AdaptationPreferenceSource: String, Codable {
+    case selfReportPreference, clinicianOverride, simulatedDemo
+}
+
 enum ICHManagementBranch: String, Codable {
     case none, medicalMonitoring, minimallyInvasiveEvacuation
     case openCraniotomyEvacuation, decompressiveCraniectomy, evdAdjunct
@@ -792,6 +858,13 @@ struct StrokeExperienceState: Equatable {
     var magnifiedViewIsActive = false
     var activeScaleDomain: String = "macroscopic_generic_atlas"
     var semanticFocusAssetID: String? = nil
+    var visualDetailPreference: VisualDetailPreference = .standard
+    var visualMotionPreference: VisualMotionPreference = .systemDefault
+    var adaptationPreferenceSource: AdaptationPreferenceSource = .selfReportPreference
+    var adaptivePresentationActive = false
+    var adaptivePatientDisplayAuthorized = false
+    var familyParticipationOrAuthorizationConfirmed = false
+    var adaptiveRecipeRevision = 0
     var animationRevision = 0       // increment to replay deterministically
     var clinicalWarningsVisible = true
 }
@@ -872,9 +945,31 @@ if activeScaleDomain == "microscopic_conceptual_separate":
 if DeviceInspectionRoot scale != 1:
     show “Magnified educational view” and an explicit scale indicator
 
+if adaptive recipe contains biometric/anxiety inference or an unknown field:
+    reject the response and keep the prior presentation
+
+if adaptivePatientDisplayAuthorized == false:
+    do not resolve an orientation candidate or apply the recipe in patient mode
+
+if visualDetailPreference == overview:
+    set blood/particle opacity to zero
+    disable procedure motion, pathology, vessels, and tool close-ups
+    require static or reduced motion and keep full facts available on request
+
+if brain_orientation_calm_educational_v1 becomes active:
+    require exact asset + semantic mapping + adaptive policy approval
+    parent only under AdaptivePresentationRoot
+    disable every detailed source/aggregate replacement leaf
+    prohibit co-load with pathology, vasculature, blood/flow, and tools
+
+if audience == family:
+    require familyParticipationOrAuthorizationConfirmed and privacy confirmation
+    prohibit detail beyond the patient's authorized level
+
 on reset:
     restore placement/orbit/zoom, visibility, pathway, step, labels,
-    animation time, highlights, and interaction selections
+    animation time, highlights, interaction selections, visual-detail/motion
+    preferences, adaptation badge, and original source presentation
 ```
 
 Asset entities should be keyed by the manifest ID, not an imported USD root
@@ -903,6 +998,7 @@ simulation.
 | v3 endovascular support tools | Static; detached pickup may use a kinematic presentation proxy | Coarse UI picking only; never vessel/device contact | Stage visibility, highlight, exploded comparison, or return-to-tray pose only; no puncture, connection, injection, aspiration, pressure, radiation, compatibility, navigation, or operating simulation |
 | v3 open-cranial instrument sets | Static; detached pickup may use a kinematic presentation proxy | Coarse UI picking only; never anatomy/tool contact | Stage visibility, highlight, exploded comparison, or return-to-tray pose only; no marking, cutting, drilling, retraction, suction, irrigation, energy, fixation, closure, CSF access, or tissue simulation |
 | v3 micro cells, thrombus, BBB, myelin, synapse, CSF interface, and tissue zones | Static; illustrative markers may be kinematic | None except coarse UI picking | Separate-stage visibility or qualitative cue motion only; no fluid, diffusion, electrophysiology, reaction, perfusion, histology, or viability solver |
+| Adaptive orientation candidate and material/visibility sidecar | Static; no gravity | None except coarse UI selection on the detached root | Replacement/visibility/material transition only; no deformation, physiology, anxiety-response, or sensor-driven motion |
 
 Implementation rules:
 
@@ -943,7 +1039,7 @@ Implementation rules:
 ### 9.1 Non-destructive working layout
 
 1. Work in Solaris/LOPs and keep each asset as a referenced or payloaded
-   component. Do not merge the 134 release packages into one destructive mesh.
+   component. Do not merge the 135 release packages into one destructive mesh.
 2. Prefer the source USDC interchange file when available. If only a USDZ is
    present in this repository, unpack it to a temporary working directory with
    USD tooling; never edit the committed package in place.
@@ -960,10 +1056,12 @@ Implementation rules:
 8. Use payloads for phase-specific heavy anatomy/review packages and references
    for lightweight always-needed components. A payload load decision must not
    change clinical meaning.
-9. Keep five explicit composition domains: `MACRO_HEAD` for registered
+9. Keep six explicit composition domains: `MACRO_HEAD` for registered
    generic atlas anatomy, `MESO_VESSEL` for magnified wall/device teaching,
    `MICRO_CELLULAR` for M-series presentation models, `EVT_TOOLS` for the gated
-   endovascular branch, and `OPEN_TOOLS` for the separately gated open branch.
+   endovascular branch, `OPEN_TOOLS` for the separately gated open branch, and
+   `ADAPTIVE_PRESENTATION` for detached, review-gated orientation replacements
+   and app-owned material/visibility sidecars.
    Never pass a display scale, viewer-fit transform, tool placement, or state
    between incompatible domains.
 
@@ -1001,6 +1099,7 @@ Recommended layer stack:
 20_look.usda                 # reviewed materials; no clinical state
 25_tool_placement.usda       # illustrative static/kinematic tool poses only
 30_presentation.usda         # cutaways, visibility variants, qualitative cues
+32_adaptive_presentation.usda # approved comfort-profile sidecars; no geometry rewrite
 35_tool_states.usda          # gated EVT/OPEN variants; no device commands
 40_lesson.usda               # IDs, captions/warnings, pathway bindings
 90_master.usda               # composition only; no copied geometry
@@ -1009,7 +1108,11 @@ Recommended layer stack:
 Use variant sets such as `anatomyDetail={broad,semantic}`,
 `whiteMatterView={broad,pathways}`, `cranialNerves={components,assembly}`,
 `microView={off,individual,review}`, and
-`exterior={intact,cutaway}`. Tool composition additionally requires
+`exterior={intact,cutaway}`. An approved adaptive handoff may add
+`visualDetail={source,overview,simplified,standard,clinicalDetail}`, but the
+overview state must reference a detached replacement or presentation sidecar;
+it must not delete, decimate, recolor, or otherwise rewrite source anatomy.
+Tool composition additionally requires
 `workflowBranch={anatomyOnly,ischemicEVT,openCranialHemorrhage}`,
 `evtTechnique={none,stentRetriever,contactAspiration,combined}`,
 `evtAccessSupport={simplifiedExisting,detailedGeneric,reviewAssembly}`,
@@ -1055,6 +1158,28 @@ Write only semantic events such as `procedure.stage.entered`,
 events such as `path.safe`, `device.success`, `reperfusion.achieved`,
 `hemostasis.complete`, or `evd.correct`. Stage timing belongs in the lesson/app
 layer and may not destructively alter payload geometry.
+
+#### 9.1.2 Adaptive presentation handoff
+
+- Reference the immutable source asset and, if approved, the calm orientation
+  candidate as separate payloads. Never build the candidate by modifying the
+  source payload in place.
+- Author semantic groups (`orientation`, `anatomy_primary`,
+  `anatomy_secondary`, `flow`, `device`, `labels`, and explicitly graphic
+  groups) as stable collections/prim metadata so RealityKit can apply a recipe
+  without guessing from material color or mesh names.
+- Put reviewed look overrides, visibility opinions, and LOD selection only in
+  `32_adaptive_presentation.usda`; keep warnings, preference source, approval
+  hashes, and lesson pacing in the app-owned lesson/configuration record.
+- Export a deterministic mapping from every recipe group to exact prim paths.
+  Missing mappings fail to a plain-language/source fallback rather than
+  silently hiding arbitrary geometry.
+- Houdini must not consume pupil, gaze, joint motion, an anxiety score, or an
+  inferred mental state. It authors presentation variants, not behavioral
+  diagnosis or a closed-loop medical response.
+- A generated procedural USDA remains a detached review draft outside the
+  release layer stack until it completes the full asset, provenance,
+  specialist, accessibility, and human-factors gates.
 
 ### 9.2 Curves, devices, and procedural motion
 
@@ -1230,6 +1355,19 @@ coverage, missing-anatomy audit, and replacement rationale are in
 16. Treat stage tags and narrative adjacency as descriptive metadata only; the
     app owns the reviewed lesson order and must not turn a manifest into device
     instructions or a clinical checklist.
+17. Send only explicit presentation preferences to the adaptive endpoint.
+    Reject biometric/anxiety fields, unknown recipe versions, unknown semantic
+    groups, and any response that lacks the display-authorization contract.
+18. In this prototype, require `patient_display_authorized == false`; use the
+    response only in a clearly labelled developer preview. A production gate
+    must bind approval to the exact source hash/version, semantic mapping, and
+    adaptive policy/profile before applying a patient-facing edit.
+19. Keep the calm orientation package under `AdaptivePresentationRoot` and
+    respect `co_load_with_source == false`. Never resolve the candidate or a
+    generated draft while `display_authorized` is false.
+20. Apply recipes on the main actor as reversible sidecars, atomically swap
+    visible states, preserve accessible full information, and make Show Less,
+    Show More, Pause, Exit/Return, and Restore Original persistent.
 
 The application, not a USD file, owns:
 
@@ -1245,6 +1383,9 @@ The application, not a USD file, owns:
 - scale-domain routing and release-manifest filtering;
 - EVT/open branch gates, stage/category eligibility, technique and closure
   variants, conditional EVD approval, and all tool assembly/overlap exclusions.
+- explicit visual-detail/motion preference, policy/version validation,
+  adaptation disclosure, family authorization/privacy, semantic group mapping,
+  and patient-display approval state;
 
 The USD/Houdini layer owns:
 
@@ -1263,7 +1404,7 @@ The USD/Houdini layer owns:
 - Also budget the whole active scene, not each file, around Apple's approximate
   Shared Space guidance of 250 draw calls/250,000 visible vertices and Full
   Space guidance of 500 draw calls/500,000 visible vertices.
-- Do not preload all 134 release assets or display combined review assemblies with
+- Do not preload all 135 release assets or display combined review assemblies with
   their individual components.
 - `layered_head_cutaway_registered_v2` is 333,642 triangles and
   `thrombectomy_registered_hero_v2` is 440,648 triangles. Either asset alone is
@@ -1281,6 +1422,10 @@ The USD/Houdini layer owns:
 - The two open review assemblies are 48,808 and 31,384 triangles respectively.
   They are lazy review-table variants and replace their listed component sets;
   the conditional CSF-access package remains outside both assemblies.
+- `brain_orientation_calm_educational_v1` is 111,798 triangles. Even after
+  release approval it replaces the detailed brain view rather than adding to
+  the visible triangle budget; profile its four-model package and transition on
+  physical Vision Pro hardware.
 - The held `cranial_support_registered_assembly_v3` build record is 333,360
   triangles, but its binary is not a performance option because it is not in
   the release tree.
@@ -1304,6 +1449,17 @@ These are hard failures:
 - No replaced bone flap at the end of a scene explicitly labelled
   decompressive craniectomy.
 - No generic asset presented as patient-specific or predictive.
+- No pupil, gaze, hand-joint, body-motion, voice, or other biometric stream
+  interpreted as an anxiety diagnosis, score, severity, or treatment trigger.
+- No random `simulated_demo` preference presented as a real-person observation.
+- No adaptive recipe applied in patient mode unless the exact asset/version,
+  semantic mapping, policy/profile, warnings, and controls share one governed
+  approval record. The current prototype always fails this gate closed.
+- No calm orientation candidate or procedural USDA draft resolved while
+  `display_authorized` is false; no candidate co-loaded over its source.
+- No visual tier used to remove material risks, benefits, alternatives,
+  uncertainty, or clinician-approved facts, or to reveal family content beyond
+  the patient's participation/authorization and privacy choices.
 - No ischemic clot and intracerebral-haematoma primary state enabled together.
 - No v1 and v2 equivalent anatomy enabled together without a documented,
   reviewed comparison mode.
@@ -1388,6 +1544,15 @@ assert not (access review assembly visible with any of its four components)
 assert not (endovascular workflow assembly visible with access assembly or any of its ten components)
 assert not (cranial-access review assembly visible with any of its five components)
 assert not (intradural/closure review assembly visible with any of its six components)
+assert adaptive request contains no pupil, gaze, joint-motion, biometric, anxiety-score, identifier, or free-text field
+assert adaptive response policy_version is supported and every semantic group is mapped or fails to safe fallback
+assert not (patient mode and adaptivePatientDisplayAuthorized == false and adaptive recipe applied)
+assert not (orientation candidate visible and candidate.display_authorized == false)
+assert not (generated draft visible and draft.display_authorized == false)
+assert not (calm orientation candidate visible with detailed source, pathology, vessels, blood/flow, or tools)
+assert overview blood_and_particles opacity == 0 and procedure motion is disabled
+assert Show Less, Show More, Pause, Exit/Return, Restore Original, adaptation badge, and changed-property disclosure are available
+assert family adaptation requires patient participation/authorization and privacy confirmation
 ```
 
 ## 13. Validation gates
@@ -1404,8 +1569,8 @@ Every generated or modified asset must pass all applicable gates:
   content, and resolvable texture references.
 - RealityKit loads the package and exposes nonzero renderable bounds.
 - An animated package exposes the expected animation resource(s).
-- The release catalog contains 134 unique IDs and paths across 11 manifests;
-  the full build map contains 136 IDs; neither held build ID
+- The release catalog contains 135 unique IDs and paths across 12 manifests;
+  the full build map contains 137 IDs; neither held build ID
   nor binary is present.
 - Every aggregate/exclusion graph is known, acyclic, recursively expanded, and
   tested against each other active asset.
@@ -1416,6 +1581,10 @@ Every generated or modified asset must pass all applicable gates:
   non-device-specific, not for planning/navigation/sizing/training, and carries
   a known stage/category mapping. All four tool review assemblies have valid,
   acyclic transitive exclusions.
+- The adaptive package hash/bytes match its manifest; the endpoint contract and
+  examples parse; dependency-free tests cover biometric rejection, framing,
+  permissions, privacy-safe logs, display gates, reversible controls, family
+  privacy, deterministic demos, and generated-draft isolation.
 
 ### Visual/interaction gate
 
@@ -1431,6 +1600,10 @@ Every generated or modified asset must pass all applicable gates:
 - The simulator build shows actual loaded content, not a spinner or placeholder.
 - A physical Vision Pro pass verifies comfort, legibility, interaction, and
   frame timing.
+- Adaptive visual QA verifies the exact semantic entity map, no-blood overview,
+  Reduce Motion/static behavior, atomic replacement, persistent disclosure and
+  controls, one-action restoration, family authorization/privacy, and failure
+  of every unapproved candidate/draft on device.
 
 ### Clinical/release gate
 
@@ -1452,6 +1625,10 @@ Every generated or modified asset must pass all applicable gates:
   the conceptual micro/thrombus wording and imagery.
 - Accessibility/human-factors review covers captions, colour-independent cues,
   seated/reclined use, opt-out, and non-graphic presentation.
+- Patient-education, accessibility, privacy, and human-factors owners review the
+  adaptive policy with representative patients and family members. They verify
+  comprehension and access to full facts, not merely apparent calmness; no
+  anxiety-reduction claim is permitted without appropriate evidence.
 - Licensing, attribution, ShareAlike, source, and modification notices ship
   with the applicable assets.
 - The signed checklist identifies the exact reviewed version.
@@ -1485,12 +1662,17 @@ An agent or Houdini artist implementing the combined experience must deliver:
 11. If patient replacement is in scope, the controlled DICOM frame/registration
     record and all acceptance-gate evidence—never the patient data itself in
     this repository.
-12. A 136-record build map / 134-file release map and deterministic tests for
+12. A 137-record build map / 135-file release map and deterministic tests for
     every `EVT-*`/`OPEN-*` tool-stage gate, technique/closure/EVD variant,
     assembly exclusion, legacy-overlap replacement, and representative-set
     warning, using the
     [surgical-tool audit](docs/assets/research/SURGICAL_TOOL_STAGE_AUDIT_V3.md)
     and machine-readable stage map as handoff inputs.
+13. An adaptive-presentation package containing the exact semantic prim map,
+    approved policy/profile version, display-authorization record, family and
+    privacy gates, reversible-control tests, Reduce Motion evidence, and a test
+    proving all biometric/anxiety inputs and unapproved candidate/draft display
+    attempts fail closed.
 
 The work is **not done** merely because the master scene opens. It is done only
 when the selected assets fit without duplicate geometry, every state is

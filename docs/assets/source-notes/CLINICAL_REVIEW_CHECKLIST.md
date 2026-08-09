@@ -106,6 +106,42 @@ a claim that the model is suitable for treatment planning.
 
 ## Visual and interaction safety
 
+### Adaptive visual-comfort mode
+
+- [ ] The feature is named and explained as a visual-detail preference, not an
+      anxiety detector, mental-health screen, diagnosis, risk score, or anxiety
+      treatment.
+- [ ] Production selection comes only from the viewer's explicit preference or
+      a visible, governed facilitator choice. `simulated_demo` is labelled
+      simulated/non-diagnostic and is never used to make a real-person claim.
+- [ ] Pupil diameter, gaze, hand joints, movement trajectories, voice, and
+      other biometric or behavioural streams are not submitted to the endpoint
+      or used to infer anxiety.
+- [ ] `patient_display_authorized` remains false until an external governed
+      release approves the exact source-asset hash/version, semantic entity
+      mapping, adaptive policy/profile, warnings, and application controls.
+- [ ] `brain_orientation_calm_educational_v1` remains a display-blocked review
+      candidate until specialist and human-factors review is recorded for the
+      exact package. It replaces the source during orientation and is never
+      co-loaded over detailed anatomy.
+- [ ] Generated USDA drafts remain `display_authorized: false`, are described
+      as abstract/non-anatomical, and cannot self-approve or enter the
+      patient-facing catalog without the full asset release process.
+- [ ] Show Less, Show More, Pause, Exit/Return, and Restore Original remain
+      visible and operable; no transition silently escalates graphic detail.
+- [ ] System Reduce Motion and a static option are honored. The overview tier
+      shows no blood particles or surgical motion and keeps a stationary frame.
+- [ ] Every adaptation visibly discloses that it is active and lists the changed
+      presentation properties. Risks, benefits, alternatives, uncertainty, and
+      clinician-approved material facts remain available in plain language.
+- [ ] Family mode requires patient participation or authorization and a privacy
+      confirmation, and never reveals more detail than the patient authorized.
+- [ ] Representative stroke patients, family members, older adults,
+      motion-sensitive users, people with varied health literacy, clinicians,
+      accessibility specialists, and patient-education owners have reviewed
+      comprehension, preference, discomfort, distress, and restoration of full
+      information.
+
 - [ ] Skin/skull/dura/brain reveals use cutaways or toggles rather than stacked
       transparent shells that obscure spatial relationships.
 - [ ] Falx, tentorium, dural sinuses, and head/neck vessels have been reviewed

@@ -1,0 +1,17 @@
+[build-system]
+requires = ["setuptools>=68"]
+build-backend = "setuptools.build_meta"
+
+[project]
+name = "stroke-vision-adaptive-asset-service"
+version = "0.1.0"
+description = "Local, non-diagnostic presentation-adaptation endpoint for Stroke VisionOS assets"
+requires-python = ">=3.9"
+dependencies = []
+
+[project.scripts]
+adaptive-asset-service = "adaptive_asset_service.server:main"
+
+[tool.setuptools.packages.find]
+where = ["."]
+include = ["adaptive_asset_service*"]

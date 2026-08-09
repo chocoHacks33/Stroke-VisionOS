@@ -1,0 +1,70 @@
+{
+  "module": "Adaptive patient-education visual derivatives v1",
+  "manifest": "asset_manifest_adaptive_visuals_v1.json",
+  "generated_at_utc": "2026-08-09T02:49:53.379917+00:00",
+  "asset_count": 1,
+  "pass_count": 1,
+  "fail_count": 0,
+  "strict_command": "/usr/bin/usdchecker --arkit --strict <package.usdz>",
+  "realitykit_probe_source": "research/realitykit_load_probe.swift",
+  "records": [
+    {
+      "id": "brain_orientation_calm_educational_v1",
+      "triangle_count": 111798,
+      "manifest_dimensions_m_source_xyz": [
+        0.135973,
+        0.166934,
+        0.145702
+      ],
+      "usdc_bytes": 5242774,
+      "usdc_sha256": "ad938c5737f8e2aae552277360ea4826cef6b066e3f4cbbfb81112281143e2d8",
+      "usdc_bytes_match": true,
+      "usdc_sha256_match": true,
+      "usdz_bytes": 5243068,
+      "usdz_sha256": "698016952f59068cb91cd6fb04fc50dbccec8c4c1495091e8e624bf21ec9efa6",
+      "usdz_bytes_match": true,
+      "usdz_sha256_match": true,
+      "strict_usd_pass": true,
+      "meters_per_unit_1": true,
+      "up_axis_y": true,
+      "embedded_stage_count": 1,
+      "embedded_stages": [
+        "brain_orientation_calm_educational_v1.usdc"
+      ],
+      "authored_prim_names": [
+        "Asset",
+        "Calm_Cerebral_Hemisphere_Left",
+        "Calm_Cerebral_Hemisphere_Left_Mesh",
+        "Calm_Periwinkle_Matte",
+        "Calm_Mint_Matte",
+        "Calm_Lavender_Matte",
+        "Calm_Teal_Matte",
+        "Calm_Cerebellum",
+        "Calm_Cerebellum_Mesh",
+        "Calm_Cerebral_Hemisphere_Right",
+        "Calm_Cerebral_Hemisphere_Right_Mesh",
+        "Calm_Brainstem",
+        "Calm_Brainstem_Mesh"
+      ],
+      "prohibited_graphic_prim_matches": [],
+      "camera_or_light_prims": [],
+      "realitykit_status": "PASS",
+      "realitykit_entities": 10,
+      "realitykit_models": 4,
+      "realitykit_materials": 4,
+      "realitykit_dimensions_runtime_xyz_m": [
+        0.135973,
+        0.145702,
+        0.166934
+      ],
+      "realitykit_load_ms_observed": 285.4,
+      "preview_dimensions_px": [
+        1600,
+        1200
+      ],
+      "source_attribution_present": true,
+      "comfort_profile_non_claim_present": true,
+      "pass": true
+    }
+  ]
+}

@@ -2,10 +2,11 @@
 
 ## Scope
 
-The committed release catalog contains 134 unique, manifest-backed runtime USDZ
+The committed release catalog contains 135 unique, manifest-backed runtime USDZ
 packages: the original 65 (36 higher-detail v2 and 29 prototype-v1), 43
-non-held v3 detail packages, and 26 v3 surgical-tool packages. The complete
-source build produced 71 v3 packages, for 136 unique build records, but the two inner-ear-containing
+non-held v3 detail packages, 26 v3 surgical-tool packages, and one adaptive
+visual derivative. The complete source build produced 71 v3 packages plus the
+adaptive derivative, for 137 unique build records, but the two inner-ear-containing
 packages are on a licence hold and are deliberately absent from this publishing
 tree. The unmanifested `stroke_kit_asset_gallery.usdz` review composite remains
 excluded because it duplicates prototype geometry.
@@ -130,6 +131,24 @@ These are representative recognition props, not exhaustive trays, marketed
 devices, operative sequences, sterile configurations, planning/navigation data,
 or training simulators. Mesh dimensions are display bounds, not product
 measurements; all allowed behavior is static or qualitatively kinematic.
+
+## Adaptive visual-comfort derivative v1
+
+`brain_orientation_calm_educational_v1` selects external orientation structures
+from HRA *Brain, Male* `3DPX-020960` v1.01 under CC BY 4.0. The source was
+recentered, joined into four display regions, reduced for runtime use, smoothed,
+and assigned project-authored matte pastel materials. Vessels, blood, pathology,
+incisions, cut surfaces, deep anatomy, instruments, and dense labels were not
+included. No marketplace mesh, vendor CAD, patient data, or generated anatomy
+was introduced.
+
+The palette and reduced visual density are a comfort-oriented design hypothesis,
+not evidence of anxiety reduction. The asset performs no behavioural inference
+and may be selected only through a visible, reversible host-application policy.
+See
+[ADAPTIVE_VISUALS_SOURCE_PROVENANCE_V1.md](research/ADAPTIVE_VISUALS_SOURCE_PROVENANCE_V1.md)
+and
+[ADAPTIVE_VISUALS_ASSET_NOTES_V1.md](source-notes/ADAPTIVE_VISUALS_ASSET_NOTES_V1.md).
 
 ## Clinical meaning boundary
 

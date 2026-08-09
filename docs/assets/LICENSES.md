@@ -6,7 +6,7 @@ source, attribution, and modification records when redistributing it.
 
 ## Original project assets
 
-Eighty-one of the 134 release-catalog USDZ packages are original project work:
+Eighty-one of the 135 release-catalog USDZ packages are original project work:
 43 baseline packages, 12 conceptual micro-detail packages, and 26 surgical-tool
 packages. No
 repository-wide licence has yet been selected for those files, so public access
@@ -35,8 +35,9 @@ actually granted by the project owner.
 
 ## NIH 3D and Human Reference Atlas derivatives — CC BY 4.0
 
-The baseline 11 packages below and all 15 neural-detail-v3 packages include
-geometry derived from NIH 3D / Human Reference Atlas sources under
+The baseline 11 packages below, all 15 neural-detail-v3 packages, and the
+adaptive visual derivative include geometry derived from NIH 3D / Human
+Reference Atlas sources under
 [CC BY 4.0](https://creativecommons.org/licenses/by/4.0/):
 
 - `brain_anatomy_realistic_v2.usdz`
@@ -50,6 +51,7 @@ geometry derived from NIH 3D / Human Reference Atlas sources under
 - `dura_mater_conceptual_v2.usdz`
 - `dura_mater_cutaway_conceptual_v2.usdz`
 - `layered_head_cutaway_registered_v2.usdz`
+- `brain_orientation_calm_educational_v1.usdz`
 
 The 15 neural-detail packages are listed individually in the
 [v3 catalog](INTRACRANIAL_ASSET_CATALOG_V3.md#neural-detail--14-hra-packages-plus-one-assembly)
@@ -57,6 +59,13 @@ and in the
 [neural manifest](../../RealityKitContent/Assets/vision_pro_stroke_kit_v2/asset_manifest_neural_detail_v3.json).
 Their detailed acquisition, source hash, and modification record is retained in
 [NEURAL_DETAIL_PROVENANCE_V3.md](research/NEURAL_DETAIL_PROVENANCE_V3.md).
+
+The adaptive package uses selected external orientation structures from HRA
+*Brain, Male* v1.01. They were recentered, joined by anatomical region,
+decimated, smoothed, and recolored with matte pastel materials; deep anatomy,
+vasculature, pathology, blood, and cut surfaces were deliberately omitted. Its
+required attribution and change notice are in
+[ADAPTIVE_VISUALS_SOURCE_PROVENANCE_V1.md](research/ADAPTIVE_VISUALS_SOURCE_PROVENANCE_V1.md).
 
 Required creator, title, version, source URL, hashes, and modification notices
 are retained under [`sources/nih3d`](sources/nih3d) and in

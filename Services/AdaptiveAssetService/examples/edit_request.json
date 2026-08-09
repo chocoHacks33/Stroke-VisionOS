@@ -1,0 +1,8 @@
+{
+  "asset_id": "artery_wall_cutaway_v2",
+  "audience": "patient",
+  "mode": "auto",
+  "adaptation_source": "self_report_preference",
+  "detail_preference": "simplified",
+  "motion_preference": "reduced"
+}

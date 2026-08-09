@@ -1,0 +1,8 @@
+{
+  "asset_id": "artery_wall_cutaway_v2",
+  "audience": "family",
+  "mode": "generate",
+  "adaptation_source": "simulated_demo",
+  "simulation_seed": 42,
+  "motion_preference": "static"
+}

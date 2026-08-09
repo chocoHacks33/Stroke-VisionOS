@@ -1,0 +1,93 @@
+{
+  "module": "Adaptive patient-education visual derivatives v1",
+  "module_id": "adaptive_visuals_v1",
+  "version": "1.0.0",
+  "generated_with": "Blender 5.2.0 LTS",
+  "units": "meters",
+  "usd_up_axis": "Y",
+  "intended_use": "Generic comfort-oriented, reduced-graphic patient/family orientation display profile",
+  "patient_specific": false,
+  "clinical_review_status": "REQUIRES_SPECIALIST_AND_HUMAN_FACTORS_REVIEW",
+  "patient_display_authorized": false,
+  "source_manifest": "asset_manifest_v2.json",
+  "source_attribution": {
+    "creator": "Human Reference Atlas (HRA)",
+    "work": "Brain, Male",
+    "version": "1.01",
+    "nih_3d_entry": "3DPX-020960",
+    "url": "https://3d.nih.gov/entries/20960?version=1.01",
+    "license": "CC BY 4.0",
+    "license_url": "https://creativecommons.org/licenses/by/4.0/",
+    "attribution_text": "Human Reference Atlas (HRA), \"Brain, Male,\" version 1.01, NIH 3D entry 3DPX-020960, https://3d.nih.gov/entries/20960?version=1.01, licensed CC BY 4.0. Source data informed by Ding et al. (2016), the Allen human brain reference atlas, and the Visible Human Project.",
+    "change_notice": "Modified from the HRA source: selected only external orientation structures; recentered, joined by anatomical region, decimated, smoothed, and recolored with high-roughness pastel materials. Deep structures, ventricles, vessels, pathology, blood, and cut surfaces are not included."
+  },
+  "adaptation_contract": {
+    "profile": "comfort_oriented_low_intensity",
+    "evidence_status": "Design hypothesis only: muted pastel color and reduced visual density are not proven to be universally calming or anxiety-reducing; user testing is required.",
+    "anxiety_reduction_claim": false,
+    "selection_owner": "host application",
+    "anxiety_inference_inside_asset": false,
+    "recommended_trigger": "Explicit viewer preference or a consented, clinician-governed application rule; never infer a clinical anxiety diagnosis from this asset.",
+    "manual_override_required": true,
+    "information_policy": "Reduce graphic detail and optional visual density; do not hide information that the clinician determines is material to informed consent."
+  },
+  "assets": [
+    {
+      "id": "brain_orientation_calm_educational_v1",
+      "title": "Comfort-oriented generic brain orientation",
+      "description": "External bilateral cortex, cerebellum, and brainstem in a matte pastel palette for low-detail spatial orientation.",
+      "asset_kind": "calm_derivative_orientation_model",
+      "module": "adaptive_visuals_v1",
+      "derivative_of": "brain_anatomy_realistic_v2",
+      "visual_profile": "comfort_oriented_low_intensity",
+      "included_anatomy": [
+        "left cerebral hemisphere orientation silhouette",
+        "right cerebral hemisphere orientation silhouette",
+        "cerebellar orientation silhouette",
+        "brainstem orientation silhouette"
+      ],
+      "intentionally_omitted": [
+        "arteries and veins",
+        "blood and fluid simulation",
+        "clot and pathology",
+        "cut surfaces and incisions",
+        "deep nuclei and ventricles",
+        "procedural instruments",
+        "labels and dense overlays"
+      ],
+      "material_profile": "non-tissue pastel, matte, high roughness",
+      "triangle_count": 111798,
+      "dimensions_m": [
+        0.135973,
+        0.166934,
+        0.145702
+      ],
+      "dimensions_m_source_xyz": [
+        0.135973,
+        0.166934,
+        0.145702
+      ],
+      "usdc": "exports/usdc/brain_orientation_calm_educational_v1.usdc",
+      "usdc_bytes": 5242774,
+      "usdc_sha256": "ad938c5737f8e2aae552277360ea4826cef6b066e3f4cbbfb81112281143e2d8",
+      "usdz": "exports/usdz/brain_orientation_calm_educational_v1.usdz",
+      "usdz_bytes": 5243068,
+      "usdz_sha256": "698016952f59068cb91cd6fb04fc50dbccec8c4c1495091e8e624bf21ec9efa6",
+      "preview": "previews/adaptive_visuals_v1/01_brain_orientation_calm_educational_v1.png",
+      "patient_specific": false,
+      "diagnostic_use": false,
+      "treatment_planning_use": false,
+      "navigation_use": false,
+      "anxiety_diagnosis_use": false,
+      "clinical_review_status": "REQUIRES_SPECIALIST_AND_HUMAN_FACTORS_REVIEW",
+      "patient_display_authorized": false
+    }
+  ],
+  "warnings": [
+    "Generic educational orientation only; not patient-specific.",
+    "Do not use for diagnosis, treatment planning, navigation, outcome prediction, or anxiety diagnosis.",
+    "Reduced graphic detail is not a substitute for informed-consent content selected by the clinical team.",
+    "The muted pastel palette is a comfort-oriented design hypothesis, not a proven anxiety-reducing intervention; test it with representative users.",
+    "The host experience must not use pupil, gaze, movement, or other biometric signals to infer anxiety through this profile; use an explicit preference or a clearly labelled simulated demo."
+  ]
+}

@@ -1,0 +1,851 @@
+{
+  "openapi": "3.1.0",
+  "info": {
+    "title": "Stroke Vision Adaptive Asset Service",
+    "version": "0.1.0",
+    "description": "Local, non-diagnostic presentation adaptation for patient/family educational assets. This API does not accept biometrics or infer anxiety. The prototype authorizes developer preview only and always returns patient_display_authorized=false."
+  },
+  "servers": [
+    {
+      "url": "http://127.0.0.1:8765",
+      "description": "Loopback development server"
+    }
+  ],
+  "paths": {
+    "/healthz": {
+      "get": {
+        "operationId": "getHealth",
+        "summary": "Check service and catalog readiness",
+        "responses": {
+          "200": {
+            "description": "Ready",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Health"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/v1/visual-adaptations": {
+      "post": {
+        "operationId": "createVisualAdaptation",
+        "summary": "Create an immediate edit recipe or queue a clinician-gated procedural draft",
+        "requestBody": {
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/AdaptationRequest"
+              },
+              "examples": {
+                "selfReportedSimplified": {
+                  "value": {
+                    "asset_id": "artery_wall_cutaway_v2",
+                    "audience": "patient",
+                    "mode": "auto",
+                    "adaptation_source": "self_report_preference",
+                    "detail_preference": "simplified",
+                    "motion_preference": "reduced"
+                  }
+                },
+                "seededDemo": {
+                  "value": {
+                    "asset_id": "artery_wall_cutaway_v2",
+                    "audience": "family",
+                    "mode": "generate",
+                    "adaptation_source": "simulated_demo",
+                    "simulation_seed": 42,
+                    "motion_preference": "static"
+                  }
+                }
+              }
+            }
+          }
+        },
+        "responses": {
+          "200": {
+            "description": "Runtime sidecar recipe completed",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/EditResponse"
+                }
+              }
+            }
+          },
+          "202": {
+            "description": "Local procedural draft accepted for asynchronous generation and clinical review",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/GenerateResponse"
+                }
+              }
+            }
+          },
+          "400": {
+            "$ref": "#/components/responses/BadRequest"
+          },
+          "404": {
+            "$ref": "#/components/responses/NotFound"
+          },
+          "413": {
+            "$ref": "#/components/responses/RequestTooLarge"
+          },
+          "415": {
+            "$ref": "#/components/responses/UnsupportedMediaType"
+          }
+        }
+      }
+    },
+    "/v1/adaptations": {
+      "post": {
+        "deprecated": true,
+        "operationId": "createVisualAdaptationAlias",
+        "summary": "Compatibility alias for /v1/visual-adaptations",
+        "requestBody": {
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/AdaptationRequest"
+              }
+            }
+          }
+        },
+        "responses": {
+          "200": {
+            "description": "Runtime sidecar recipe completed",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/EditResponse"
+                }
+              }
+            }
+          },
+          "202": {
+            "description": "Procedural draft accepted",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/GenerateResponse"
+                }
+              }
+            }
+          },
+          "400": {
+            "$ref": "#/components/responses/BadRequest"
+          }
+        }
+      }
+    },
+    "/v1/jobs/{job_id}": {
+      "get": {
+        "operationId": "getGenerationJob",
+        "summary": "Poll an asynchronous procedural draft",
+        "parameters": [
+          {
+            "$ref": "#/components/parameters/JobId"
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Current job state",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/GenerationJob"
+                }
+              }
+            }
+          },
+          "404": {
+            "$ref": "#/components/responses/NotFound"
+          }
+        }
+      }
+    },
+    "/v1/artifacts/{job_id}/{filename}": {
+      "get": {
+        "operationId": "downloadReviewDraft",
+        "summary": "Download a non-display-authorized draft for clinical review",
+        "description": "Responses set X-Display-Authorized: false and X-Clinical-Review-Required: true.",
+        "parameters": [
+          {
+            "$ref": "#/components/parameters/JobId"
+          },
+          {
+            "name": "filename",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "string",
+              "enum": [
+                "scene.usda",
+                "recipe.json"
+              ]
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Review-only draft",
+            "headers": {
+              "X-Display-Authorized": {
+                "schema": {
+                  "type": "string",
+                  "const": "false"
+                }
+              },
+              "X-Clinical-Review-Required": {
+                "schema": {
+                  "type": "string",
+                  "const": "true"
+                }
+              }
+            },
+            "content": {
+              "model/vnd.usda": {
+                "schema": {
+                  "type": "string",
+                  "contentMediaType": "model/vnd.usda"
+                }
+              },
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Recipe"
+                }
+              }
+            }
+          },
+          "404": {
+            "$ref": "#/components/responses/NotFound"
+          }
+        }
+      }
+    }
+  },
+  "components": {
+    "parameters": {
+      "JobId": {
+        "name": "job_id",
+        "in": "path",
+        "required": true,
+        "schema": {
+          "type": "string",
+          "pattern": "^[a-f0-9]{24}$"
+        }
+      }
+    },
+    "responses": {
+      "BadRequest": {
+        "description": "Invalid request, including rejected biometric or diagnostic fields",
+        "content": {
+          "application/json": {
+            "schema": {
+              "$ref": "#/components/schemas/ErrorResponse"
+            }
+          }
+        }
+      },
+      "NotFound": {
+        "description": "Asset, job, artifact, or route not found",
+        "content": {
+          "application/json": {
+            "schema": {
+              "$ref": "#/components/schemas/ErrorResponse"
+            }
+          }
+        }
+      },
+      "RequestTooLarge": {
+        "description": "Request exceeds 16 KiB",
+        "content": {
+          "application/json": {
+            "schema": {
+              "$ref": "#/components/schemas/ErrorResponse"
+            }
+          }
+        }
+      },
+      "UnsupportedMediaType": {
+        "description": "Content-Type is not application/json",
+        "content": {
+          "application/json": {
+            "schema": {
+              "$ref": "#/components/schemas/ErrorResponse"
+            }
+          }
+        }
+      }
+    },
+    "schemas": {
+      "AdaptationRequest": {
+        "type": "object",
+        "additionalProperties": false,
+        "required": [
+          "asset_id",
+          "audience",
+          "mode",
+          "adaptation_source"
+        ],
+        "properties": {
+          "asset_id": {
+            "type": "string",
+            "pattern": "^[A-Za-z0-9][A-Za-z0-9_.-]{0,127}$",
+            "description": "Exact manifest ID; it is never interpreted as a path."
+          },
+          "audience": {
+            "type": "string",
+            "enum": [
+              "patient",
+              "family"
+            ]
+          },
+          "mode": {
+            "type": "string",
+            "enum": [
+              "auto",
+              "edit",
+              "generate"
+            ]
+          },
+          "adaptation_source": {
+            "type": "string",
+            "enum": [
+              "simulated_demo",
+              "self_report_preference",
+              "clinician_override"
+            ]
+          },
+          "detail_preference": {
+            "type": "string",
+            "enum": [
+              "overview",
+              "simplified",
+              "standard",
+              "clinical_detail"
+            ]
+          },
+          "motion_preference": {
+            "type": "string",
+            "default": "system_default",
+            "enum": [
+              "system_default",
+              "reduced",
+              "static"
+            ]
+          },
+          "simulation_seed": {
+            "type": "integer",
+            "minimum": 0,
+            "maximum": 9223372036854775807,
+            "description": "Accepted only for simulated_demo; makes the demo choice reproducible."
+          }
+        },
+        "allOf": [
+          {
+            "if": {
+              "properties": {
+                "adaptation_source": {
+                  "enum": [
+                    "self_report_preference",
+                    "clinician_override"
+                  ]
+                }
+              },
+              "required": [
+                "adaptation_source"
+              ]
+            },
+            "then": {
+              "required": [
+                "detail_preference"
+              ],
+              "not": {
+                "required": [
+                  "simulation_seed"
+                ]
+              }
+            }
+          }
+        ]
+      },
+      "Health": {
+        "type": "object",
+        "required": [
+          "status",
+          "service",
+          "version",
+          "catalog",
+          "diagnostic_inference"
+        ],
+        "properties": {
+          "status": {
+            "const": "ok"
+          },
+          "service": {
+            "const": "adaptive-asset-service"
+          },
+          "version": {
+            "type": "string"
+          },
+          "catalog": {
+            "type": "object",
+            "required": [
+              "assets",
+              "manifests"
+            ],
+            "properties": {
+              "assets": {
+                "type": "integer",
+                "minimum": 1
+              },
+              "manifests": {
+                "type": "integer",
+                "minimum": 1
+              }
+            }
+          },
+          "diagnostic_inference": {
+            "const": false
+          }
+        }
+      },
+      "SourceAsset": {
+        "type": "object",
+        "required": [
+          "asset_id",
+          "title",
+          "module",
+          "description",
+          "clinical_review_status"
+        ],
+        "properties": {
+          "asset_id": {
+            "type": "string"
+          },
+          "title": {
+            "type": "string"
+          },
+          "module": {
+            "type": "string"
+          },
+          "description": {
+            "type": "string"
+          },
+          "clinical_review_status": {
+            "type": "string"
+          },
+          "package_name": {
+            "type": [
+              "string",
+              "null"
+            ]
+          }
+        }
+      },
+      "PresentationPreference": {
+        "type": "object",
+        "required": [
+          "detail_preference",
+          "motion_preference",
+          "source",
+          "simulated",
+          "non_diagnostic",
+          "notice",
+          "biometric_inputs_used"
+        ],
+        "properties": {
+          "detail_preference": {
+            "enum": [
+              "overview",
+              "simplified",
+              "standard",
+              "clinical_detail"
+            ]
+          },
+          "motion_preference": {
+            "enum": [
+              "system_default",
+              "reduced",
+              "static"
+            ]
+          },
+          "source": {
+            "type": "string"
+          },
+          "simulated": {
+            "type": "boolean"
+          },
+          "non_diagnostic": {
+            "const": true
+          },
+          "notice": {
+            "type": "string"
+          },
+          "biometric_inputs_used": {
+            "const": false
+          }
+        }
+      },
+      "Recipe": {
+        "type": "object",
+        "required": [
+          "schema_version",
+          "policy_version",
+          "asset_id",
+          "audience",
+          "adaptation_tier",
+          "detail",
+          "materials",
+          "opacity",
+          "motion",
+          "annotations",
+          "pacing",
+          "comfort_controls",
+          "recommended_fallback",
+          "warnings",
+          "transparency"
+        ],
+        "properties": {
+          "schema_version": {
+            "const": "1.0"
+          },
+          "policy_version": {
+            "type": "string"
+          },
+          "asset_id": {
+            "type": "string"
+          },
+          "audience": {
+            "enum": [
+              "patient",
+              "family"
+            ]
+          },
+          "adaptation_tier": {
+            "enum": [
+              "overview",
+              "simplified",
+              "standard",
+              "clinical_detail"
+            ]
+          },
+          "detail": {
+            "type": "object"
+          },
+          "materials": {
+            "type": "object"
+          },
+          "opacity": {
+            "type": "object"
+          },
+          "motion": {
+            "type": "object"
+          },
+          "annotations": {
+            "type": "object"
+          },
+          "pacing": {
+            "type": "object"
+          },
+          "comfort_controls": {
+            "type": "object"
+          },
+          "recommended_fallback": {
+            "type": "string"
+          },
+          "warnings": {
+            "type": "array",
+            "items": {
+              "type": "string"
+            }
+          },
+          "transparency": {
+            "type": "object"
+          },
+          "family_access": {
+            "type": "object"
+          }
+        }
+      },
+      "OrientationAssetCandidate": {
+        "type": "object",
+        "required": [
+          "asset_id",
+          "role",
+          "clinical_review_status",
+          "display_authorized",
+          "review_gate",
+          "co_load_with_source",
+          "source_asset_remains_available"
+        ],
+        "properties": {
+          "asset_id": {
+            "type": "string"
+          },
+          "role": {
+            "const": "orientation_only_candidate"
+          },
+          "clinical_review_status": {
+            "type": "string"
+          },
+          "display_authorized": {
+            "const": false
+          },
+          "review_gate": {
+            "const": "specialist_and_human_factors_review_required_before_patient_display"
+          },
+          "co_load_with_source": {
+            "const": false
+          },
+          "source_asset_remains_available": {
+            "const": true
+          }
+        }
+      },
+      "AdaptationResponseBase": {
+        "type": "object",
+        "required": [
+          "request_id",
+          "adaptation_id",
+          "requested_mode",
+          "source_asset",
+          "presentation_preference",
+          "recipe",
+          "recipe_sha256"
+        ],
+        "properties": {
+          "request_id": {
+            "type": "string"
+          },
+          "adaptation_id": {
+            "type": "string"
+          },
+          "requested_mode": {
+            "type": "string"
+          },
+          "source_asset": {
+            "$ref": "#/components/schemas/SourceAsset"
+          },
+          "presentation_preference": {
+            "$ref": "#/components/schemas/PresentationPreference"
+          },
+          "recipe": {
+            "$ref": "#/components/schemas/Recipe"
+          },
+          "recipe_sha256": {
+            "type": "string",
+            "pattern": "^[a-f0-9]{64}$"
+          },
+          "orientation_asset_candidate": {
+            "$ref": "#/components/schemas/OrientationAssetCandidate"
+          },
+          "latency_class": {
+            "type": "string"
+          }
+        }
+      },
+      "ApplicationContract": {
+        "type": "object",
+        "required": [
+          "engine",
+          "operation",
+          "mutates_source_asset",
+          "fallback_if_semantic_layers_missing",
+          "developer_preview_authorized",
+          "source_asset_manifest_approved",
+          "patient_display_authorized",
+          "patient_display_review_required",
+          "required_manifest_status_for_patient_display",
+          "required_adaptive_policy_approval",
+          "authorization_notice"
+        ],
+        "properties": {
+          "engine": {
+            "const": "RealityKit"
+          },
+          "operation": {
+            "const": "apply_recipe_at_runtime"
+          },
+          "mutates_source_asset": {
+            "const": false
+          },
+          "fallback_if_semantic_layers_missing": {
+            "type": "string"
+          },
+          "developer_preview_authorized": {
+            "const": true
+          },
+          "source_asset_manifest_approved": {
+            "type": "boolean"
+          },
+          "patient_display_authorized": {
+            "const": false
+          },
+          "patient_display_review_required": {
+            "const": true
+          },
+          "required_manifest_status_for_patient_display": {
+            "const": "APPROVED_FOR_PATIENT_EDUCATION"
+          },
+          "required_adaptive_policy_approval": {
+            "const": "presentation-preference-v1"
+          },
+          "authorization_notice": {
+            "type": "string"
+          }
+        }
+      },
+      "EditResponse": {
+        "allOf": [
+          {
+            "$ref": "#/components/schemas/AdaptationResponseBase"
+          },
+          {
+            "type": "object",
+            "properties": {
+              "resolved_mode": {
+                "const": "edit"
+              },
+              "status": {
+                "const": "completed"
+              },
+              "application_contract": {
+                "$ref": "#/components/schemas/ApplicationContract"
+              }
+            },
+            "required": [
+              "resolved_mode",
+              "status",
+              "application_contract"
+            ]
+          }
+        ]
+      },
+      "GenerateResponse": {
+        "allOf": [
+          {
+            "$ref": "#/components/schemas/AdaptationResponseBase"
+          },
+          {
+            "type": "object",
+            "properties": {
+              "resolved_mode": {
+                "const": "generate"
+              },
+              "status": {
+                "const": "accepted"
+              },
+              "generation_contract": {
+                "$ref": "#/components/schemas/GenerationJob"
+              }
+            },
+            "required": [
+              "resolved_mode",
+              "status",
+              "generation_contract"
+            ]
+          }
+        ]
+      },
+      "GenerationJob": {
+        "type": "object",
+        "required": [
+          "job_id",
+          "status",
+          "generator",
+          "generator_kind",
+          "model_provider",
+          "source_asset_mutated",
+          "display_authorized",
+          "review_gate",
+          "artifact_role",
+          "limitations"
+        ],
+        "properties": {
+          "job_id": {
+            "type": "string",
+            "pattern": "^[a-f0-9]{24}$"
+          },
+          "status": {
+            "enum": [
+              "queued",
+              "awaiting_clinician_review",
+              "failed"
+            ]
+          },
+          "generator": {
+            "const": "local_procedural_comfort_template_v1"
+          },
+          "generator_kind": {
+            "const": "deterministic_non_ai_template"
+          },
+          "model_provider": {
+            "type": "null"
+          },
+          "source_asset_mutated": {
+            "const": false
+          },
+          "display_authorized": {
+            "const": false
+          },
+          "review_gate": {
+            "const": "clinician_review_required_before_display"
+          },
+          "artifact_role": {
+            "const": "abstract_procedural_review_draft"
+          },
+          "orientation_asset_candidate": {
+            "$ref": "#/components/schemas/OrientationAssetCandidate"
+          },
+          "draft_artifacts": {
+            "type": "object"
+          },
+          "limitations": {
+            "type": "array",
+            "items": {
+              "type": "string"
+            }
+          }
+        }
+      },
+      "ErrorResponse": {
+        "type": "object",
+        "required": [
+          "request_id",
+          "error"
+        ],
+        "properties": {
+          "request_id": {
+            "type": "string"
+          },
+          "error": {
+            "type": "object",
+            "required": [
+              "code",
+              "message"
+            ],
+            "properties": {
+              "code": {
+                "type": "string"
+              },
+              "message": {
+                "type": "string"
+              },
+              "field": {
+                "type": "string"
+              }
+            }
+          }
+        }
+      }
+    }
+  }
+}

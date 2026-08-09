@@ -5,15 +5,17 @@ RealityKit. Module reports retain their exact validation dates.
 
 ## Catalog integrity
 
-- 134 release runtime USDZ packages: 65 original plus 43 non-held v3 detail
-  packages and 26 v3 surgical-tool packages.
-- 134 unique release-manifest IDs, basenames, and paths. All 69 v3 records carry
+- 135 release runtime USDZ packages: 65 original plus 43 non-held v3 detail
+  packages, 26 v3 surgical-tool packages, and one adaptive visual derivative.
+- 135 unique release-manifest IDs, basenames, and paths. All 69 v3 records and
+  the adaptive derivative carry
   verified byte counts and SHA-256 values; the original package validation
   retains its payload-integrity evidence.
-- Eleven manifests: five v2, one prototype-v1, and five v3 module manifests.
+- Twelve manifests: five v2, one prototype-v1, five v3 module manifests, and
+  one adaptive-visual manifest.
 - No missing manifest-backed packages.
 - `stroke_kit_asset_gallery.usdz` intentionally excluded.
-- Runtime payload: 270,376,845 bytes (257.85 MiB).
+- Runtime payload: 275,619,913 bytes (262.85 MiB).
 - Largest package: 32,482,833 bytes; no selected file exceeds 50 MiB.
 - The original 65 repository packages passed
   `/usr/bin/usdchecker --arkit --strict`: 65 pass, 0 fail.
@@ -21,6 +23,8 @@ RealityKit. Module reports retain their exact validation dates.
   `/usr/bin/usdchecker --arkit --strict`: 43 pass, 0 fail.
 - Fresh strict validation of the 26 exact tool-v3 publishing copies:
   `/usr/bin/usdchecker --arkit --strict`: 26 pass, 0 fail.
+- Strict validation of the adaptive visual derivative:
+  `/usr/bin/usdchecker --arkit --strict`: 1 pass, 0 fail.
 
 ## v2 technical gate
 
@@ -81,6 +85,30 @@ RealityKit. Module reports retain their exact validation dates.
   previews. It explicitly leaves the clinical-validity gate unpassed and
   outside the technical audit.
 
+## Adaptive visual and endpoint gates
+
+- `brain_orientation_calm_educational_v1`: 1/1 strict USD PASS and 1/1
+  RealityKit load PASS with four non-empty model/material regions and finite
+  positive bounds.
+- Manifest byte count and SHA-256 match the published USDZ; the package is
+  metre-scale, Y-up, self-contained, and contains no camera, light, or named
+  graphic-content prim.
+- The 1600 × 1200 preview passed visual inspection for framing, silhouette,
+  tonal separation, and absence of blood, lesion, incision, or instrument
+  content.
+- The adaptive service passes 21/21 dependency-free unit tests, OpenAPI JSON
+  parsing, Python compilation, full-catalog lookup, biometric-field rejection,
+  traversal rejection, privacy-safe logs, reversible edit recipes, and
+  display-blocked procedural generation.
+- The new orientation model remains
+  `REQUIRES_SPECIALIST_AND_HUMAN_FACTORS_REVIEW`. The endpoint exposes it only
+  as `display_authorized: false`; neither a technical package pass nor an API
+  response authorizes patient display.
+- Detailed evidence is retained in
+  [ADAPTIVE_VISUALS_VALIDATION_V1.md](validation/ADAPTIVE_VISUALS_VALIDATION_V1.md)
+  and
+  [ADAPTIVE_ENDPOINT_VALIDATION.md](../adaptive-visuals/ADAPTIVE_ENDPOINT_VALIDATION.md).
+
 ## Viewer integration evidence
 
 The prior 108-asset release catalog was also exercised in the separate local
@@ -94,7 +122,7 @@ the blood-brain-barrier micro vignette. The micro view retained its persistent
 “not to anatomical scale” warning.
 
 That simulator evidence predates the 26 tool packages. The tools have
-package-level USD and RealityKit validation, but the complete 134-package
+package-level USD and RealityKit validation, but the complete 135-package
 catalog has not yet been bundled into or visually exercised by that viewer.
 
 That production viewer is not the repository-owned Xcode application scaffold,
