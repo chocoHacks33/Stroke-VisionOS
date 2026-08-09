@@ -1,0 +1,77 @@
+{
+  "asset_count": 150,
+  "integrity_algorithm": "sha256",
+  "manifest_self_hash_policy": "This manifest excludes itself because a self-hash is recursive.",
+  "module_id": "visual_detail_variants_v1",
+  "patient_display_authorized": false,
+  "reduced80_semantic_density_target": 0.8,
+  "resource_count": 8,
+  "resources": [
+    {
+      "bytes": 8986,
+      "id": "README",
+      "media_type": "text/markdown",
+      "path": "README.md",
+      "sha256": "e964d48716dc23433daec1031c7685ae16c86f8e23a515b9f4201652081e73ff"
+    },
+    {
+      "bytes": 6842,
+      "id": "VISUAL_DETAIL_ASSET_CATEGORIES",
+      "media_type": "text/plain",
+      "path": "VISUAL_DETAIL_ASSET_CATEGORIES.txt",
+      "sha256": "b0c4f275237f6214a30c50b37cc1f55acd37d1bee023f015c03b578d76619ce1"
+    },
+    {
+      "bytes": 40037,
+      "id": "build_visual_detail_variants_v1",
+      "media_type": "text/x-python",
+      "path": "build_visual_detail_variants_v1.py",
+      "sha256": "6543e732ebe8a0b40559bff664659ac36a7f3170362f4ccf2b9d52342c4cddb4"
+    },
+    {
+      "bytes": 29315,
+      "id": "validate_visual_detail_variants_v1",
+      "media_type": "text/x-python",
+      "path": "validate_visual_detail_variants_v1.py",
+      "sha256": "8349375917f7868a98d3a882a0cebdaee03eab46500db499d184ed9ca23d5cc7"
+    },
+    {
+      "bytes": 13268,
+      "id": "visual_detail_category_policy_schema_v1",
+      "media_type": "application/json",
+      "path": "visual_detail_category_policy_schema_v1.json",
+      "sha256": "6be6e43abc336f88df53ec7db2dae84e2989a1ee82fd5c95699a792cb9f7e61f"
+    },
+    {
+      "bytes": 42765,
+      "id": "visual_detail_category_policy_v1",
+      "media_type": "application/json",
+      "path": "visual_detail_category_policy_v1.json",
+      "sha256": "9097522cd240b2e929f05954482651e30e230e2c0fa8b85303c752e26f18248b"
+    },
+    {
+      "bytes": 4058,
+      "id": "visual_detail_selector_v1",
+      "media_type": "text/javascript",
+      "path": "visual_detail_selector_v1.js",
+      "sha256": "f7ce28c6b27b111870d28fa3f542a83992ba4779858a4bb45e32e8832d39cb74"
+    },
+    {
+      "bytes": 805413,
+      "id": "visual_detail_variant_catalog_v1",
+      "media_type": "application/json",
+      "path": "visual_detail_variant_catalog_v1.json",
+      "sha256": "78be2bddff068298b62da4b504fe1c4b898f052c30209e52c84cf446abc25822"
+    }
+  ],
+  "runtime_geometry_included": false,
+  "schema_version": "1.0.0",
+  "tier_count": 3,
+  "tiers": [
+    "minimal",
+    "reduced80",
+    "full"
+  ],
+  "title": "Visual detail virtual variants v1",
+  "virtual_variant_count": 450
+}

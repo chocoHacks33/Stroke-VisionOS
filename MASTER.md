@@ -4,7 +4,9 @@ This document is the implementation contract for assembling the repository's
 150 release-catalog runtime assets into one coherent Apple Vision Pro
 educational experience. The full source build has 152 unique package records;
 two inner-ear-containing records are licence-held and not present as runtime
-binaries in this publishing tree.
+binaries in this publishing tree. Each release asset also has three explicit,
+non-geometry presentation bindings (`minimal`, `reduced80`, and `full`) for 450
+virtual variants; the runtime USDZ count remains 150.
 It is written for a coding agent, technical artist, Houdini artist, or
 RealityKit engineer. The individual asset descriptions live in the
 [asset catalog](RealityKitContent/Assets/README.md); this file defines how the
@@ -71,6 +73,13 @@ When files disagree, use this order:
     [Page 2 interface manifest](RealityKitContent/InterfaceMedia/figma_page2_surgical_interface_v1/asset_manifest_figma_page2_surgical_interface_v1.json)
     is authoritative for its ten non-geometry resources and fail-closed pathway,
     copy, anchor, attachment, icon, token, and integrity contracts.
+13. The
+    [three-tier visual-detail catalog](RealityKitContent/InterfaceMedia/visual_detail_variants_v1/visual_detail_variant_catalog_v1.json),
+    [category policy](RealityKitContent/InterfaceMedia/visual_detail_variants_v1/visual_detail_category_policy_v1.json),
+    and exhaustive
+    [text classification](RealityKitContent/InterfaceMedia/visual_detail_variants_v1/VISUAL_DETAIL_ASSET_CATEGORIES.txt)
+    are authoritative for the 450 virtual `minimal`, `reduced80`, and `full`
+    bindings. They add no USDZ geometry and grant no patient-display approval.
 
 The word **must** below means a release-blocking requirement. **Should** means
 the default implementation unless a reviewed design decision says otherwise.
@@ -838,6 +847,44 @@ native SwiftUI/RealityKit attachments under `InterfaceAttachmentRoot`.
    of visual tier. A family view additionally requires patient participation or
    authorization and privacy confirmation.
 
+#### 6.1.2 Three-tier asset-detail variants
+
+This is a separate, narrower state dimension from the lesson-level adaptive
+profile above. Every release asset has exactly three revision-bound virtual
+variants; the runtime USDZ inventory remains 150 packages.
+
+| Tier | Required asset behavior | Blood/flow behavior |
+| --- | --- | --- |
+| `minimal` | Use the smallest reviewed, meaning-preserving presentation: recognizable silhouette or reviewed equivalent, active learning objective, pathway/laterality, warnings, and accessible material facts | Replace continuous cells/flow with sparse static direction markers; no continuous cell animation |
+| `reduced80` | Target `0.8` semantic density, not polygon count: retain the focus and most landmarks while reducing secondary layers, labels, shine, particles, and motion | Reduce cell/flow-marker density and use slower motion while retaining qualitative direction |
+| `full` | Load the exact source USDZ bytes/SHA and apply no presentation mutation | Preserve the source-authored presentation and its conceptual/non-CFD warning |
+
+For every selection:
+
+1. Require an explicit `assetID`, tier, and expected source SHA-256. There is no
+   implicit/default tier and no pupil, gaze, movement, biometric, or inferred
+   anxiety input. An upstream prototype may deliberately map its three UI
+   labels to these neutral tiers, but only the tier crosses this boundary.
+   Discover with `GET /v1/detail-variants/{asset_id}` and resolve with
+   `POST /v1/detail-variants`; a stale expected SHA must return HTTP 409.
+2. Resolve the asset's one primary category and, for an aggregate, its explicit
+   assembly-domain override from `visual_detail_variant_catalog_v1.json`.
+3. For `full`, verify bytes/SHA and use the immutable source package. For lower
+   tiers, keep that package immutable and apply only the resolved reversible
+   presentation parameters.
+4. Preserve pathway, laterality, registration, pathology/closure identity,
+   warnings, uncertainty, scale/magnification disclosures, accessibility, and
+   material medical facts at all three tiers.
+5. For an assembly at a lower tier, unload the assembly and select approved leaf
+   components recursively. Never decimate or partly hide a composite in place,
+   and never co-load the assembly with its leaves.
+6. Treat a missing/stale hash, unknown category/tier, incomplete policy,
+   prohibited combination, or unavailable reviewed proxy as a hard failure.
+   Keep the prior state and provide the accessible source/text fallback.
+7. Keep `patient_display_authorized=false` until the exact package, category
+   recipe, entity mapping, controls, accessibility behavior, and human-factors
+   review share a governed approval record.
+
 ### 6.2 Ischemic thrombectomy educational path
 
 | State | Show | Hide / replace | App behavior |
@@ -989,6 +1036,12 @@ enum VisualDetailPreference: String, Codable {
     case overview, simplified, standard, clinicalDetail
 }
 
+// Exact asset-presentation tier. This is explicit UI input, not an anxiety
+// measurement and not an alias for VisualDetailPreference.
+enum AssetVisualDetailTier: String, Codable {
+    case minimal, reduced80, full
+}
+
 enum VisualMotionPreference: String, Codable {
     case systemDefault, reduced, staticPresentation
 }
@@ -1086,6 +1139,9 @@ struct StrokeExperienceState: Equatable {
     var activeScaleDomain: String = "macroscopic_generic_atlas"
     var semanticFocusAssetID: String? = nil
     var visualDetailPreference: VisualDetailPreference = .standard
+    var assetVisualDetailTier: AssetVisualDetailTier = .full
+    var expectedAssetPackageSHA256: String? = nil
+    var activeVirtualVariantID: String? = nil
     var visualMotionPreference: VisualMotionPreference = .systemDefault
     var adaptationPreferenceSource: AdaptationPreferenceSource = .selfReportPreference
     var adaptivePresentationActive = false
@@ -1222,6 +1278,31 @@ if adaptive recipe contains biometric/anxiety inference or an unknown field:
 
 if adaptivePatientDisplayAuthorized == false:
     do not resolve an orientation candidate or apply the recipe in patient mode
+
+if assetVisualDetailTier selection lacks asset ID, exact expected package SHA, or explicit tier:
+    reject the selection and keep the prior presentation
+
+resolve assetVisualDetailTier from the 150-asset/450-variant catalog:
+    require exactly one primary category and exactly one variant for the requested tier
+    require observed source bytes/SHA == catalog source bytes/SHA
+    require geometry_mutation_allowed == false
+    require patient_display_authorized == false in this prototype
+
+if assetVisualDetailTier == full:
+    bind exact source USDZ and apply no visual-detail sidecar mutation
+
+if assetVisualDetailTier in {minimal, reduced80}:
+    apply only the resolved category/tier presentation parameters
+    preserve source entity state for immediate Restore Full
+    preserve material facts, warnings, pathway, laterality, registration, and selected focus
+
+if selected asset category == BLOOD_FLOW_TEACHING and assetVisualDetailTier == minimal:
+    use sparse static direction markers
+    set continuous blood-cell animation off
+
+if selected asset category == COMPOSITE_ASSEMBLY and assetVisualDetailTier != full:
+    unload the assembly and use reviewed domain-governed leaves
+    reject assembly + leaf co-loading
 
 if visualDetailPreference == overview:
     set blood/particle opacity to zero
@@ -1529,6 +1610,21 @@ layer and may not destructively alter payload geometry.
 - A generated procedural USDA remains a detached review draft outside the
   release layer stack until it completes the full asset, provenance,
   specialist, accessibility, and human-factors gates.
+- Treat `minimal`, `reduced80`, and `full` as presentation opinions in
+  `32_adaptive_presentation.usda`, never as destructive edits to a payload.
+  `full` must reference the exact source package revision; lower tiers may
+  author opaque visibility, material, label, motion, and leaf-selection
+  opinions only.
+- Drive the sidecar from the asset's primary category and optional
+  assembly-domain override in `visual_detail_variant_catalog_v1.json`. Do not
+  infer a category from prim names or appearance, and do not author an
+  unreviewed substitute when the policy cannot be satisfied.
+- For `BLOOD_FLOW_TEACHING/minimal`, author sparse static direction markers and
+  no continuous cell animation. For `reduced80`, reduce marker/cell density and
+  slow authored motion. These remain qualitative non-CFD cues.
+- For a composite lower tier, switch to approved leaf payloads before applying
+  presentation opinions. Never partially decimate a composed assembly or leave
+  the complete assembly loaded behind its leaves.
 
 ### 9.2 Curves, devices, and procedural motion
 
@@ -1754,6 +1850,21 @@ coverage, missing-anatomy audit, and replacement rationale are in
 31. Build the Page 2 title pill, rails, cards, warning, hotspots, leader lines,
     and timeline as native attachments. Starting dimensions/distances are
     design inputs only and require physical-device human-factors review.
+32. Load `visual_detail_variant_catalog_v1.json` and
+    `visual_detail_category_policy_v1.json` as non-geometry application
+    resources. Require 150 assets, 450 unique virtual variants, all three fixed
+    tiers per asset, 14 categories, and a valid observed package revision.
+33. Accept only an explicit `minimal`, `reduced80`, or `full` asset-detail
+    selection. Resolve `presentation_parameters` from the asset's primary
+    category/assembly domain; never derive them from an anxiety value or asset
+    appearance.
+34. Apply lower tiers as a transaction on the main actor: snapshot source
+    presentation, apply only reviewed opaque visibility/material/label/motion
+    or leaf-selection operations, then support immediate Restore Full. A
+    failed hash, policy, mapping, or operation restores the snapshot.
+35. Keep the lower-tier response in developer preview while
+    `patient_display_authorized=false`. Renderer integration may not treat a
+    successful catalog lookup as clinical or human-factors approval.
 
 The application, not a USD file, owns:
 
@@ -1872,6 +1983,14 @@ These are hard failures:
 - No pupil, gaze, hand-joint, body-motion, voice, or other biometric stream
   interpreted as an anxiety diagnosis, score, severity, or treatment trigger.
 - No random `simulated_demo` preference presented as a real-person observation.
+- No `minimal`, `reduced80`, or `full` asset tier described as a diagnosed or
+  inferred anxiety severity. The names express presentation detail only.
+- No lower tier produced by destructive USDZ decimation, geometry replacement,
+  hidden material facts, lost warnings, altered laterality/pathway, or an
+  unreviewed meaning-changing proxy.
+- No `reduced80` claim interpreted as 80% of polygons, texture resolution,
+  opacity, medical severity, or clinical completeness; it is a semantic-density
+  design target.
 - No adaptive recipe applied in patient mode unless the exact asset/version,
   semantic mapping, policy/profile, warnings, and controls share one governed
   approval record. The current prototype always fails this gate closed.
@@ -2001,6 +2120,14 @@ assert not (intradural/closure review assembly visible with any of its six compo
 assert adaptive request contains no pupil, gaze, joint-motion, biometric, anxiety-score, identifier, or free-text field
 assert adaptive response policy_version is supported and every semantic group is mapped or fails to safe fallback
 assert not (patient mode and adaptivePatientDisplayAuthorized == false and adaptive recipe applied)
+assert every release asset has exactly one primary visual-detail category and exactly three virtual tiers
+assert selected virtual variant ID == assetID + "::" + requested explicit tier
+assert observed source bytes/SHA == selected variant source bytes/SHA
+assert full tier applies no presentation mutation
+assert lower tiers apply no source geometry mutation and preserve Restore Full state
+assert BLOOD_FLOW_TEACHING/minimal uses sparse static markers and no continuous cell animation
+assert lower-tier composite assembly is not loaded with any selected leaf component
+assert no visual-detail response is applied in patient mode while patient_display_authorized == false
 assert not (orientation candidate visible and candidate.display_authorized == false)
 assert not (generated draft visible and draft.display_authorized == false)
 assert not (calm orientation candidate visible with detailed source, pathology, vessels, blood/flow, or tools)
@@ -2058,6 +2185,17 @@ Every generated or modified asset must pass all applicable gates:
 - All ten Page 2 interface resources match their manifest bytes/hashes and parse;
   pathway separation, null copy/anchor bindings, cross-pathway lockout, native
   UI ownership, zero-PHI, and patient-display block remain intact.
+- The visual-detail pack deterministically resolves all 150 release IDs into
+  exactly 450 unique virtual variants: three fixed tiers per asset, 14 mutually
+  exclusive primary categories, 17 assembly-domain overrides, and 42 complete
+  category/tier parameter blocks.
+- All 150 `full` variants match the observed source package bytes/SHA exactly;
+  all 300 lower variants are reversible sidecars with source and geometry
+  unchanged. Structured numeric targets are bounded and monotonic, and every
+  `reduced80` semantic-density target equals `0.8`.
+- The browser/service selector rejects missing, unknown, implicit, stale, or
+  biometric/anxiety-derived selections. Patient display and automatic renderer
+  application remain false until separately governed review passes.
 
 ### Visual/interaction gate
 
@@ -2186,6 +2324,13 @@ An agent or Houdini artist implementing the combined experience must deliver:
 18. The ten-resource Page 2 interface pack integrated through native
     attachments, six user-controlled open steps, null-binding failure, pathway
     lockout, accessibility/comfort tests, and a still-false patient-display gate.
+19. The three-tier asset-detail pack integrated for all 150 release assets:
+    exact source revision checks, one validated category per asset, three
+    explicit tiers per asset, 450 unique virtual IDs, category-specific
+    presentation parameters, composite-to-leaf substitution, blood/flow static
+    minimal behavior, Restore Full, and fail-closed tests for every unsupported
+    tier, stale package, missing policy, prohibited combination, and
+    patient-display attempt.
 
 The work is **not done** merely because the master scene opens. It is done only
 when the selected assets fit without duplicate geometry, every state is

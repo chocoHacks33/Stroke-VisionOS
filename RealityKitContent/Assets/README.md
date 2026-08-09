@@ -38,6 +38,15 @@ For the canonical scene hierarchy, all component/assembly relationships,
 procedure state logic, interaction physics, and Houdini/RealityKit handoff, see
 [`MASTER.md`](../../MASTER.md).
 
+Each of these 150 packages also has three non-destructive presentation
+bindings—`minimal`, `reduced80`, and `full`—for **450 virtual variants**. These
+are not additional USDZ files: `full` is the exact source package, and lower
+tiers are reversible visibility/material/label/motion/component-selection
+policies. The complete asset-by-asset classification is
+[`VISUAL_DETAIL_ASSET_CATEGORIES.txt`](../InterfaceMedia/visual_detail_variants_v1/VISUAL_DETAIL_ASSET_CATEGORIES.txt),
+with machine catalog, category policy, selector, and validation instructions in
+[`visual_detail_variants_v1`](../InterfaceMedia/visual_detail_variants_v1/README.md).
+
 GitHub does not permit a public fork to upload new LFS objects into its parent
 repository's LFS store. Consequently, this cross-fork pull request stores the
 USDZ packages as ordinary binary Git objects; every individual package is below

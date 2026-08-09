@@ -104,6 +104,37 @@ layer. In its lowest-detail profile it replaces the detailed brain view; it
 must not be co-loaded over the source anatomy or used to hide
 clinician-approved facts.
 
+### Three visual-detail variants for every asset
+
+Every one of the 150 release assets now has three deterministic presentation
+bindings: `minimal`, `reduced80`, and `full`—**450 virtual variants** in all.
+This does not add 300 duplicate USDZ files: `full` binds the exact current
+package bytes and SHA-256, while the two lower-detail choices are reversible
+host-side policies for visibility, labels, materials, motion, particles, and
+component selection. The source catalog therefore remains 150 USDZ packages.
+
+- `minimal` preserves the recognizable shape, selected learning objective,
+  laterality/pathway, warnings, and medical facts while showing the smallest
+  reviewed explanation. Blood/flow views use sparse static direction markers
+  rather than continuous cells or flowing blood.
+- `reduced80` targets approximately 80% of approved semantic information—not
+  80% of polygons—with fewer secondary layers, labels, particles, highlights,
+  and slower motion.
+- `full` is the unmodified 100% source asset already in the repository.
+
+The exhaustive text classification is
+[`VISUAL_DETAIL_ASSET_CATEGORIES.txt`](RealityKitContent/InterfaceMedia/visual_detail_variants_v1/VISUAL_DETAIL_ASSET_CATEGORIES.txt).
+The machine catalog, 14-category policy, browser selector, deterministic
+builder, validator, and integration rules are documented in
+[`visual_detail_variants_v1`](RealityKitContent/InterfaceMedia/visual_detail_variants_v1/README.md).
+Tier selection is explicit and external; this pack does not read sensors,
+infer anxiety, choose a tier automatically, or authorize patient display.
+If the separate web application already has user-facing labels such as “very
+anxious,” “less anxious,” and “no anxiety,” it may deliberately map them to
+`minimal`, `reduced80`, and `full` respectively. Only the neutral tier value is
+sent to this selector, and that upstream label must not be presented as a
+diagnosis or sensor-derived measurement.
+
 The environment module is also a presentation option, not clinical content.
 On Vision Pro the default remains system passthrough; in Simulator the default
 remains the selected Simulator environment. The synthetic consultation room is
@@ -246,6 +277,16 @@ motion, labels, and pacing. It may also report a display-blocked orientation
 candidate for later governed review. A compatibility alias is
 available at `/v1/adaptations`.
 
+The separate three-tier asset selector uses the exact vocabulary
+`minimal|reduced80|full` and revision-binds every response to the selected
+USDZ. It is designed for a web control to choose a tier explicitly; it does not
+accept anxiety, biometric, pupil, gaze, or joint-motion fields.
+`GET /v1/detail-variants/{asset_id}` lists all three choices and the current
+package SHA; `POST /v1/detail-variants` resolves the explicit choice only when
+the caller supplies that exact SHA. A stale revision returns HTTP 409. The
+response remains developer-preview data with renderer application and patient
+display both unauthorized pending exact entity mapping and external review.
+
 ```mermaid
 flowchart LR
     A["Viewer chooses detail and motion"] --> B["POST /v1/visual-adaptations"]
@@ -315,7 +356,7 @@ Stroke-VisionOS/
 │   └── Resources/                  # App-owned resources
 ├── RealityKitContent/
 │   ├── Assets/                     # 150 manifest-backed USDZ packages
-│   └── InterfaceMedia/             # Fictional/demo UI media and scene config
+│   └── InterfaceMedia/             # UI/config plus 450 virtual detail bindings
 ├── Services/
 │   └── AdaptiveAssetService/       # Local visual-preference recipe endpoint
 ├── Tests/                          # Unit, contract, and UI tests

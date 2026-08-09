@@ -144,6 +144,94 @@
         }
       }
     },
+    "/v1/detail-variants/{asset_id}": {
+      "get": {
+        "operationId": "listDetailVariants",
+        "summary": "List all three deterministic virtual detail tiers for one exact asset revision",
+        "description": "Returns path-free metadata and policy-resolved recipes for minimal, reduced80, and full in that order. This endpoint does not choose a tier, apply a renderer mapping, accept sensor data, or authorize patient display.",
+        "parameters": [
+          {
+            "name": "asset_id",
+            "in": "path",
+            "required": true,
+            "description": "Exact manifest asset ID; never interpreted as a path.",
+            "schema": {
+              "$ref": "#/components/schemas/AssetId"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "All three source-bound virtual variants",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/DetailVariantsResponse"
+                }
+              }
+            }
+          },
+          "400": {
+            "$ref": "#/components/responses/BadRequest"
+          },
+          "404": {
+            "$ref": "#/components/responses/NotFound"
+          },
+          "409": {
+            "$ref": "#/components/responses/StaleAssetRevision"
+          }
+        }
+      }
+    },
+    "/v1/detail-variants": {
+      "post": {
+        "operationId": "selectDetailVariant",
+        "summary": "Resolve an explicitly selected detail tier against one exact asset revision",
+        "description": "Selection is deterministic and explicit. The expected SHA-256 is an optimistic-concurrency guard; a stale value returns 409. The result is a developer-preview recipe only, not an instruction that the renderer is authorized to apply and not authorization for patient display.",
+        "requestBody": {
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/DetailVariantRequest"
+              },
+              "example": {
+                "asset_id": "head_skin_generic",
+                "detail_tier": "reduced80",
+                "expected_package_sha256": "b07ea2b39b4cf9d185205912d9f0fb0ab245dd201bb41837397ad1c0cf65bf26"
+              }
+            }
+          }
+        },
+        "responses": {
+          "200": {
+            "description": "The exact virtual variant and policy-resolved recipe",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/DetailVariantSelectionResponse"
+                }
+              }
+            }
+          },
+          "400": {
+            "$ref": "#/components/responses/BadRequest"
+          },
+          "404": {
+            "$ref": "#/components/responses/NotFound"
+          },
+          "409": {
+            "$ref": "#/components/responses/StaleAssetRevision"
+          },
+          "413": {
+            "$ref": "#/components/responses/RequestTooLarge"
+          },
+          "415": {
+            "$ref": "#/components/responses/UnsupportedMediaType"
+          }
+        }
+      }
+    },
     "/v1/jobs/{job_id}": {
       "get": {
         "operationId": "getGenerationJob",
@@ -263,6 +351,16 @@
           }
         }
       },
+      "StaleAssetRevision": {
+        "description": "The expected SHA-256 is stale or the source package changed after service startup; keep the prior state, re-fetch, and retry only against the new exact revision",
+        "content": {
+          "application/json": {
+            "schema": {
+              "$ref": "#/components/schemas/ErrorResponse"
+            }
+          }
+        }
+      },
       "RequestTooLarge": {
         "description": "Request exceeds 16 KiB",
         "content": {
@@ -285,6 +383,588 @@
       }
     },
     "schemas": {
+      "AssetId": {
+        "type": "string",
+        "pattern": "^(?!.*\\.\\.)[A-Za-z0-9][A-Za-z0-9_.-]{0,127}$",
+        "description": "Exact manifest ID; never interpreted as a path."
+      },
+      "PackageSha256": {
+        "type": "string",
+        "pattern": "^[a-f0-9]{64}$",
+        "description": "Lowercase SHA-256 digest; source-package uses bind to the exact observed USDZ bytes."
+      },
+      "DetailTier": {
+        "type": "string",
+        "enum": [
+          "minimal",
+          "reduced80",
+          "full"
+        ]
+      },
+      "DetailVariantRequest": {
+        "type": "object",
+        "additionalProperties": false,
+        "required": [
+          "asset_id",
+          "detail_tier",
+          "expected_package_sha256"
+        ],
+        "properties": {
+          "asset_id": {
+            "$ref": "#/components/schemas/AssetId"
+          },
+          "detail_tier": {
+            "$ref": "#/components/schemas/DetailTier"
+          },
+          "expected_package_sha256": {
+            "$ref": "#/components/schemas/PackageSha256"
+          }
+        }
+      },
+      "SourcePackageRevision": {
+        "type": "object",
+        "additionalProperties": false,
+        "description": "Path-free binding to the exact source package revision.",
+        "required": [
+          "asset_id",
+          "package_name",
+          "package_bytes",
+          "package_sha256",
+          "package_integrity"
+        ],
+        "properties": {
+          "asset_id": {
+            "$ref": "#/components/schemas/AssetId"
+          },
+          "package_name": {
+            "type": "string",
+            "pattern": "^[^/\\\\]+\\.usdz$"
+          },
+          "package_bytes": {
+            "type": "integer",
+            "minimum": 1
+          },
+          "package_sha256": {
+            "$ref": "#/components/schemas/PackageSha256"
+          },
+          "package_integrity": {
+            "type": "string",
+            "enum": [
+              "verified_against_manifest",
+              "partially_verified_against_manifest",
+              "observed_without_manifest_digest"
+            ]
+          }
+        }
+      },
+      "DetailPresentationParameters": {
+        "type": "object",
+        "additionalProperties": false,
+        "required": [
+          "semantic_density_target",
+          "texture_resolution_scale",
+          "secondary_detail_visibility_ratio",
+          "label_density_ratio",
+          "saturation_multiplier",
+          "specular_multiplier",
+          "motion_speed_multiplier",
+          "particle_or_flow_count_ratio",
+          "motion_mode",
+          "particle_or_flow_mode"
+        ],
+        "properties": {
+          "semantic_density_target": {
+            "type": "number",
+            "minimum": 0,
+            "maximum": 1,
+            "description": "Ratio of approved explanatory information, not a polygon target."
+          },
+          "texture_resolution_scale": {
+            "type": "number",
+            "minimum": 0,
+            "maximum": 1
+          },
+          "secondary_detail_visibility_ratio": {
+            "type": "number",
+            "minimum": 0,
+            "maximum": 1
+          },
+          "label_density_ratio": {
+            "type": "number",
+            "minimum": 0,
+            "maximum": 1
+          },
+          "saturation_multiplier": {
+            "type": "number",
+            "minimum": 0,
+            "maximum": 1
+          },
+          "specular_multiplier": {
+            "type": "number",
+            "minimum": 0,
+            "maximum": 1
+          },
+          "motion_speed_multiplier": {
+            "type": "number",
+            "minimum": 0,
+            "maximum": 1
+          },
+          "particle_or_flow_count_ratio": {
+            "type": "number",
+            "minimum": 0,
+            "maximum": 1
+          },
+          "motion_mode": {
+            "type": "string",
+            "enum": [
+              "static",
+              "slowed",
+              "source_authored"
+            ]
+          },
+          "particle_or_flow_mode": {
+            "type": "string",
+            "enum": [
+              "none",
+              "sparse_static_direction_markers",
+              "reduced_direction_markers",
+              "reduced_cells_and_flow",
+              "representative_static_elements",
+              "reduced_representative_elements",
+              "source_authored"
+            ]
+          }
+        }
+      },
+      "DetailAssemblyResolution": {
+        "type": "object",
+        "additionalProperties": false,
+        "required": [
+          "action",
+          "assembly_control_parameters",
+          "assembly_domain",
+          "leaf_parameter_resolution"
+        ],
+        "properties": {
+          "action": {
+            "type": "string",
+            "enum": [
+              "unload_assembly_then_select_leaf_components",
+              "bind_exact_source_assembly"
+            ]
+          },
+          "assembly_control_parameters": {
+            "$ref": "#/components/schemas/DetailPresentationParameters"
+          },
+          "assembly_domain": {
+            "type": "string"
+          },
+          "leaf_parameter_resolution": {
+            "type": "string",
+            "enum": [
+              "per_leaf_primary_category",
+              "fixed_assembly_domain_category"
+            ]
+          }
+        }
+      },
+      "DetailVariantRecipe": {
+        "type": "object",
+        "additionalProperties": false,
+        "required": [
+          "schema_version",
+          "catalog_id",
+          "catalog_revision_sha256",
+          "category_policy_id",
+          "category_policy_revision_sha256",
+          "asset_id",
+          "variant_id",
+          "detail_tier",
+          "category_id",
+          "parameter_policy_category",
+          "presentation_parameters",
+          "strategy",
+          "source_asset_revision",
+          "geometry_mutation_allowed",
+          "source_asset_unchanged",
+          "preserve_silhouette_or_meaning",
+          "preserve_medical_facts_and_warnings",
+          "global_must_preserve",
+          "primary_category_must_preserve",
+          "parameter_category_must_preserve",
+          "prohibited",
+          "patient_display_authorized"
+        ],
+        "properties": {
+          "schema_version": {
+            "const": "1.0"
+          },
+          "catalog_id": {
+            "const": "visual_detail_variant_catalog_v1"
+          },
+          "catalog_revision_sha256": {
+            "$ref": "#/components/schemas/PackageSha256"
+          },
+          "category_policy_id": {
+            "const": "visual_detail_category_policy_v1"
+          },
+          "category_policy_revision_sha256": {
+            "$ref": "#/components/schemas/PackageSha256"
+          },
+          "asset_id": {
+            "$ref": "#/components/schemas/AssetId"
+          },
+          "variant_id": {
+            "type": "string",
+            "pattern": "^[A-Za-z0-9][A-Za-z0-9_.-]{0,127}::(minimal|reduced80|full)$"
+          },
+          "detail_tier": {
+            "$ref": "#/components/schemas/DetailTier"
+          },
+          "category_id": {
+            "type": "string"
+          },
+          "parameter_policy_category": {
+            "type": "string"
+          },
+          "presentation_parameters": {
+            "$ref": "#/components/schemas/DetailPresentationParameters"
+          },
+          "strategy": {
+            "type": "array",
+            "minItems": 1,
+            "uniqueItems": true,
+            "items": {
+              "type": "string"
+            }
+          },
+          "source_asset_revision": {
+            "$ref": "#/components/schemas/SourcePackageRevision"
+          },
+          "geometry_mutation_allowed": {
+            "const": false
+          },
+          "source_asset_unchanged": {
+            "const": true
+          },
+          "preserve_silhouette_or_meaning": {
+            "const": true
+          },
+          "preserve_medical_facts_and_warnings": {
+            "const": true
+          },
+          "global_must_preserve": {
+            "type": "array",
+            "minItems": 1,
+            "uniqueItems": true,
+            "items": {
+              "type": "string"
+            }
+          },
+          "primary_category_must_preserve": {
+            "type": "array",
+            "minItems": 1,
+            "uniqueItems": true,
+            "items": {
+              "type": "string"
+            }
+          },
+          "parameter_category_must_preserve": {
+            "type": "array",
+            "minItems": 1,
+            "uniqueItems": true,
+            "items": {
+              "type": "string"
+            }
+          },
+          "prohibited": {
+            "type": "array",
+            "minItems": 1,
+            "uniqueItems": true,
+            "items": {
+              "type": "string"
+            }
+          },
+          "patient_display_authorized": {
+            "const": false
+          },
+          "semantic_density": {
+            "const": "smallest_reviewed_complete_explanation"
+          },
+          "semantic_density_target": {
+            "const": 0.8
+          },
+          "assembly_resolution": {
+            "$ref": "#/components/schemas/DetailAssemblyResolution"
+          }
+        }
+      },
+      "DetailCatalogRevision": {
+        "type": "object",
+        "additionalProperties": false,
+        "required": [
+          "catalog_id",
+          "schema_version",
+          "sha256"
+        ],
+        "properties": {
+          "catalog_id": {
+            "const": "visual_detail_variant_catalog_v1"
+          },
+          "schema_version": {
+            "const": "1.0.0"
+          },
+          "sha256": {
+            "$ref": "#/components/schemas/PackageSha256"
+          }
+        }
+      },
+      "DetailCategoryPolicyRevision": {
+        "type": "object",
+        "additionalProperties": false,
+        "required": [
+          "policy_id",
+          "schema_version",
+          "sha256"
+        ],
+        "properties": {
+          "policy_id": {
+            "const": "visual_detail_category_policy_v1"
+          },
+          "schema_version": {
+            "const": "1.0.0"
+          },
+          "sha256": {
+            "$ref": "#/components/schemas/PackageSha256"
+          }
+        }
+      },
+      "DetailVariantApplicationContract": {
+        "type": "object",
+        "additionalProperties": false,
+        "required": [
+          "runtime_scope",
+          "developer_preview_authorized",
+          "developer_runtime_application_authorized",
+          "renderer_mapping_status",
+          "requires_exact_renderer_mapping",
+          "source_asset_unchanged",
+          "patient_display_authorized",
+          "patient_display_review_required"
+        ],
+        "properties": {
+          "runtime_scope": {
+            "const": "developer_preview_only"
+          },
+          "developer_preview_authorized": {
+            "const": true
+          },
+          "developer_runtime_application_authorized": {
+            "const": false
+          },
+          "renderer_mapping_status": {
+            "const": "pending_exact_renderer_mapping"
+          },
+          "requires_exact_renderer_mapping": {
+            "const": true
+          },
+          "source_asset_unchanged": {
+            "const": true
+          },
+          "patient_display_authorized": {
+            "const": false
+          },
+          "patient_display_review_required": {
+            "const": true
+          }
+        }
+      },
+      "DetailVariant": {
+        "type": "object",
+        "additionalProperties": false,
+        "required": [
+          "variant_id",
+          "detail_tier",
+          "virtual_reversible_sidecar",
+          "binds_exact_observed_source_as_presentation",
+          "source_asset_revision",
+          "recipe"
+        ],
+        "properties": {
+          "variant_id": {
+            "type": "string",
+            "pattern": "^[A-Za-z0-9][A-Za-z0-9_.-]{0,127}::(minimal|reduced80|full)$"
+          },
+          "detail_tier": {
+            "$ref": "#/components/schemas/DetailTier"
+          },
+          "virtual_reversible_sidecar": {
+            "type": "boolean"
+          },
+          "binds_exact_observed_source_as_presentation": {
+            "type": "boolean"
+          },
+          "source_asset_revision": {
+            "$ref": "#/components/schemas/SourcePackageRevision"
+          },
+          "recipe": {
+            "$ref": "#/components/schemas/DetailVariantRecipe"
+          }
+        }
+      },
+      "DetailVariantsResponse": {
+        "type": "object",
+        "additionalProperties": false,
+        "required": [
+          "request_id",
+          "status",
+          "catalog_revision",
+          "category_policy_revision",
+          "tier_order",
+          "source_asset",
+          "variants",
+          "application_contract",
+          "patient_display_authorized"
+        ],
+        "properties": {
+          "request_id": {
+            "type": "string"
+          },
+          "status": {
+            "const": "available"
+          },
+          "catalog_revision": {
+            "$ref": "#/components/schemas/DetailCatalogRevision"
+          },
+          "category_policy_revision": {
+            "$ref": "#/components/schemas/DetailCategoryPolicyRevision"
+          },
+          "tier_order": {
+            "type": "array",
+            "minItems": 3,
+            "maxItems": 3,
+            "prefixItems": [
+              {
+                "const": "minimal"
+              },
+              {
+                "const": "reduced80"
+              },
+              {
+                "const": "full"
+              }
+            ],
+            "items": false
+          },
+          "source_asset": {
+            "$ref": "#/components/schemas/SourcePackageRevision"
+          },
+          "variants": {
+            "type": "array",
+            "minItems": 3,
+            "maxItems": 3,
+            "prefixItems": [
+              {
+                "allOf": [
+                  {
+                    "$ref": "#/components/schemas/DetailVariant"
+                  },
+                  {
+                    "type": "object",
+                    "properties": {
+                      "detail_tier": {
+                        "const": "minimal"
+                      }
+                    }
+                  }
+                ]
+              },
+              {
+                "allOf": [
+                  {
+                    "$ref": "#/components/schemas/DetailVariant"
+                  },
+                  {
+                    "type": "object",
+                    "properties": {
+                      "detail_tier": {
+                        "const": "reduced80"
+                      }
+                    }
+                  }
+                ]
+              },
+              {
+                "allOf": [
+                  {
+                    "$ref": "#/components/schemas/DetailVariant"
+                  },
+                  {
+                    "type": "object",
+                    "properties": {
+                      "detail_tier": {
+                        "const": "full"
+                      }
+                    }
+                  }
+                ]
+              }
+            ],
+            "items": false
+          },
+          "application_contract": {
+            "$ref": "#/components/schemas/DetailVariantApplicationContract"
+          },
+          "patient_display_authorized": {
+            "const": false
+          }
+        }
+      },
+      "DetailVariantSelectionResponse": {
+        "type": "object",
+        "additionalProperties": false,
+        "required": [
+          "request_id",
+          "status",
+          "selection_id",
+          "catalog_revision",
+          "category_policy_revision",
+          "source_asset",
+          "selected_variant",
+          "application_contract",
+          "patient_display_authorized"
+        ],
+        "properties": {
+          "request_id": {
+            "type": "string"
+          },
+          "status": {
+            "const": "resolved"
+          },
+          "selection_id": {
+            "type": "string",
+            "pattern": "^[a-f0-9]{24}$"
+          },
+          "catalog_revision": {
+            "$ref": "#/components/schemas/DetailCatalogRevision"
+          },
+          "category_policy_revision": {
+            "$ref": "#/components/schemas/DetailCategoryPolicyRevision"
+          },
+          "source_asset": {
+            "$ref": "#/components/schemas/SourcePackageRevision"
+          },
+          "selected_variant": {
+            "$ref": "#/components/schemas/DetailVariant"
+          },
+          "application_contract": {
+            "$ref": "#/components/schemas/DetailVariantApplicationContract"
+          },
+          "patient_display_authorized": {
+            "const": false
+          }
+        }
+      },
       "AdaptationRequest": {
         "type": "object",
         "additionalProperties": false,

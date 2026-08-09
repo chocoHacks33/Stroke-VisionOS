@@ -1,0 +1,391 @@
+{
+  "$id": "visual_detail_category_policy_schema_v1.json",
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "additionalProperties": false,
+  "properties": {
+    "assembly_domain_overrides": {
+      "maxProperties": 17,
+      "minProperties": 17,
+      "type": "object"
+    },
+    "categories": {
+      "items": {
+        "additionalProperties": false,
+        "properties": {
+          "asset_count": {
+            "minimum": 1,
+            "type": "integer"
+          },
+          "category_id": {
+            "enum": [
+              "ANATOMY_CNS_MACRO",
+              "ANATOMY_HEAD_NECK_SUPPORT",
+              "ANATOMY_VASCULAR",
+              "PATHOLOGY_MACRO",
+              "BLOOD_FLOW_TEACHING",
+              "MICRO_CONCEPTUAL",
+              "TOOLS_ENDOVASCULAR",
+              "TOOLS_OPEN_CRANIAL",
+              "OPEN_CRANIAL_ANATOMY_STATE",
+              "CLINICAL_CONTEXT",
+              "SPATIAL_ENVIRONMENT",
+              "GUIDANCE",
+              "ADAPTIVE_PRESENTATION",
+              "COMPOSITE_ASSEMBLY"
+            ]
+          },
+          "must_preserve": {
+            "items": {
+              "type": "string"
+            },
+            "minItems": 1,
+            "type": "array"
+          },
+          "tiers": {
+            "additionalProperties": false,
+            "properties": {
+              "full": {
+                "properties": {
+                  "geometry_mutation_allowed": {
+                    "const": false
+                  },
+                  "presentation_parameters": {
+                    "additionalProperties": false,
+                    "properties": {
+                      "label_density_ratio": {
+                        "maximum": 1.0,
+                        "minimum": 0.0,
+                        "type": "number"
+                      },
+                      "motion_mode": {
+                        "enum": [
+                          "static",
+                          "slowed",
+                          "source_authored"
+                        ]
+                      },
+                      "motion_speed_multiplier": {
+                        "maximum": 1.0,
+                        "minimum": 0.0,
+                        "type": "number"
+                      },
+                      "particle_or_flow_count_ratio": {
+                        "maximum": 1.0,
+                        "minimum": 0.0,
+                        "type": "number"
+                      },
+                      "particle_or_flow_mode": {
+                        "enum": [
+                          "none",
+                          "sparse_static_direction_markers",
+                          "reduced_direction_markers",
+                          "reduced_cells_and_flow",
+                          "representative_static_elements",
+                          "reduced_representative_elements",
+                          "source_authored"
+                        ]
+                      },
+                      "saturation_multiplier": {
+                        "maximum": 1.0,
+                        "minimum": 0.0,
+                        "type": "number"
+                      },
+                      "secondary_detail_visibility_ratio": {
+                        "maximum": 1.0,
+                        "minimum": 0.0,
+                        "type": "number"
+                      },
+                      "semantic_density_target": {
+                        "maximum": 1.0,
+                        "minimum": 0.0,
+                        "type": "number"
+                      },
+                      "specular_multiplier": {
+                        "maximum": 1.0,
+                        "minimum": 0.0,
+                        "type": "number"
+                      },
+                      "texture_resolution_scale": {
+                        "maximum": 1.0,
+                        "minimum": 0.0,
+                        "type": "number"
+                      }
+                    },
+                    "required": [
+                      "semantic_density_target",
+                      "texture_resolution_scale",
+                      "secondary_detail_visibility_ratio",
+                      "label_density_ratio",
+                      "saturation_multiplier",
+                      "specular_multiplier",
+                      "motion_mode",
+                      "motion_speed_multiplier",
+                      "particle_or_flow_mode",
+                      "particle_or_flow_count_ratio"
+                    ],
+                    "type": "object"
+                  }
+                },
+                "required": [
+                  "geometry_mutation_allowed",
+                  "presentation_parameters"
+                ],
+                "type": "object"
+              },
+              "minimal": {
+                "properties": {
+                  "geometry_mutation_allowed": {
+                    "const": false
+                  },
+                  "presentation_parameters": {
+                    "additionalProperties": false,
+                    "properties": {
+                      "label_density_ratio": {
+                        "maximum": 1.0,
+                        "minimum": 0.0,
+                        "type": "number"
+                      },
+                      "motion_mode": {
+                        "enum": [
+                          "static",
+                          "slowed",
+                          "source_authored"
+                        ]
+                      },
+                      "motion_speed_multiplier": {
+                        "maximum": 1.0,
+                        "minimum": 0.0,
+                        "type": "number"
+                      },
+                      "particle_or_flow_count_ratio": {
+                        "maximum": 1.0,
+                        "minimum": 0.0,
+                        "type": "number"
+                      },
+                      "particle_or_flow_mode": {
+                        "enum": [
+                          "none",
+                          "sparse_static_direction_markers",
+                          "reduced_direction_markers",
+                          "reduced_cells_and_flow",
+                          "representative_static_elements",
+                          "reduced_representative_elements",
+                          "source_authored"
+                        ]
+                      },
+                      "saturation_multiplier": {
+                        "maximum": 1.0,
+                        "minimum": 0.0,
+                        "type": "number"
+                      },
+                      "secondary_detail_visibility_ratio": {
+                        "maximum": 1.0,
+                        "minimum": 0.0,
+                        "type": "number"
+                      },
+                      "semantic_density_target": {
+                        "maximum": 1.0,
+                        "minimum": 0.0,
+                        "type": "number"
+                      },
+                      "specular_multiplier": {
+                        "maximum": 1.0,
+                        "minimum": 0.0,
+                        "type": "number"
+                      },
+                      "texture_resolution_scale": {
+                        "maximum": 1.0,
+                        "minimum": 0.0,
+                        "type": "number"
+                      }
+                    },
+                    "required": [
+                      "semantic_density_target",
+                      "texture_resolution_scale",
+                      "secondary_detail_visibility_ratio",
+                      "label_density_ratio",
+                      "saturation_multiplier",
+                      "specular_multiplier",
+                      "motion_mode",
+                      "motion_speed_multiplier",
+                      "particle_or_flow_mode",
+                      "particle_or_flow_count_ratio"
+                    ],
+                    "type": "object"
+                  }
+                },
+                "required": [
+                  "geometry_mutation_allowed",
+                  "presentation_parameters"
+                ],
+                "type": "object"
+              },
+              "reduced80": {
+                "properties": {
+                  "geometry_mutation_allowed": {
+                    "const": false
+                  },
+                  "presentation_parameters": {
+                    "additionalProperties": false,
+                    "properties": {
+                      "label_density_ratio": {
+                        "maximum": 1.0,
+                        "minimum": 0.0,
+                        "type": "number"
+                      },
+                      "motion_mode": {
+                        "enum": [
+                          "static",
+                          "slowed",
+                          "source_authored"
+                        ]
+                      },
+                      "motion_speed_multiplier": {
+                        "maximum": 1.0,
+                        "minimum": 0.0,
+                        "type": "number"
+                      },
+                      "particle_or_flow_count_ratio": {
+                        "maximum": 1.0,
+                        "minimum": 0.0,
+                        "type": "number"
+                      },
+                      "particle_or_flow_mode": {
+                        "enum": [
+                          "none",
+                          "sparse_static_direction_markers",
+                          "reduced_direction_markers",
+                          "reduced_cells_and_flow",
+                          "representative_static_elements",
+                          "reduced_representative_elements",
+                          "source_authored"
+                        ]
+                      },
+                      "saturation_multiplier": {
+                        "maximum": 1.0,
+                        "minimum": 0.0,
+                        "type": "number"
+                      },
+                      "secondary_detail_visibility_ratio": {
+                        "maximum": 1.0,
+                        "minimum": 0.0,
+                        "type": "number"
+                      },
+                      "semantic_density_target": {
+                        "maximum": 1.0,
+                        "minimum": 0.0,
+                        "type": "number"
+                      },
+                      "specular_multiplier": {
+                        "maximum": 1.0,
+                        "minimum": 0.0,
+                        "type": "number"
+                      },
+                      "texture_resolution_scale": {
+                        "maximum": 1.0,
+                        "minimum": 0.0,
+                        "type": "number"
+                      }
+                    },
+                    "required": [
+                      "semantic_density_target",
+                      "texture_resolution_scale",
+                      "secondary_detail_visibility_ratio",
+                      "label_density_ratio",
+                      "saturation_multiplier",
+                      "specular_multiplier",
+                      "motion_mode",
+                      "motion_speed_multiplier",
+                      "particle_or_flow_mode",
+                      "particle_or_flow_count_ratio"
+                    ],
+                    "type": "object"
+                  }
+                },
+                "required": [
+                  "geometry_mutation_allowed",
+                  "presentation_parameters"
+                ],
+                "type": "object"
+              }
+            },
+            "required": [
+              "minimal",
+              "reduced80",
+              "full"
+            ],
+            "type": "object"
+          }
+        },
+        "required": [
+          "category_id",
+          "asset_count",
+          "must_preserve",
+          "tiers"
+        ],
+        "type": "object"
+      },
+      "maxItems": 14,
+      "minItems": 14,
+      "type": "array"
+    },
+    "category_count": {
+      "const": 14
+    },
+    "global_must_preserve": {
+      "items": {
+        "type": "string"
+      },
+      "minItems": 1,
+      "type": "array"
+    },
+    "global_prohibited": {
+      "items": {
+        "type": "string"
+      },
+      "minItems": 1,
+      "type": "array"
+    },
+    "module_id": {
+      "const": "visual_detail_variants_v1"
+    },
+    "patient_display_authorized": {
+      "const": false
+    },
+    "policy_id": {
+      "const": "visual_detail_category_policy_v1"
+    },
+    "presentation_parameter_contract": {
+      "type": "object"
+    },
+    "schema_version": {
+      "const": "1.0.0"
+    },
+    "tier_order": {
+      "const": [
+        "minimal",
+        "reduced80",
+        "full"
+      ]
+    },
+    "tier_semantics": {
+      "type": "object"
+    }
+  },
+  "required": [
+    "schema_version",
+    "module_id",
+    "policy_id",
+    "patient_display_authorized",
+    "tier_order",
+    "tier_semantics",
+    "global_must_preserve",
+    "global_prohibited",
+    "presentation_parameter_contract",
+    "category_count",
+    "categories",
+    "assembly_domain_overrides"
+  ],
+  "title": "Visual detail category policy v1",
+  "type": "object"
+}

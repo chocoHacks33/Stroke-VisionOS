@@ -85,6 +85,38 @@ contrast, and meaning must never depend on color alone. See the
 [Apple color HIG](https://developer.apple.com/design/human-interface-guidelines/color)
 and [WCAG 2.2](https://www.w3.org/TR/WCAG22/).
 
+### Asset-level three-tier detail selector
+
+The release catalog also has a narrower, deterministic asset-presentation
+contract with exactly three values: `minimal`, `reduced80`, and `full`. This is
+not an anxiety scale and does not replace the four lesson-level profiles above.
+An external control explicitly selects one of the three values; the selector
+does not observe or classify the viewer.
+
+- `minimal` means the smallest reviewed, meaning-preserving explanation. A
+  recognizable silhouette or reviewed equivalent, the selected learning
+  objective, laterality/pathway, warnings, uncertainty, and all material facts
+  must remain available. Blood/flow assets use sparse static direction markers
+  with no continuous cell animation.
+- `reduced80` targets `0.8` semantic density. The value is not a claim about
+  polygon reduction, texture quality, opacity, medical severity, or viewer
+  state. It reduces secondary layers, label/particle density, visual shine, and
+  motion while preserving meaning.
+- `full` binds the exact existing USDZ bytes and SHA-256 and applies no
+  presentation mutation.
+
+The complete 150-asset classification and 450 virtual bindings are in
+[`visual_detail_variants_v1`](../../RealityKitContent/InterfaceMedia/visual_detail_variants_v1/README.md).
+The lower tiers are reversible sidecars; they are not new anatomical geometry,
+and the pack keeps patient display blocked pending exact recipe and
+human-factors review.
+
+An upstream prototype may deliberately map its own three explicit UI choices
+to these neutral values—for example `very anxious → minimal`, `less anxious →
+reduced80`, and `no anxiety → full`—but the API receives only the neutral tier.
+That label is a presentation preference supplied by the upstream controller,
+not evidence that this system measured, diagnosed, or validated anxiety.
+
 ## Motion and spatial comfort
 
 - Honor the system Reduce Motion preference.

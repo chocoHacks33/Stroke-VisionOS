@@ -102,10 +102,13 @@ RealityKit. Module reports retain their exact validation dates.
 - The 1600 × 1200 preview passed visual inspection for framing, silhouette,
   tonal separation, and absence of blood, lesion, incision, or instrument
   content.
-- The adaptive service passes 21/21 dependency-free unit tests, OpenAPI JSON
+- The adaptive service passes 35/35 dependency-free unit tests, OpenAPI JSON
   parsing, Python compilation, full-catalog lookup, biometric-field rejection,
   traversal rejection, privacy-safe logs, reversible edit recipes, and
-  display-blocked procedural generation.
+  display-blocked procedural generation. The three-tier GET/POST routes also
+  pass frozen catalog/policy binding, exact source revision, stale-SHA 409,
+  catalog-reload drift, same-size mid-hash mutation, duplicate-JSON-key,
+  non-finite-number, path-free response, and malformed-framing tests.
 - The new orientation model remains
   `REQUIRES_SPECIALIST_AND_HUMAN_FACTORS_REVIEW`. The endpoint exposes it only
   as `display_authorized: false`; neither a technical package pass nor an API
@@ -114,6 +117,29 @@ RealityKit. Module reports retain their exact validation dates.
   [ADAPTIVE_VISUALS_VALIDATION_V1.md](validation/ADAPTIVE_VISUALS_VALIDATION_V1.md)
   and
   [ADAPTIVE_ENDPOINT_VALIDATION.md](../adaptive-visuals/ADAPTIVE_ENDPOINT_VALIDATION.md).
+
+## Three-tier visual-detail catalog gates
+
+- The deterministic pack covers 150/150 release assets across all 14 USDZ
+  manifests, with exactly one primary category per asset and all 17 composite
+  assembly-domain overrides.
+- It emits exactly 450 unique virtual IDs: 150 each for `minimal`,
+  `reduced80`, and `full`. All 150 full bindings match the observed source
+  package byte count and SHA-256; all 300 lower tiers preserve the source and
+  prohibit geometry mutation.
+- The 14 categories × 3 tiers provide 42 complete structured parameter blocks.
+  All normalized numeric series are bounded and monotonic; every `reduced80`
+  semantic target is exactly `0.8`.
+- The blood/flow rule is explicit: minimal uses sparse static markers with zero
+  motion; reduced80 uses fewer flow/cell cues at slower speed; full remains
+  source-authored. No tier claims CFD or quantitative physiology.
+- Builder determinism, catalog/source integrity, Draft 2020-12 policy-schema
+  evaluation, JavaScript selector behavior, missing/unknown-tier rejection,
+  eight-resource manifest integrity, private-path absence, and the false
+  patient-display/geometry-mutation gates all pass.
+- The pack contains no additional USDZ geometry. Detailed evidence and the
+  exhaustive asset-by-asset text map are in
+  [`visual_detail_variants_v1`](../../RealityKitContent/InterfaceMedia/visual_detail_variants_v1/README.md).
 
 ## Spatial-care environment gates
 

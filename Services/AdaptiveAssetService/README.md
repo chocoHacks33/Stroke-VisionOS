@@ -17,6 +17,9 @@ Defaults:
 
 - binds to `127.0.0.1` only;
 - indexes the repository's `RealityKitContent/Assets/**/asset_manifest*.json` files read-only;
+- loads the frozen visual-detail catalog and category policy and fails startup if
+  their authorized revisions, source-package bytes, or SHA-256 bindings do not
+  match;
 - writes generated review drafts under the operating system's temporary directory;
 - emits structured JSON logs containing request ID, route, status, and duration—not request bodies, asset IDs, preferences, or seeds.
 
@@ -25,6 +28,63 @@ Check readiness:
 ```bash
 curl --fail http://127.0.0.1:8765/healthz
 ```
+
+## Deterministic visual-detail variants
+
+The isolated visual-detail API exposes exactly three explicit presentation
+tiers for each catalogued asset. It does not infer anxiety, inspect sensors, or
+randomly select a tier, and it does not change the existing four
+`detail_preference` values used by `/v1/visual-adaptations`.
+
+List all three variants, in `minimal`, `reduced80`, `full` order:
+
+```bash
+curl --fail-with-body \
+  http://127.0.0.1:8765/v1/detail-variants/head_skin_generic
+```
+
+Resolve one tier against the exact USDZ revision:
+
+```bash
+curl --fail-with-body \
+  -H 'Content-Type: application/json' \
+  -d @examples/detail_variant_request.json \
+  http://127.0.0.1:8765/v1/detail-variants
+```
+
+`POST /v1/detail-variants` accepts exactly these three fields:
+
+| Field | Required | Values / behavior |
+|---|---:|---|
+| `asset_id` | yes | Exact manifest ID; paths and traversal are rejected |
+| `detail_tier` | yes | Exactly `minimal`, `reduced80`, or `full` |
+| `expected_package_sha256` | yes | Lowercase 64-character SHA-256 copied from the current GET response |
+
+`minimal` is the category policy's smallest complete explanatory
+presentation. `reduced80` targets 80% of approved semantic information—not
+80% of polygons. `full` binds the exact observed source package as the
+presentation. Lower tiers are virtual, reversible recipes; none of the three
+mutates the USDZ.
+
+Both endpoints return path-free source metadata, including the exact package
+byte count and SHA-256, plus the frozen catalog and category-policy revisions.
+Every recipe contains the category-resolved `presentation_parameters`. If the
+POST digest is stale, the server returns HTTP `409` and leaves the caller's
+current state unchanged; fetch the variants again before retrying. Unknown
+fields—including pupil, gaze, movement, biometric, anxiety, or other sensor
+fields—are rejected rather than used as selectors.
+
+The returned `application_contract` is intentionally strict:
+
+- `runtime_scope` is `developer_preview_only`;
+- `developer_runtime_application_authorized` is `false`;
+- `renderer_mapping_status` is `pending_exact_renderer_mapping`; and
+- `patient_display_authorized` is always `false`.
+
+The endpoint resolves data only. A client must not apply the recipe until an
+exact renderer/entity mapping has been implemented and separately reviewed,
+and it must not show these variants to a patient while the display flag is
+false.
 
 ## Fast edit request
 
@@ -138,9 +198,10 @@ python3 -m json.tool openapi.json >/dev/null
 
 The test suite covers catalog integrity, traversal rejection, request-framing
 desynchronization, private artifact permissions, per-request correlation IDs,
-validation, seeded demo reproducibility, all motion overrides, family privacy,
-biometric-field rejection, safe logging, asynchronous procedural drafts, and
-clinical-review headers.
+validation, exact three-tier coverage, stale-package conflicts, frozen
+catalog/policy bindings, seeded demo reproducibility, all motion overrides,
+family privacy, biometric-field rejection, safe logging, asynchronous
+procedural drafts, and clinical-review headers.
 
 The complete machine-readable contract is in [openapi.json](openapi.json).
 

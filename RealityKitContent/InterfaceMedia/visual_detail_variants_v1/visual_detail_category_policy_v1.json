@@ -1,0 +1,1092 @@
+{
+  "assembly_domain_overrides": {
+    "artery_cutaway_complete_v2": "BLOOD_FLOW_TEACHING",
+    "cerebral_bloodflow_teaching_set_v2": "BLOOD_FLOW_TEACHING",
+    "cranial_access_tools_review_assembly_open_neurosurgery_v3": "TOOLS_OPEN_CRANIAL",
+    "cranial_nerves_complete_assembly_v3": "ANATOMY_HEAD_NECK_SUPPORT",
+    "cranial_vascular_registered_assembly_v2": "ANATOMY_VASCULAR",
+    "dural_sinuses_jugulars_realistic_v2": "ANATOMY_VASCULAR",
+    "endovascular_tools_workflow_review_assembly_v3": "TOOLS_ENDOVASCULAR",
+    "head_neck_veins_expanded_realistic_v2": "ANATOMY_VASCULAR",
+    "intracranial_micro_teaching_set_v3": "MICRO_CONCEPTUAL",
+    "intradural_closure_tools_review_assembly_open_neurosurgery_v3": "TOOLS_OPEN_CRANIAL",
+    "layered_head_cutaway_registered_v2": "ANATOMY_HEAD_NECK_SUPPORT",
+    "meningeal_partitions_atlas_v2": "ANATOMY_HEAD_NECK_SUPPORT",
+    "neural_detail_registered_review_assembly_v3": "ANATOMY_CNS_MACRO",
+    "spatial_care_consultation_environment_assembly_v1": "SPATIAL_ENVIRONMENT",
+    "thrombectomy_device_set_educational_v2": "TOOLS_ENDOVASCULAR",
+    "thrombectomy_registered_hero_v2": "MIXED_REGISTERED_HEAD",
+    "vascular_access_setup_review_assembly_v3": "TOOLS_ENDOVASCULAR"
+  },
+  "categories": [
+    {
+      "asset_count": 18,
+      "category_id": "ANATOMY_CNS_MACRO",
+      "must_preserve": [
+        "CNS silhouette and orientation",
+        "selected structure identity",
+        "laterality and atlas/generic warning"
+      ],
+      "tiers": {
+        "full": {
+          "geometry_mutation_allowed": false,
+          "presentation_parameters": {
+            "label_density_ratio": 1.0,
+            "motion_mode": "source_authored",
+            "motion_speed_multiplier": 1.0,
+            "particle_or_flow_count_ratio": 1.0,
+            "particle_or_flow_mode": "source_authored",
+            "saturation_multiplier": 1.0,
+            "secondary_detail_visibility_ratio": 1.0,
+            "semantic_density_target": 1.0,
+            "specular_multiplier": 1.0,
+            "texture_resolution_scale": 1.0
+          },
+          "source_asset_unchanged": true,
+          "strategy": [
+            "Bind the exact observed source USDZ bytes and SHA-256 without geometry or material mutation."
+          ]
+        },
+        "minimal": {
+          "geometry_mutation_allowed": false,
+          "presentation_parameters": {
+            "label_density_ratio": 0.25,
+            "motion_mode": "static",
+            "motion_speed_multiplier": 0.0,
+            "particle_or_flow_count_ratio": 0.0,
+            "particle_or_flow_mode": "none",
+            "saturation_multiplier": 0.75,
+            "secondary_detail_visibility_ratio": 0.2,
+            "semantic_density_target": 0.35,
+            "specular_multiplier": 0.45,
+            "texture_resolution_scale": 0.5
+          },
+          "semantic_density": "smallest_reviewed_complete_explanation",
+          "strategy": [
+            "Show a brain/cerebellum/brainstem silhouette plus one required structure.",
+            "Keep deep or pathway anatomy only when it is the active learning objective."
+          ],
+          "virtual_reversible_sidecar": true
+        },
+        "reduced80": {
+          "geometry_mutation_allowed": false,
+          "presentation_parameters": {
+            "label_density_ratio": 0.7,
+            "motion_mode": "slowed",
+            "motion_speed_multiplier": 0.7,
+            "particle_or_flow_count_ratio": 0.0,
+            "particle_or_flow_mode": "none",
+            "saturation_multiplier": 0.9,
+            "secondary_detail_visibility_ratio": 0.75,
+            "semantic_density_target": 0.8,
+            "specular_multiplier": 0.8,
+            "texture_resolution_scale": 0.8
+          },
+          "semantic_density_target": 0.8,
+          "strategy": [
+            "Show broad landmarks plus the selected focus.",
+            "Hide secondary parcels and labels with opaque swaps; avoid stacked transparency."
+          ],
+          "virtual_reversible_sidecar": true
+        }
+      }
+    },
+    {
+      "asset_count": 25,
+      "category_id": "ANATOMY_HEAD_NECK_SUPPORT",
+      "must_preserve": [
+        "head/skull/meningeal silhouette",
+        "selected support structure and bilateral identity",
+        "registered relationship"
+      ],
+      "tiers": {
+        "full": {
+          "geometry_mutation_allowed": false,
+          "presentation_parameters": {
+            "label_density_ratio": 1.0,
+            "motion_mode": "source_authored",
+            "motion_speed_multiplier": 1.0,
+            "particle_or_flow_count_ratio": 1.0,
+            "particle_or_flow_mode": "source_authored",
+            "saturation_multiplier": 1.0,
+            "secondary_detail_visibility_ratio": 1.0,
+            "semantic_density_target": 1.0,
+            "specular_multiplier": 1.0,
+            "texture_resolution_scale": 1.0
+          },
+          "source_asset_unchanged": true,
+          "strategy": [
+            "Bind the exact observed source USDZ bytes and SHA-256 without geometry or material mutation."
+          ]
+        },
+        "minimal": {
+          "geometry_mutation_allowed": false,
+          "presentation_parameters": {
+            "label_density_ratio": 0.25,
+            "motion_mode": "static",
+            "motion_speed_multiplier": 0.0,
+            "particle_or_flow_count_ratio": 0.0,
+            "particle_or_flow_mode": "none",
+            "saturation_multiplier": 0.72,
+            "secondary_detail_visibility_ratio": 0.2,
+            "semantic_density_target": 0.35,
+            "specular_multiplier": 0.42,
+            "texture_resolution_scale": 0.5
+          },
+          "semantic_density": "smallest_reviewed_complete_explanation",
+          "strategy": [
+            "Show the closed exterior or one orientation shell plus the selected support structure.",
+            "If a cranial nerve is the objective, retain that nerve and its text equivalent."
+          ],
+          "virtual_reversible_sidecar": true
+        },
+        "reduced80": {
+          "geometry_mutation_allowed": false,
+          "presentation_parameters": {
+            "label_density_ratio": 0.68,
+            "motion_mode": "slowed",
+            "motion_speed_multiplier": 0.65,
+            "particle_or_flow_count_ratio": 0.0,
+            "particle_or_flow_mode": "none",
+            "saturation_multiplier": 0.88,
+            "secondary_detail_visibility_ratio": 0.72,
+            "semantic_density_target": 0.8,
+            "specular_multiplier": 0.78,
+            "texture_resolution_scale": 0.8
+          },
+          "semantic_density_target": 0.8,
+          "strategy": [
+            "Show one support family at a time.",
+            "Prefer major nerve trunks or an opaque cutaway; hide nonessential distal detail."
+          ],
+          "virtual_reversible_sidecar": true
+        }
+      }
+    },
+    {
+      "asset_count": 6,
+      "category_id": "ANATOMY_VASCULAR",
+      "must_preserve": [
+        "arterial versus venous class",
+        "selected route and direction",
+        "laterality and conceptual color warning"
+      ],
+      "tiers": {
+        "full": {
+          "geometry_mutation_allowed": false,
+          "presentation_parameters": {
+            "label_density_ratio": 1.0,
+            "motion_mode": "source_authored",
+            "motion_speed_multiplier": 1.0,
+            "particle_or_flow_count_ratio": 1.0,
+            "particle_or_flow_mode": "source_authored",
+            "saturation_multiplier": 1.0,
+            "secondary_detail_visibility_ratio": 1.0,
+            "semantic_density_target": 1.0,
+            "specular_multiplier": 1.0,
+            "texture_resolution_scale": 1.0
+          },
+          "source_asset_unchanged": true,
+          "strategy": [
+            "Bind the exact observed source USDZ bytes and SHA-256 without geometry or material mutation."
+          ]
+        },
+        "minimal": {
+          "geometry_mutation_allowed": false,
+          "presentation_parameters": {
+            "label_density_ratio": 0.3,
+            "motion_mode": "static",
+            "motion_speed_multiplier": 0.0,
+            "particle_or_flow_count_ratio": 0.15,
+            "particle_or_flow_mode": "sparse_static_direction_markers",
+            "saturation_multiplier": 0.8,
+            "secondary_detail_visibility_ratio": 0.25,
+            "semantic_density_target": 0.3,
+            "specular_multiplier": 0.5,
+            "texture_resolution_scale": 0.5
+          },
+          "semantic_density": "smallest_reviewed_complete_explanation",
+          "strategy": [
+            "Show one static origin-to-focus route or selected vessel silhouette.",
+            "Keep arterial/venous and laterality text visible."
+          ],
+          "virtual_reversible_sidecar": true
+        },
+        "reduced80": {
+          "geometry_mutation_allowed": false,
+          "presentation_parameters": {
+            "label_density_ratio": 0.7,
+            "motion_mode": "slowed",
+            "motion_speed_multiplier": 0.65,
+            "particle_or_flow_count_ratio": 0.65,
+            "particle_or_flow_mode": "reduced_direction_markers",
+            "saturation_multiplier": 0.9,
+            "secondary_detail_visibility_ratio": 0.75,
+            "semantic_density_target": 0.8,
+            "specular_multiplier": 0.8,
+            "texture_resolution_scale": 0.8
+          },
+          "semantic_density_target": 0.8,
+          "strategy": [
+            "Retain the selected major route and cull irrelevant branches.",
+            "Reduce labels and material glow without changing route identity."
+          ],
+          "virtual_reversible_sidecar": true
+        }
+      }
+    },
+    {
+      "asset_count": 6,
+      "category_id": "PATHOLOGY_MACRO",
+      "must_preserve": [
+        "pathology type",
+        "registered focus and laterality",
+        "conceptual/nonquantitative and uncertainty warning"
+      ],
+      "tiers": {
+        "full": {
+          "geometry_mutation_allowed": false,
+          "presentation_parameters": {
+            "label_density_ratio": 1.0,
+            "motion_mode": "source_authored",
+            "motion_speed_multiplier": 1.0,
+            "particle_or_flow_count_ratio": 1.0,
+            "particle_or_flow_mode": "source_authored",
+            "saturation_multiplier": 1.0,
+            "secondary_detail_visibility_ratio": 1.0,
+            "semantic_density_target": 1.0,
+            "specular_multiplier": 1.0,
+            "texture_resolution_scale": 1.0
+          },
+          "source_asset_unchanged": true,
+          "strategy": [
+            "Bind the exact observed source USDZ bytes and SHA-256 without geometry or material mutation."
+          ]
+        },
+        "minimal": {
+          "geometry_mutation_allowed": false,
+          "presentation_parameters": {
+            "label_density_ratio": 0.35,
+            "motion_mode": "static",
+            "motion_speed_multiplier": 0.0,
+            "particle_or_flow_count_ratio": 0.0,
+            "particle_or_flow_mode": "none",
+            "saturation_multiplier": 0.62,
+            "secondary_detail_visibility_ratio": 0.15,
+            "semantic_density_target": 0.3,
+            "specular_multiplier": 0.3,
+            "texture_resolution_scale": 0.45
+          },
+          "semantic_density": "smallest_reviewed_complete_explanation",
+          "strategy": [
+            "Use a non-graphic halo or region marker plus the pathology type.",
+            "Do not imply measured extent, severity, pressure, target, or outcome."
+          ],
+          "virtual_reversible_sidecar": true
+        },
+        "reduced80": {
+          "geometry_mutation_allowed": false,
+          "presentation_parameters": {
+            "label_density_ratio": 0.72,
+            "motion_mode": "static",
+            "motion_speed_multiplier": 0.0,
+            "particle_or_flow_count_ratio": 0.0,
+            "particle_or_flow_mode": "none",
+            "saturation_multiplier": 0.8,
+            "secondary_detail_visibility_ratio": 0.65,
+            "semantic_density_target": 0.8,
+            "specular_multiplier": 0.62,
+            "texture_resolution_scale": 0.78
+          },
+          "semantic_density_target": 0.8,
+          "strategy": [
+            "Use a muted solid cue and remove graphic surface detail or particles.",
+            "Retain the reviewed focus and pathology disclosure."
+          ],
+          "virtual_reversible_sidecar": true
+        }
+      }
+    },
+    {
+      "asset_count": 7,
+      "category_id": "BLOOD_FLOW_TEACHING",
+      "must_preserve": [
+        "qualitative direction",
+        "baseline/restricted/restored state",
+        "non-CFD and nonquantitative warning"
+      ],
+      "tiers": {
+        "full": {
+          "geometry_mutation_allowed": false,
+          "presentation_parameters": {
+            "label_density_ratio": 1.0,
+            "motion_mode": "source_authored",
+            "motion_speed_multiplier": 1.0,
+            "particle_or_flow_count_ratio": 1.0,
+            "particle_or_flow_mode": "source_authored",
+            "saturation_multiplier": 1.0,
+            "secondary_detail_visibility_ratio": 1.0,
+            "semantic_density_target": 1.0,
+            "specular_multiplier": 1.0,
+            "texture_resolution_scale": 1.0
+          },
+          "source_asset_unchanged": true,
+          "strategy": [
+            "Bind the exact observed source USDZ bytes and SHA-256 without geometry or material mutation."
+          ]
+        },
+        "minimal": {
+          "geometry_mutation_allowed": false,
+          "presentation_parameters": {
+            "label_density_ratio": 0.3,
+            "motion_mode": "static",
+            "motion_speed_multiplier": 0.0,
+            "particle_or_flow_count_ratio": 0.15,
+            "particle_or_flow_mode": "sparse_static_direction_markers",
+            "saturation_multiplier": 0.72,
+            "secondary_detail_visibility_ratio": 0.15,
+            "semantic_density_target": 0.3,
+            "specular_multiplier": 0.35,
+            "texture_resolution_scale": 0.45
+          },
+          "semantic_density": "smallest_reviewed_complete_explanation",
+          "strategy": [
+            "Use a static directional path with two or three markers and a text equivalent.",
+            "Hide blood cells and animation; never expose pressure, velocity, perfusion, or CFD values."
+          ],
+          "virtual_reversible_sidecar": true
+        },
+        "reduced80": {
+          "geometry_mutation_allowed": false,
+          "presentation_parameters": {
+            "label_density_ratio": 0.7,
+            "motion_mode": "slowed",
+            "motion_speed_multiplier": 0.6,
+            "particle_or_flow_count_ratio": 0.7,
+            "particle_or_flow_mode": "reduced_cells_and_flow",
+            "saturation_multiplier": 0.88,
+            "secondary_detail_visibility_ratio": 0.7,
+            "semantic_density_target": 0.8,
+            "specular_multiplier": 0.72,
+            "texture_resolution_scale": 0.8
+          },
+          "semantic_density_target": 0.8,
+          "strategy": [
+            "Reduce cell, arrow, pulse, glow, and label density while retaining direction.",
+            "Slow or disable motion according to explicit motion preference."
+          ],
+          "virtual_reversible_sidecar": true
+        }
+      }
+    },
+    {
+      "asset_count": 11,
+      "category_id": "MICRO_CONCEPTUAL",
+      "must_preserve": [
+        "representative mechanism",
+        "separate microscopic presentation root",
+        "persistent magnification/conceptual/non-patient warning"
+      ],
+      "tiers": {
+        "full": {
+          "geometry_mutation_allowed": false,
+          "presentation_parameters": {
+            "label_density_ratio": 1.0,
+            "motion_mode": "source_authored",
+            "motion_speed_multiplier": 1.0,
+            "particle_or_flow_count_ratio": 1.0,
+            "particle_or_flow_mode": "source_authored",
+            "saturation_multiplier": 1.0,
+            "secondary_detail_visibility_ratio": 1.0,
+            "semantic_density_target": 1.0,
+            "specular_multiplier": 1.0,
+            "texture_resolution_scale": 1.0
+          },
+          "source_asset_unchanged": true,
+          "strategy": [
+            "Bind the exact observed source USDZ bytes and SHA-256 without geometry or material mutation."
+          ]
+        },
+        "minimal": {
+          "geometry_mutation_allowed": false,
+          "presentation_parameters": {
+            "label_density_ratio": 0.3,
+            "motion_mode": "static",
+            "motion_speed_multiplier": 0.0,
+            "particle_or_flow_count_ratio": 0.1,
+            "particle_or_flow_mode": "representative_static_elements",
+            "saturation_multiplier": 0.75,
+            "secondary_detail_visibility_ratio": 0.15,
+            "semantic_density_target": 0.25,
+            "specular_multiplier": 0.35,
+            "texture_resolution_scale": 0.45
+          },
+          "semantic_density": "smallest_reviewed_complete_explanation",
+          "strategy": [
+            "Show one representative element and one schematic relationship.",
+            "Never overlay or scale-match the vignette to the head."
+          ],
+          "virtual_reversible_sidecar": true
+        },
+        "reduced80": {
+          "geometry_mutation_allowed": false,
+          "presentation_parameters": {
+            "label_density_ratio": 0.7,
+            "motion_mode": "slowed",
+            "motion_speed_multiplier": 0.6,
+            "particle_or_flow_count_ratio": 0.65,
+            "particle_or_flow_mode": "reduced_representative_elements",
+            "saturation_multiplier": 0.9,
+            "secondary_detail_visibility_ratio": 0.7,
+            "semantic_density_target": 0.8,
+            "specular_multiplier": 0.75,
+            "texture_resolution_scale": 0.8
+          },
+          "semantic_density_target": 0.8,
+          "strategy": [
+            "Reduce repeated cells, filaments, particles, and labels.",
+            "Retain the canonical elements required to explain the selected relation."
+          ],
+          "virtual_reversible_sidecar": true
+        }
+      }
+    },
+    {
+      "asset_count": 19,
+      "category_id": "TOOLS_ENDOVASCULAR",
+      "must_preserve": [
+        "tool category and conditional status",
+        "EVT pathway gate",
+        "non-device-specific and non-training warning"
+      ],
+      "tiers": {
+        "full": {
+          "geometry_mutation_allowed": false,
+          "presentation_parameters": {
+            "label_density_ratio": 1.0,
+            "motion_mode": "source_authored",
+            "motion_speed_multiplier": 1.0,
+            "particle_or_flow_count_ratio": 1.0,
+            "particle_or_flow_mode": "source_authored",
+            "saturation_multiplier": 1.0,
+            "secondary_detail_visibility_ratio": 1.0,
+            "semantic_density_target": 1.0,
+            "specular_multiplier": 1.0,
+            "texture_resolution_scale": 1.0
+          },
+          "source_asset_unchanged": true,
+          "strategy": [
+            "Bind the exact observed source USDZ bytes and SHA-256 without geometry or material mutation."
+          ]
+        },
+        "minimal": {
+          "geometry_mutation_allowed": false,
+          "presentation_parameters": {
+            "label_density_ratio": 0.35,
+            "motion_mode": "static",
+            "motion_speed_multiplier": 0.0,
+            "particle_or_flow_count_ratio": 0.0,
+            "particle_or_flow_mode": "none",
+            "saturation_multiplier": 0.72,
+            "secondary_detail_visibility_ratio": 0.12,
+            "semantic_density_target": 0.3,
+            "specular_multiplier": 0.38,
+            "texture_resolution_scale": 0.48
+          },
+          "semantic_density": "smallest_reviewed_complete_explanation",
+          "strategy": [
+            "Use a detached simplified silhouette or reviewed proxy plus category text.",
+            "Show no anatomy contact, route motion, sizing, compatibility, or technique cue."
+          ],
+          "virtual_reversible_sidecar": true
+        },
+        "reduced80": {
+          "geometry_mutation_allowed": false,
+          "presentation_parameters": {
+            "label_density_ratio": 0.72,
+            "motion_mode": "slowed",
+            "motion_speed_multiplier": 0.6,
+            "particle_or_flow_count_ratio": 0.0,
+            "particle_or_flow_mode": "none",
+            "saturation_multiplier": 0.88,
+            "secondary_detail_visibility_ratio": 0.7,
+            "semantic_density_target": 0.8,
+            "specular_multiplier": 0.72,
+            "texture_resolution_scale": 0.8
+          },
+          "semantic_density_target": 0.8,
+          "strategy": [
+            "Show the active tool category plus at most one necessary connector or context item.",
+            "Hide trays, accessories, duplicate variants, and unselected techniques."
+          ],
+          "virtual_reversible_sidecar": true
+        }
+      }
+    },
+    {
+      "asset_count": 16,
+      "category_id": "TOOLS_OPEN_CRANIAL",
+      "must_preserve": [
+        "tool category and conditional status",
+        "open-neurosurgery/EVD gates",
+        "non-device-specific and non-training warning"
+      ],
+      "tiers": {
+        "full": {
+          "geometry_mutation_allowed": false,
+          "presentation_parameters": {
+            "label_density_ratio": 1.0,
+            "motion_mode": "source_authored",
+            "motion_speed_multiplier": 1.0,
+            "particle_or_flow_count_ratio": 1.0,
+            "particle_or_flow_mode": "source_authored",
+            "saturation_multiplier": 1.0,
+            "secondary_detail_visibility_ratio": 1.0,
+            "semantic_density_target": 1.0,
+            "specular_multiplier": 1.0,
+            "texture_resolution_scale": 1.0
+          },
+          "source_asset_unchanged": true,
+          "strategy": [
+            "Bind the exact observed source USDZ bytes and SHA-256 without geometry or material mutation."
+          ]
+        },
+        "minimal": {
+          "geometry_mutation_allowed": false,
+          "presentation_parameters": {
+            "label_density_ratio": 0.35,
+            "motion_mode": "static",
+            "motion_speed_multiplier": 0.0,
+            "particle_or_flow_count_ratio": 0.0,
+            "particle_or_flow_mode": "none",
+            "saturation_multiplier": 0.65,
+            "secondary_detail_visibility_ratio": 0.1,
+            "semantic_density_target": 0.25,
+            "specular_multiplier": 0.3,
+            "texture_resolution_scale": 0.42
+          },
+          "semantic_density": "smallest_reviewed_complete_explanation",
+          "strategy": [
+            "Use a detached outline/proxy or native category card.",
+            "Show no exposed-tissue contact, trajectory, force, energy, pressure, or technique."
+          ],
+          "virtual_reversible_sidecar": true
+        },
+        "reduced80": {
+          "geometry_mutation_allowed": false,
+          "presentation_parameters": {
+            "label_density_ratio": 0.7,
+            "motion_mode": "slowed",
+            "motion_speed_multiplier": 0.55,
+            "particle_or_flow_count_ratio": 0.0,
+            "particle_or_flow_mode": "none",
+            "saturation_multiplier": 0.84,
+            "secondary_detail_visibility_ratio": 0.62,
+            "semantic_density_target": 0.8,
+            "specular_multiplier": 0.65,
+            "texture_resolution_scale": 0.76
+          },
+          "semantic_density_target": 0.8,
+          "strategy": [
+            "Show only the active category and mute sharp visual detail.",
+            "Keep tools detached unless an exact reviewed placement exists; hide tissue contact."
+          ],
+          "virtual_reversible_sidecar": true
+        }
+      }
+    },
+    {
+      "asset_count": 7,
+      "category_id": "OPEN_CRANIAL_ANATOMY_STATE",
+      "must_preserve": [
+        "open versus closed state",
+        "craniotomy-replace versus craniectomy-leave-off",
+        "open-neurosurgery gate and non-graphic warning"
+      ],
+      "tiers": {
+        "full": {
+          "geometry_mutation_allowed": false,
+          "presentation_parameters": {
+            "label_density_ratio": 1.0,
+            "motion_mode": "source_authored",
+            "motion_speed_multiplier": 1.0,
+            "particle_or_flow_count_ratio": 1.0,
+            "particle_or_flow_mode": "source_authored",
+            "saturation_multiplier": 1.0,
+            "secondary_detail_visibility_ratio": 1.0,
+            "semantic_density_target": 1.0,
+            "specular_multiplier": 1.0,
+            "texture_resolution_scale": 1.0
+          },
+          "source_asset_unchanged": true,
+          "strategy": [
+            "Bind the exact observed source USDZ bytes and SHA-256 without geometry or material mutation."
+          ]
+        },
+        "minimal": {
+          "geometry_mutation_allowed": false,
+          "presentation_parameters": {
+            "label_density_ratio": 0.35,
+            "motion_mode": "static",
+            "motion_speed_multiplier": 0.0,
+            "particle_or_flow_count_ratio": 0.0,
+            "particle_or_flow_mode": "none",
+            "saturation_multiplier": 0.55,
+            "secondary_detail_visibility_ratio": 0.1,
+            "semantic_density_target": 0.2,
+            "specular_multiplier": 0.25,
+            "texture_resolution_scale": 0.35
+          },
+          "semantic_density": "smallest_reviewed_complete_explanation",
+          "strategy": [
+            "Use a closed-head cue or schematic cap/outline rather than graphic tissue.",
+            "Preserve branch-correct closure and reject every asset in ordinary EVT."
+          ],
+          "virtual_reversible_sidecar": true
+        },
+        "reduced80": {
+          "geometry_mutation_allowed": false,
+          "presentation_parameters": {
+            "label_density_ratio": 0.7,
+            "motion_mode": "slowed",
+            "motion_speed_multiplier": 0.5,
+            "particle_or_flow_count_ratio": 0.0,
+            "particle_or_flow_mode": "none",
+            "saturation_multiplier": 0.78,
+            "secondary_detail_visibility_ratio": 0.65,
+            "semantic_density_target": 0.8,
+            "specular_multiplier": 0.6,
+            "texture_resolution_scale": 0.75
+          },
+          "semantic_density_target": 0.8,
+          "strategy": [
+            "Show one opaque muted access or closure state at a time.",
+            "Use static or slowed host-owned flap motion and no tissue physics."
+          ],
+          "virtual_reversible_sidecar": true
+        }
+      }
+    },
+    {
+      "asset_count": 7,
+      "category_id": "CLINICAL_CONTEXT",
+      "must_preserve": [
+        "only context required by the lesson",
+        "privacy, modesty, and fictional/generic status",
+        "no operational monitor/equipment meaning"
+      ],
+      "tiers": {
+        "full": {
+          "geometry_mutation_allowed": false,
+          "presentation_parameters": {
+            "label_density_ratio": 1.0,
+            "motion_mode": "source_authored",
+            "motion_speed_multiplier": 1.0,
+            "particle_or_flow_count_ratio": 1.0,
+            "particle_or_flow_mode": "source_authored",
+            "saturation_multiplier": 1.0,
+            "secondary_detail_visibility_ratio": 1.0,
+            "semantic_density_target": 1.0,
+            "specular_multiplier": 1.0,
+            "texture_resolution_scale": 1.0
+          },
+          "source_asset_unchanged": true,
+          "strategy": [
+            "Bind the exact observed source USDZ bytes and SHA-256 without geometry or material mutation."
+          ]
+        },
+        "minimal": {
+          "geometry_mutation_allowed": false,
+          "presentation_parameters": {
+            "label_density_ratio": 0.1,
+            "motion_mode": "static",
+            "motion_speed_multiplier": 0.0,
+            "particle_or_flow_count_ratio": 0.0,
+            "particle_or_flow_mode": "none",
+            "saturation_multiplier": 0.7,
+            "secondary_detail_visibility_ratio": 0.05,
+            "semantic_density_target": 0.15,
+            "specular_multiplier": 0.35,
+            "texture_resolution_scale": 0.4
+          },
+          "semantic_density": "smallest_reviewed_complete_explanation",
+          "strategy": [
+            "Use no people/equipment unless essential; otherwise use a neutral reviewed silhouette.",
+            "Never display readings, patient identity, or equipment-operation cues."
+          ],
+          "virtual_reversible_sidecar": true
+        },
+        "reduced80": {
+          "geometry_mutation_allowed": false,
+          "presentation_parameters": {
+            "label_density_ratio": 0.4,
+            "motion_mode": "static",
+            "motion_speed_multiplier": 0.0,
+            "particle_or_flow_count_ratio": 0.0,
+            "particle_or_flow_mode": "none",
+            "saturation_multiplier": 0.85,
+            "secondary_detail_visibility_ratio": 0.6,
+            "semantic_density_target": 0.8,
+            "specular_multiplier": 0.7,
+            "texture_resolution_scale": 0.75
+          },
+          "semantic_density_target": 0.8,
+          "strategy": [
+            "Remove unrelated staff and equipment and use blank abstract displays.",
+            "Retain at most the context required for orientation."
+          ],
+          "virtual_reversible_sidecar": true
+        }
+      }
+    },
+    {
+      "asset_count": 9,
+      "category_id": "SPATIAL_ENVIRONMENT",
+      "must_preserve": [
+        "system passthrough/Simulator remains default",
+        "safe-space and non-therapeutic warnings",
+        "assembly/component exclusion"
+      ],
+      "tiers": {
+        "full": {
+          "geometry_mutation_allowed": false,
+          "presentation_parameters": {
+            "label_density_ratio": 1.0,
+            "motion_mode": "source_authored",
+            "motion_speed_multiplier": 1.0,
+            "particle_or_flow_count_ratio": 1.0,
+            "particle_or_flow_mode": "source_authored",
+            "saturation_multiplier": 1.0,
+            "secondary_detail_visibility_ratio": 1.0,
+            "semantic_density_target": 1.0,
+            "specular_multiplier": 1.0,
+            "texture_resolution_scale": 1.0
+          },
+          "source_asset_unchanged": true,
+          "strategy": [
+            "Bind the exact observed source USDZ bytes and SHA-256 without geometry or material mutation."
+          ]
+        },
+        "minimal": {
+          "geometry_mutation_allowed": false,
+          "presentation_parameters": {
+            "label_density_ratio": 0.0,
+            "motion_mode": "static",
+            "motion_speed_multiplier": 0.0,
+            "particle_or_flow_count_ratio": 0.0,
+            "particle_or_flow_mode": "none",
+            "saturation_multiplier": 0.8,
+            "secondary_detail_visibility_ratio": 0.0,
+            "semantic_density_target": 0.0,
+            "specular_multiplier": 0.4,
+            "texture_resolution_scale": 0.25
+          },
+          "semantic_density": "smallest_reviewed_complete_explanation",
+          "strategy": [
+            "Load zero optional environment assets and use the system environment.",
+            "Do not substitute virtual surfaces for physical boundaries or support."
+          ],
+          "virtual_reversible_sidecar": true
+        },
+        "reduced80": {
+          "geometry_mutation_allowed": false,
+          "presentation_parameters": {
+            "label_density_ratio": 0.3,
+            "motion_mode": "static",
+            "motion_speed_multiplier": 0.0,
+            "particle_or_flow_count_ratio": 0.0,
+            "particle_or_flow_mode": "none",
+            "saturation_multiplier": 0.9,
+            "secondary_detail_visibility_ratio": 0.55,
+            "semantic_density_target": 0.8,
+            "specular_multiplier": 0.7,
+            "texture_resolution_scale": 0.75
+          },
+          "semantic_density_target": 0.8,
+          "strategy": [
+            "Keep architecture, dais, and only essential seating; omit decor first.",
+            "Use static geometry and app-owned lighting."
+          ],
+          "virtual_reversible_sidecar": true
+        }
+      }
+    },
+    {
+      "asset_count": 1,
+      "category_id": "GUIDANCE",
+      "must_preserve": [
+        "current step and accessible equivalent",
+        "Reset/Home and Exit/Return",
+        "progress means navigation only"
+      ],
+      "tiers": {
+        "full": {
+          "geometry_mutation_allowed": false,
+          "presentation_parameters": {
+            "label_density_ratio": 1.0,
+            "motion_mode": "source_authored",
+            "motion_speed_multiplier": 1.0,
+            "particle_or_flow_count_ratio": 1.0,
+            "particle_or_flow_mode": "source_authored",
+            "saturation_multiplier": 1.0,
+            "secondary_detail_visibility_ratio": 1.0,
+            "semantic_density_target": 1.0,
+            "specular_multiplier": 1.0,
+            "texture_resolution_scale": 1.0
+          },
+          "source_asset_unchanged": true,
+          "strategy": [
+            "Bind the exact observed source USDZ bytes and SHA-256 without geometry or material mutation."
+          ]
+        },
+        "minimal": {
+          "geometry_mutation_allowed": false,
+          "presentation_parameters": {
+            "label_density_ratio": 0.5,
+            "motion_mode": "static",
+            "motion_speed_multiplier": 0.0,
+            "particle_or_flow_count_ratio": 0.0,
+            "particle_or_flow_mode": "none",
+            "saturation_multiplier": 0.85,
+            "secondary_detail_visibility_ratio": 0.0,
+            "semantic_density_target": 0.3,
+            "specular_multiplier": 0.4,
+            "texture_resolution_scale": 0.5
+          },
+          "semantic_density": "smallest_reviewed_complete_explanation",
+          "strategy": [
+            "Unload authored marker geometry and show a native current-step label/control."
+          ],
+          "virtual_reversible_sidecar": true
+        },
+        "reduced80": {
+          "geometry_mutation_allowed": false,
+          "presentation_parameters": {
+            "label_density_ratio": 0.75,
+            "motion_mode": "static",
+            "motion_speed_multiplier": 0.0,
+            "particle_or_flow_count_ratio": 0.0,
+            "particle_or_flow_mode": "none",
+            "saturation_multiplier": 0.95,
+            "secondary_detail_visibility_ratio": 0.5,
+            "semantic_density_target": 0.8,
+            "specular_multiplier": 0.7,
+            "texture_resolution_scale": 0.8
+          },
+          "semantic_density_target": 0.8,
+          "strategy": [
+            "Show current and next markers only; prefer native attachments."
+          ],
+          "virtual_reversible_sidecar": true
+        }
+      }
+    },
+    {
+      "asset_count": 1,
+      "category_id": "ADAPTIVE_PRESENTATION",
+      "must_preserve": [
+        "orientation silhouette",
+        "replacement-not-overlay rule",
+        "review and display authorization"
+      ],
+      "tiers": {
+        "full": {
+          "geometry_mutation_allowed": false,
+          "presentation_parameters": {
+            "label_density_ratio": 1.0,
+            "motion_mode": "source_authored",
+            "motion_speed_multiplier": 1.0,
+            "particle_or_flow_count_ratio": 1.0,
+            "particle_or_flow_mode": "source_authored",
+            "saturation_multiplier": 1.0,
+            "secondary_detail_visibility_ratio": 1.0,
+            "semantic_density_target": 1.0,
+            "specular_multiplier": 1.0,
+            "texture_resolution_scale": 1.0
+          },
+          "source_asset_unchanged": true,
+          "strategy": [
+            "Bind the exact observed source USDZ bytes and SHA-256 without geometry or material mutation."
+          ]
+        },
+        "minimal": {
+          "geometry_mutation_allowed": false,
+          "presentation_parameters": {
+            "label_density_ratio": 0.3,
+            "motion_mode": "static",
+            "motion_speed_multiplier": 0.0,
+            "particle_or_flow_count_ratio": 0.0,
+            "particle_or_flow_mode": "none",
+            "saturation_multiplier": 0.75,
+            "secondary_detail_visibility_ratio": 0.0,
+            "semantic_density_target": 0.1,
+            "specular_multiplier": 0.3,
+            "texture_resolution_scale": 0.35
+          },
+          "semantic_density": "smallest_reviewed_complete_explanation",
+          "strategy": [
+            "Show no 3D asset or a separately reviewed silhouette proxy.",
+            "Never decimate or rewrite the source asset in place."
+          ],
+          "virtual_reversible_sidecar": true
+        },
+        "reduced80": {
+          "geometry_mutation_allowed": false,
+          "presentation_parameters": {
+            "label_density_ratio": 0.65,
+            "motion_mode": "slowed",
+            "motion_speed_multiplier": 0.65,
+            "particle_or_flow_count_ratio": 0.0,
+            "particle_or_flow_mode": "none",
+            "saturation_multiplier": 0.9,
+            "secondary_detail_visibility_ratio": 0.6,
+            "semantic_density_target": 0.8,
+            "specular_multiplier": 0.7,
+            "texture_resolution_scale": 0.8
+          },
+          "semantic_density_target": 0.8,
+          "strategy": [
+            "Keep source geometry unchanged and reduce only labels/motion through an app sidecar.",
+            "Never co-load with the detailed source or pathology/tools."
+          ],
+          "virtual_reversible_sidecar": true
+        }
+      }
+    },
+    {
+      "asset_count": 17,
+      "category_id": "COMPOSITE_ASSEMBLY",
+      "must_preserve": [
+        "assembly domain and recursive leaf meaning",
+        "assembly/component exclusion",
+        "source registration and warnings"
+      ],
+      "tiers": {
+        "full": {
+          "geometry_mutation_allowed": false,
+          "presentation_parameters": {
+            "label_density_ratio": 1.0,
+            "motion_mode": "source_authored",
+            "motion_speed_multiplier": 1.0,
+            "particle_or_flow_count_ratio": 1.0,
+            "particle_or_flow_mode": "source_authored",
+            "saturation_multiplier": 1.0,
+            "secondary_detail_visibility_ratio": 1.0,
+            "semantic_density_target": 1.0,
+            "specular_multiplier": 1.0,
+            "texture_resolution_scale": 1.0
+          },
+          "source_asset_unchanged": true,
+          "strategy": [
+            "Bind the exact observed source USDZ bytes and SHA-256 without geometry or material mutation."
+          ]
+        },
+        "minimal": {
+          "geometry_mutation_allowed": false,
+          "presentation_parameters": {
+            "label_density_ratio": 0.25,
+            "motion_mode": "static",
+            "motion_speed_multiplier": 0.0,
+            "particle_or_flow_count_ratio": 0.0,
+            "particle_or_flow_mode": "none",
+            "saturation_multiplier": 0.75,
+            "secondary_detail_visibility_ratio": 0.1,
+            "semantic_density_target": 0.2,
+            "specular_multiplier": 0.4,
+            "texture_resolution_scale": 0.4
+          },
+          "semantic_density": "smallest_reviewed_complete_explanation",
+          "strategy": [
+            "Unload the assembly and load at most one essential leaf or no geometry.",
+            "Environment assemblies reduce to the system environment."
+          ],
+          "virtual_reversible_sidecar": true
+        },
+        "reduced80": {
+          "geometry_mutation_allowed": false,
+          "presentation_parameters": {
+            "label_density_ratio": 0.65,
+            "motion_mode": "slowed",
+            "motion_speed_multiplier": 0.6,
+            "particle_or_flow_count_ratio": 0.0,
+            "particle_or_flow_mode": "none",
+            "saturation_multiplier": 0.88,
+            "secondary_detail_visibility_ratio": 0.65,
+            "semantic_density_target": 0.8,
+            "specular_multiplier": 0.7,
+            "texture_resolution_scale": 0.75
+          },
+          "semantic_density_target": 0.8,
+          "strategy": [
+            "Unload the assembly and substitute a curated set of leaf components governed by their domain policy.",
+            "Do not partially decimate or ambiguously hide an assembly in place."
+          ],
+          "virtual_reversible_sidecar": true
+        }
+      }
+    }
+  ],
+  "category_count": 14,
+  "global_must_preserve": [
+    "recognizable silhouette or a separately reviewed meaning-equivalent proxy",
+    "selected learning objective and all material medical facts",
+    "laterality, registration, pathology type, pathway, and closure branch",
+    "conceptual, nonquantitative, magnification, uncertainty, and scale warnings",
+    "accessible text equivalent and immediate restore-original control"
+  ],
+  "global_prohibited": [
+    "destructive source USDZ edits or unreviewed generated replacement geometry",
+    "anxiety, emotion, gaze, pupil, joint-motion, biometric, or sensor inference",
+    "changing clinical pathway, laterality, registration, lesion meaning, or outcome",
+    "hiding material facts or treating visual reduction as clinical recommendation",
+    "patient display while patient_display_authorized is false"
+  ],
+  "module_id": "visual_detail_variants_v1",
+  "patient_display_authorized": false,
+  "policy_id": "visual_detail_category_policy_v1",
+  "presentation_parameter_contract": {
+    "motion_modes": [
+      "static",
+      "slowed",
+      "source_authored"
+    ],
+    "numeric_monotonic_order": "minimal <= reduced80 <= full",
+    "numeric_range": [
+      0.0,
+      1.0
+    ],
+    "particle_or_flow_modes": [
+      "none",
+      "sparse_static_direction_markers",
+      "reduced_direction_markers",
+      "reduced_cells_and_flow",
+      "representative_static_elements",
+      "reduced_representative_elements",
+      "source_authored"
+    ],
+    "reduced80_semantic_density_target": 0.8,
+    "units": {
+      "motion_speed_multiplier": "ratio_of_source_authored_speed",
+      "particle_or_flow_count_ratio": "ratio_of_source_authored_count_or_reviewed_equivalent",
+      "semantic_density_target": "ratio_of_approved_explanatory_information_not_polygon_count"
+    }
+  },
+  "schema_version": "1.0.0",
+  "tier_order": [
+    "minimal",
+    "reduced80",
+    "full"
+  ],
+  "tier_semantics": {
+    "full": {
+      "source_asset_unchanged": true
+    },
+    "minimal": {
+      "semantic_density": "smallest_reviewed_complete_explanation"
+    },
+    "reduced80": {
+      "meaning": "Retain approximately 80% of approved semantic information; this is not a polygon target.",
+      "semantic_density_target": 0.8
+    }
+  }
+}

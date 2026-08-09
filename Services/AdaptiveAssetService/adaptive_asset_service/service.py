@@ -9,7 +9,8 @@ import threading
 from concurrent.futures import ThreadPoolExecutor
 from typing import Any
 
-from .catalog import AssetCatalog, valid_asset_id
+from .catalog import AssetCatalog, CatalogAsset, CatalogError, SHA256_PATTERN, valid_asset_id
+from .detail_variants import DETAIL_TIERS, DetailVariantCatalog
 from .policy import NON_DIAGNOSTIC_NOTICE, POLICY_VERSION, make_recipe, recipe_fingerprint, simulate_preference
 from .procedural import ArtifactStore
 
@@ -35,7 +36,14 @@ BIOMETRIC_FIELDS = {
     "anxiety_score",
     "simulated_anxiety_score",
     "comfort_score",
+    "gaze",
+    "gaze_data",
+    "heart_rate",
+    "sensor_data",
+    "sensors",
+    "viewer_state",
 }
+DETAIL_VARIANT_FIELDS = {"asset_id", "detail_tier", "expected_package_sha256"}
 CALM_ORIENTATION_ASSET_ID = "brain_orientation_calm_educational_v1"
 PATIENT_DISPLAY_APPROVED_STATUS = "APPROVED_FOR_PATIENT_EDUCATION"
 
@@ -57,9 +65,15 @@ class ServiceError(Exception):
 class AdaptationService:
     """Pure policy plus a constrained local artifact store."""
 
-    def __init__(self, catalog: AssetCatalog, artifacts: ArtifactStore):
+    def __init__(
+        self,
+        catalog: AssetCatalog,
+        artifacts: ArtifactStore,
+        detail_variants: DetailVariantCatalog,
+    ):
         self.catalog = catalog
         self.artifacts = artifacts
+        self.detail_variants = detail_variants
         self._jobs: dict[str, dict[str, Any]] = {}
         self._jobs_lock = threading.Lock()
         self._executor = ThreadPoolExecutor(max_workers=2, thread_name_prefix="adaptive-template")
@@ -69,6 +83,8 @@ class AdaptationService:
     def _validate(payload: Any) -> dict[str, Any]:
         if not isinstance(payload, dict):
             raise ServiceError(400, "invalid_request", "JSON body must be an object")
+        if not all(isinstance(key, str) for key in payload):
+            raise ServiceError(400, "invalid_request", "JSON object field names must be strings")
         biometric = sorted(set(payload).intersection(BIOMETRIC_FIELDS))
         if biometric:
             raise ServiceError(
@@ -147,6 +163,162 @@ class AdaptationService:
                     "simulation_seed",
                 )
         return payload
+
+    @staticmethod
+    def _validate_detail_variant_request(payload: Any) -> dict[str, Any]:
+        if not isinstance(payload, dict):
+            raise ServiceError(400, "invalid_request", "JSON body must be an object")
+        if not all(isinstance(key, str) for key in payload):
+            raise ServiceError(400, "invalid_request", "JSON object field names must be strings")
+        biometric = sorted(set(payload).intersection(BIOMETRIC_FIELDS))
+        if biometric:
+            raise ServiceError(
+                400,
+                "biometric_input_not_accepted",
+                "This selector does not accept sensor, gaze, movement, or anxiety data.",
+                biometric[0],
+            )
+        extra = sorted(set(payload).difference(DETAIL_VARIANT_FIELDS))
+        if extra:
+            raise ServiceError(400, "unknown_field", "Unknown request field", extra[0])
+        missing = sorted(DETAIL_VARIANT_FIELDS.difference(payload))
+        if missing:
+            raise ServiceError(400, "missing_field", "Required request field is missing", missing[0])
+        if not valid_asset_id(payload["asset_id"]):
+            raise ServiceError(
+                400,
+                "invalid_asset_id",
+                "asset_id must be a catalog identifier, not a path",
+                "asset_id",
+            )
+        tier = payload["detail_tier"]
+        if not isinstance(tier, str) or tier not in DETAIL_TIERS:
+            raise ServiceError(
+                400,
+                "invalid_detail_tier",
+                "detail_tier must be minimal, reduced80, or full",
+                "detail_tier",
+            )
+        expected_sha256 = payload["expected_package_sha256"]
+        if (
+            not isinstance(expected_sha256, str)
+            or SHA256_PATTERN.fullmatch(expected_sha256) is None
+        ):
+            raise ServiceError(
+                400,
+                "invalid_package_sha256",
+                "expected_package_sha256 must be a lowercase 64-character SHA-256 digest",
+                "expected_package_sha256",
+            )
+        return payload
+
+    def _assert_current_package(self, asset: CatalogAsset) -> None:
+        if not self.detail_variants.matches_validated_source(asset):
+            raise ServiceError(
+                409,
+                "detail_catalog_source_revision_mismatch",
+                "The source catalog no longer matches the frozen detail catalog; keep the prior state and reload an authorized release.",
+                "asset_id",
+            )
+        try:
+            current = self.catalog.current_package_revision(asset.asset_id)
+        except CatalogError as exc:
+            raise ServiceError(
+                409,
+                "package_revision_changed",
+                "The source package changed after startup; keep the prior state and reload the service catalog.",
+                "asset_id",
+            ) from exc
+        if current != (asset.package_bytes, asset.package_sha256):
+            raise ServiceError(
+                409,
+                "package_revision_changed",
+                "The source package changed after startup; keep the prior state and reload the service catalog.",
+                "asset_id",
+            )
+
+    @staticmethod
+    def _selection_id(
+        asset_id: str,
+        detail_tier: str,
+        package_sha256: str,
+        catalog_sha256: str,
+        policy_sha256: str,
+    ) -> str:
+        material = "\n".join(
+            (asset_id, detail_tier, package_sha256, catalog_sha256, policy_sha256)
+        ).encode("utf-8")
+        return hashlib.sha256(material).hexdigest()[:24]
+
+    def get_detail_variants(self, asset_id: Any, request_id: str) -> tuple[int, dict[str, Any]]:
+        if not valid_asset_id(asset_id):
+            raise ServiceError(
+                400,
+                "invalid_asset_id",
+                "asset_id must be a catalog identifier, not a path",
+                "asset_id",
+            )
+        asset = self.catalog.get(asset_id)
+        if asset is None or not self.detail_variants.has_asset(asset_id):
+            raise ServiceError(
+                404,
+                "asset_not_found",
+                "asset_id is not present in the detail-variant catalog",
+                "asset_id",
+            )
+        self._assert_current_package(asset)
+        variants = self.detail_variants.variants_for(asset_id)
+        assert variants is not None
+        return 200, {
+            "request_id": request_id,
+            "status": "available",
+            "catalog_revision": self.detail_variants.catalog_revision,
+            "category_policy_revision": self.detail_variants.policy_revision,
+            "tier_order": list(DETAIL_TIERS),
+            "source_asset": self.detail_variants.source_revision(asset_id),
+            "variants": variants,
+            "application_contract": self.detail_variants.application_contract,
+            "patient_display_authorized": False,
+        }
+
+    def select_detail_variant(self, payload: Any, request_id: str) -> tuple[int, dict[str, Any]]:
+        data = self._validate_detail_variant_request(payload)
+        asset = self.catalog.get(data["asset_id"])
+        if asset is None or not self.detail_variants.has_asset(data["asset_id"]):
+            raise ServiceError(
+                404,
+                "asset_not_found",
+                "asset_id is not present in the detail-variant catalog",
+                "asset_id",
+            )
+        if data["expected_package_sha256"] != asset.package_sha256:
+            raise ServiceError(
+                409,
+                "package_revision_mismatch",
+                "expected_package_sha256 does not match the current catalog revision; keep the prior state.",
+                "expected_package_sha256",
+            )
+        self._assert_current_package(asset)
+        selected = self.detail_variants.select(asset.asset_id, data["detail_tier"])
+        assert selected is not None
+        selection_id = self._selection_id(
+            asset.asset_id,
+            data["detail_tier"],
+            asset.package_sha256,
+            self.detail_variants.document_sha256,
+            self.detail_variants.policy_sha256,
+        )
+        return 200, {
+            "request_id": request_id,
+            "status": "resolved",
+            "selection_id": selection_id,
+            "catalog_revision": self.detail_variants.catalog_revision,
+            "category_policy_revision": self.detail_variants.policy_revision,
+            "source_asset": self.detail_variants.source_revision(asset.asset_id),
+            "selected_variant": selected,
+            "application_contract": self.detail_variants.application_contract,
+            "patient_display_authorized": False,
+        }
 
     def adapt(self, payload: Any, request_id: str) -> tuple[int, dict[str, Any]]:
         data = self._validate(payload)

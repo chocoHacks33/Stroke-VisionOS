@@ -7,6 +7,7 @@ from http.server import BaseHTTPRequestHandler, ThreadingHTTPServer
 import json
 import logging
 from pathlib import Path
+import re
 import secrets
 import sys
 import tempfile
@@ -16,6 +17,12 @@ from urllib.parse import urlsplit
 
 from . import __version__
 from .catalog import AssetCatalog, CatalogError
+from .detail_variants import (
+    FROZEN_DETAIL_CATALOG_SHA256,
+    FROZEN_DETAIL_POLICY_SHA256,
+    DetailVariantCatalog,
+    DetailVariantError,
+)
 from .procedural import ArtifactStore, JOB_ID_PATTERN
 from .service import AdaptationService, ServiceError
 
@@ -114,8 +121,11 @@ class AdaptiveRequestHandler(BaseHTTPRequestHandler):
         if len(content_lengths) > 1 or (content_lengths and "," in content_lengths[0]):
             raise ServiceError(400, "invalid_content_length", "Send at most one Content-Length header")
         if content_lengths:
+            raw_length = content_lengths[0]
+            if len(raw_length) > 20 or re.fullmatch(r"[0-9]+", raw_length) is None:
+                raise ServiceError(400, "invalid_content_length", "Content-Length must contain ASCII digits only")
             try:
-                length = int(content_lengths[0])
+                length = int(raw_length)
             except ValueError as exc:
                 raise ServiceError(400, "invalid_content_length", "Content-Length must be an integer") from exc
             if length != 0:
@@ -137,6 +147,8 @@ class AdaptiveRequestHandler(BaseHTTPRequestHandler):
         if len(content_lengths) != 1 or "," in content_lengths[0]:
             raise ServiceError(400, "invalid_content_length", "Send exactly one Content-Length header")
         raw_length = content_lengths[0]
+        if len(raw_length) > 20 or re.fullmatch(r"[0-9]+", raw_length) is None:
+            raise ServiceError(400, "invalid_content_length", "Content-Length must contain ASCII digits only")
         try:
             length = int(raw_length)
         except ValueError as exc:
@@ -144,9 +156,24 @@ class AdaptiveRequestHandler(BaseHTTPRequestHandler):
         if length < 0 or length > MAX_REQUEST_BYTES:
             raise ServiceError(413, "request_too_large", f"Request body limit is {MAX_REQUEST_BYTES} bytes")
         body = self.rfile.read(length)
+        def reject_duplicate_keys(pairs: list[tuple[str, Any]]) -> dict[str, Any]:
+            result: dict[str, Any] = {}
+            for key, value in pairs:
+                if key in result:
+                    raise ValueError("duplicate JSON object key")
+                result[key] = value
+            return result
+
+        def reject_nonfinite_number(value: str) -> None:
+            raise ValueError(f"non-finite JSON number: {value}")
+
         try:
-            return json.loads(body.decode("utf-8"))
-        except (UnicodeDecodeError, json.JSONDecodeError) as exc:
+            return json.loads(
+                body.decode("utf-8"),
+                object_pairs_hook=reject_duplicate_keys,
+                parse_constant=reject_nonfinite_number,
+            )
+        except (UnicodeDecodeError, json.JSONDecodeError, ValueError) as exc:
             raise ServiceError(400, "invalid_json", "Request body must be valid UTF-8 JSON") from exc
 
     def _finish_log(self, started: float, status: int, route: str, error_code: str | None = None) -> None:
@@ -190,6 +217,14 @@ class AdaptiveRequestHandler(BaseHTTPRequestHandler):
                 return
 
             parts = path.strip("/").split("/")
+            if len(parts) == 3 and parts[:2] == ["v1", "detail-variants"]:
+                route = "/v1/detail-variants/{asset_id}"
+                status, response = self.server.service.get_detail_variants(
+                    parts[2], self._request_id()
+                )
+                self._send_json(status, response)
+                return
+
             if len(parts) == 3 and parts[:2] == ["v1", "jobs"] and JOB_ID_PATTERN.fullmatch(parts[2]):
                 route = "/v1/jobs/{job_id}"
                 job = self.server.service.get_job(parts[2])
@@ -242,10 +277,21 @@ class AdaptiveRequestHandler(BaseHTTPRequestHandler):
         error_code: str | None = None
         try:
             path = self._path()
-            if path not in {"/v1/visual-adaptations", "/v1/adaptations"}:
+            if path not in {
+                "/v1/visual-adaptations",
+                "/v1/adaptations",
+                "/v1/detail-variants",
+            }:
                 raise ServiceError(404, "route_not_found", "Route was not found")
-            route = "/v1/visual-adaptations"
             payload = self._read_json()
+            if path == "/v1/detail-variants":
+                route = "/v1/detail-variants"
+                status, response = self.server.service.select_detail_variant(
+                    payload, self._request_id()
+                )
+                self._send_json(status, response)
+                return
+            route = "/v1/visual-adaptations"
             status, response = self.server.service.adapt(payload, self._request_id())
             if path == "/v1/adaptations":
                 response["endpoint_alias"] = {
@@ -263,9 +309,31 @@ class AdaptiveRequestHandler(BaseHTTPRequestHandler):
             self._finish_log(started, status, route, error_code)
 
 
-def build_server(host: str, port: int, catalog_root: Path, output_root: Path) -> AdaptiveHTTPServer:
+def _detail_variant_root() -> Path:
+    return _repo_root() / "RealityKitContent" / "InterfaceMedia" / "visual_detail_variants_v1"
+
+
+def build_server(
+    host: str,
+    port: int,
+    catalog_root: Path,
+    output_root: Path,
+    detail_catalog_path: Path | None = None,
+    detail_policy_path: Path | None = None,
+    *,
+    expected_detail_catalog_sha256: str | None = FROZEN_DETAIL_CATALOG_SHA256,
+    expected_detail_policy_sha256: str | None = FROZEN_DETAIL_POLICY_SHA256,
+) -> AdaptiveHTTPServer:
     catalog = AssetCatalog(catalog_root)
-    service = AdaptationService(catalog, ArtifactStore(output_root))
+    pack_root = _detail_variant_root()
+    details = DetailVariantCatalog(
+        detail_catalog_path or pack_root / "visual_detail_variant_catalog_v1.json",
+        detail_policy_path or pack_root / "visual_detail_category_policy_v1.json",
+        catalog,
+        expected_catalog_sha256=expected_detail_catalog_sha256,
+        expected_policy_sha256=expected_detail_policy_sha256,
+    )
+    service = AdaptationService(catalog, ArtifactStore(output_root), details)
     return AdaptiveHTTPServer((host, port), service)
 
 
@@ -285,6 +353,18 @@ def _parser() -> argparse.ArgumentParser:
         default=Path(tempfile.gettempdir()) / "stroke-vision-adaptive-assets",
         help="Runtime directory for clinician-review drafts",
     )
+    parser.add_argument(
+        "--detail-catalog",
+        type=Path,
+        default=_detail_variant_root() / "visual_detail_variant_catalog_v1.json",
+        help="Frozen visual-detail variant catalog",
+    )
+    parser.add_argument(
+        "--detail-policy",
+        type=Path,
+        default=_detail_variant_root() / "visual_detail_category_policy_v1.json",
+        help="Frozen category-tier presentation policy",
+    )
     return parser
 
 
@@ -302,8 +382,15 @@ def main() -> None:
             )
         )
     try:
-        server = build_server(args.host, args.port, args.catalog_root, args.output_root)
-    except (CatalogError, OSError, RuntimeError) as exc:
+        server = build_server(
+            args.host,
+            args.port,
+            args.catalog_root,
+            args.output_root,
+            args.detail_catalog,
+            args.detail_policy,
+        )
+    except (CatalogError, DetailVariantError, OSError, RuntimeError) as exc:
         raise SystemExit(f"startup failed: {exc}") from exc
     LOGGER.info(
         json.dumps(

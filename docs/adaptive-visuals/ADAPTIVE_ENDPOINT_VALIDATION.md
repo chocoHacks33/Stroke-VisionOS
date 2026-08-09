@@ -1,6 +1,6 @@
 # Adaptive visual endpoint validation
 
-Validation date: 2026-08-09
+Validation date: 2026-08-10
 
 ## Outcome
 
@@ -19,7 +19,7 @@ python3 -m json.tool openapi.json >/dev/null
 python3 -m compileall -q adaptive_asset_service
 ```
 
-Result: **21/21 tests passed**, the OpenAPI document parsed, and the Python
+Result: **35/35 tests passed**, the OpenAPI document parsed, and the Python
 package compiled. Coverage includes:
 
 - canonical and compatibility endpoint routing;
@@ -40,12 +40,19 @@ package compiled. Coverage includes:
 - allowlisted logs that omit request bodies, asset IDs, preferences, seeds, and
   client addresses;
 - asynchronous deterministic procedural drafts with no external USD reference;
-- `display_authorized: false` response and artifact headers; and
-- no patient-display approval endpoint.
+- `display_authorized: false` response and artifact headers;
+- no patient-display approval endpoint;
+- exact three-tier discovery and selection for every release asset;
+- frozen catalog/policy revision checks and exact source byte/SHA binding;
+- missing/invalid tier, stale SHA, duplicate-key, non-finite-number, and unknown
+  field rejection;
+- catalog-reload drift, post-startup package change, and same-size mid-hash
+  package replacement rejection; and
+- strict ASCII `Content-Length` parsing and path-free detail-variant responses.
 
 ## Full-catalog smoke test
 
-The service indexed **135 assets across 12 manifests** from
+The service indexed **150 assets across 14 manifests** from
 `RealityKitContent/Assets`. Live loopback requests verified:
 
 - `/healthz` reports `diagnostic_inference: false`;
@@ -62,9 +69,19 @@ The service indexed **135 assets across 12 manifests** from
   `orientation_asset_candidate` with its manifest review status,
   `display_authorized: false`, and the specialist/human-factors review gate;
 - a generation request returns HTTP 202 and a deterministic abstract USDA
-  review draft; and
+  review draft;
 - the generated USDA passes `usdchecker` and contains no external asset
-  reference.
+  reference;
+- `GET /v1/detail-variants/{asset_id}` returns exactly `minimal`, `reduced80`,
+  and `full`, bound to catalog SHA-256
+  `78be2bddff068298b62da4b504fe1c4b898f052c30209e52c84cf446abc25822`
+  and category-policy SHA-256
+  `9097522cd240b2e929f05954482651e30e230e2c0fa8b85303c752e26f18248b`;
+- `POST /v1/detail-variants` resolves an exact source-bound recipe, while a
+  stale expected package SHA returns HTTP 409 and keeps the prior state; and
+- the detail endpoint reports `developer_runtime_application_authorized=false`
+  and `patient_display_authorized=false`, because exact renderer/entity mapping
+  and external review are not implemented by this branch.
 
 ## Development latency observation
 
