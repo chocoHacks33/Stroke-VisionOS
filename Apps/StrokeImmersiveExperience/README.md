@@ -14,6 +14,8 @@ This directory contains a native SwiftUI + RealityKit visionOS developer preview
 - An explicit, user-paced state machine with Previous, Next, Pause/Resume, Replay, and Restore. There is no automatic clinical progression.
 - A searchable, category-filtered 150-record library, paged eight records at a time. Open-cranial records remain visible as metadata but locked until the separate developer gate is active.
 - Fail-closed resource loading: a missing required asset replaces the scene with a neutral marker; a missing optional asset produces a warning.
+- A project-owned interaction-feedback pack with seven short, low-level UI earcons and one optional seamless water/rain ambience loop. UI feedback and ambience have separate user controls; ambience is off by default.
+- A shared RealityKit loader with explicit file URL, existence, byte-count, and underlying error diagnostics; window and immersive failures expose a Retry action instead of permanently trapping the scene.
 - Simulator build, install, launch, screenshot, gated-branch QA, resource-staging, and pure-core smoke-test scripts.
 
 ## Asset and visual-detail contract
@@ -90,6 +92,37 @@ The implemented input path uses visionOS-owned focus and pinch behavior for Swif
 
 The app does not collect raw gaze, pupil dilation, hand-joint poses, or emotion/anxiety signals, and it does not render a custom hand mesh.
 
+## Sound and haptic feedback
+
+The app implements sparse, causal feedback—not continuous sonification. The source pack is under:
+
+```text
+Apps/StrokeImmersiveExperience/Resources/InteractionFeedback/
+```
+
+It contains seven original deterministic earcons (`focus`, `selection`, `confirm`, `back`, `warning`, `transition`, and `restore`) plus one 12-second seamless `soft_water_rain_loop`. All are 48 kHz, mono, 16-bit PCM and are staged with byte-count and SHA-256 verification. The water/rain loop is diffuse and UI-owned; it is never attached to anatomy or moved by head pose.
+
+Feedback rules:
+
+- Standard SwiftUI controls retain their platform hover and press treatment. Custom audio marks semantic tier boundaries, committed step changes, blocked/confirmation-required actions, restore, and major mode transitions.
+- Raw gaze, pupil data, head movement, continuous hand tracking, hover dwell, and every slider sample are silent. The visual-detail slider emits at most one cue when it crosses a tier boundary.
+- UI feedback and optional nature ambience have independent toggles and volume sliders. Ambience starts off, fades in/out, ducks under warning feedback, mixes with other audio, and pauses when the system requests secondary-audio silence.
+- Sound is never the only state indication; labels, button state, dialogs, timeline state, and warnings remain visible.
+- Vision Pro does **not** provide general-purpose headset vibration. The Swift contract exposes capability-gated external-accessory haptic intents, but they remain disabled unless a supported accessory adapter reports availability. The app never labels audio as tactile feedback.
+- The water/rain option is an evidence-informed comfort preference, not a medical treatment and not a claim that it reduces anxiety for every person.
+
+Generate and validate the exact pack:
+
+```bash
+PYTHONDONTWRITEBYTECODE=1 \
+  Apps/StrokeImmersiveExperience/Scripts/InteractionFeedback/generate_earcons.py
+
+PYTHONDONTWRITEBYTECODE=1 \
+  Apps/StrokeImmersiveExperience/Scripts/InteractionFeedback/validate_earcons.py
+```
+
+The validator checks exact deterministic regeneration, manifest membership, hashes, PCM format, duration, peak/RMS/DC bounds, cooldown policy, default-off ambience, independent volume policy, and loop-boundary continuity.
+
 ## Requirements
 
 - Apple Silicon Mac.
@@ -117,6 +150,18 @@ ExperienceCore smoke tests passed: 150 assets, 450 variants, 14 step recipes.
 
 The smoke suite verifies catalog counts and binding path/byte/digest invariants, tier monotonicity and hysteresis, recipe budgets, assembly/component exclusion, pathway separation, single-pathology and micro-vignette rules, audience/open-branch gates, detached placeholder notes, and the core tier-reconfiguration plan.
 
+Run the packaged RealityKit regression after a clean install:
+
+```bash
+Apps/StrokeImmersiveExperience/Tests/RuntimeAssetLoading/run_packaged_xros_probe.sh
+```
+
+It loads the assets used by the built-in recipes from the installed app bundle
+and fails if RealityKit cannot decode one. The same clean-install run prepares
+all seven earcons plus the ambience loop and starts one confirmation cue.
+Runtime failures retain the actual package path and underlying RealityKit
+error; they are not reduced to a misleading asset ID.
+
 ### 2. Build only
 
 ```bash
@@ -129,7 +174,7 @@ Default output:
 Apps/StrokeImmersiveExperience/build/Stroke Care Immersive.app
 ```
 
-The build stages all 150 USDZ files, their 14 source manifests, and three InterfaceMedia packs; verifies staged bytes and SHA-256 values; compiles for visionOS Simulator; and ad-hoc signs the bundle.
+The build stages all 150 USDZ files, their 14 source manifests, three InterfaceMedia packs, and all eight interaction-feedback WAV resources; verifies staged bytes and SHA-256 values; compiles for visionOS Simulator; and ad-hoc signs the bundle.
 
 ### 3. Build, boot, install, and launch
 
@@ -178,6 +223,8 @@ Environment variables:
 | `STROKE_IMMERSIVE_BUILD_ROOT` | `Apps/StrokeImmersiveExperience/build` | App and smoke-test output directory |
 | `STROKE_SCREENSHOT_DELAY_SECONDS` | `15` | Seconds to wait after launch before screenshot QA |
 
+Debug-only packaged probes accept `STROKE_RUNTIME_ASSET_PROBE_ID` (one ID, comma-separated IDs, or `all`), `STROKE_RUNTIME_UI_PROBE_ID` (open one catalog asset in the window stage), and `STROKE_RUNTIME_FEEDBACK_PROBE=1` (prepare seven earcons, the ambience loop, and start one confirmation cue). They do not change release authorization.
+
 The Xcode project can also be opened directly:
 
 ```bash
@@ -191,10 +238,13 @@ The shared scheme keeps `STROKE_ENABLE_OPEN_CRANIAL_DEVELOPER_PREVIEW=0` by defa
 ```text
 Apps/StrokeImmersiveExperience/
 ├── Config/                         build settings for visionOS 27
-├── Scripts/                        tests, resource staging, build/install/launch
+├── Resources/InteractionFeedback/ original WAVs, manifest, provenance, license
+├── Scripts/                        tests, feedback generation, resource staging, build/install/launch
 ├── Sources/ExperienceCore/         catalog, tiers, recipes, safety, state, notes, tools, cameras
+├── Sources/InteractionFeedback/    semantic earcon/optional accessory-haptic recipes
 ├── Sources/StrokeImmersiveExperience/ SwiftUI and RealityKit app shell
 ├── Tests/ExperienceCoreTests/      executable pure-core smoke suite
+├── Tests/RuntimeAssetLoading/      installed-package RealityKit regression
 ├── StrokeImmersiveExperience.xcodeproj
 └── Info.plist
 ```
@@ -232,6 +282,8 @@ Key runtime flow:
 9. The open-cranial environment flag is a developer convenience, not a secure role/authorization system.
 10. The canonical automation installs only to visionOS Simulator. Physical Vision Pro signing, entitlements, device trust, pairing, performance, and comfort testing remain outstanding.
 11. There is no external web anxiety endpoint, sensor pipeline, analytics, persistence, networking, multi-user synchronization, or clinician content-management system in this app.
+12. The headset supplies no general-purpose tactile haptic output. External-accessory haptic intents are a disabled integration boundary until a compatible, explicitly opted-in adapter is implemented and tested.
+13. The optional procedural water/rain bed and tonal earcons require user testing with stroke patients, families, clinicians, hearing-device users, and sound-sensitive users; they carry no therapeutic efficacy claim.
 
 ## Improvement priorities
 
@@ -245,3 +297,4 @@ Key runtime flow:
 8. Add unit, UI, screenshot-regression, resource-corruption, memory-pressure, cancellation, and physical-device test coverage.
 9. Add localization, Dynamic Type/VoiceOver review, Reduce Transparency treatment, contrast checks, and patient-comprehension testing only after content approval.
 10. Build a signed physical-device workflow separately from the Simulator script.
+11. Test earcon audibility, annoyance, masking, localization, latency, VoiceOver coexistence, hearing-device behavior, external-controller capability detection, and nature-ambience preference on physical Vision Pro before release.

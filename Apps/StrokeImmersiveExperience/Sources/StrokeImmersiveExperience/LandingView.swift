@@ -72,6 +72,7 @@ struct LandingView: View {
             Label("150 assets · 3 visual-detail tiers", systemImage: "cube.transparent.fill")
                 .font(.callout.weight(.medium))
                 .foregroundStyle(ExperienceTheme.quietText)
+            InteractionFeedbackSettingsButton()
         }
         .padding(.horizontal, 48)
         .padding(.vertical, 26)

@@ -67,9 +67,10 @@ fi
 mkdir -p "$app_bundle"
 
 core_sources=("$app_root"/Sources/ExperienceCore/*.swift(N))
+feedback_sources=("$app_root"/Sources/InteractionFeedback/*.swift(N))
 app_sources=("$app_root"/Sources/StrokeImmersiveExperience/*.swift(N))
-if (( ${#core_sources} == 0 || ${#app_sources} == 0 )); then
-    print -u2 "Expected ExperienceCore and app Swift sources under $app_root/Sources"
+if (( ${#core_sources} == 0 || ${#feedback_sources} == 0 || ${#app_sources} == 0 )); then
+    print -u2 "Expected ExperienceCore, InteractionFeedback, and app Swift sources under $app_root/Sources"
     exit 66
 fi
 
@@ -80,11 +81,16 @@ fi
     -O \
     -framework SwiftUI \
     -framework RealityKit \
+    -framework AVFAudio \
     -o "$app_bundle/StrokeImmersiveExperience" \
     "${core_sources[@]}" \
+    "${feedback_sources[@]}" \
     "${app_sources[@]}"
 
 cp "$app_root/Info.plist" "$app_bundle/Info.plist"
+/usr/libexec/PlistBuddy -c 'Delete :UIDeviceFamily' "$app_bundle/Info.plist" 2>/dev/null || true
+/usr/libexec/PlistBuddy -c 'Add :UIDeviceFamily array' "$app_bundle/Info.plist"
+/usr/libexec/PlistBuddy -c 'Add :UIDeviceFamily:0 integer 7' "$app_bundle/Info.plist"
 "$script_dir/stage_release_resources.sh" "$app_bundle"
 codesign --force --sign - --timestamp=none "$app_bundle"
 

@@ -110,6 +110,8 @@ struct ExploreShellView: View {
             } label: {
                 Label("Library", systemImage: "square.grid.3x3")
             }
+
+            InteractionFeedbackSettingsButton()
         }
         .padding(.horizontal, 26)
         .padding(.top, 20)

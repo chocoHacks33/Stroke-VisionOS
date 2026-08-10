@@ -1,8 +1,89 @@
+import Foundation
 import RealityKit
 import SwiftUI
 #if canImport(ExperienceCore)
 import ExperienceCore
 #endif
+
+struct RuntimeAssetLoadFailure: LocalizedError {
+    let assetID: String
+    let sourcePath: String
+    let fileURL: URL
+    let fileExists: Bool
+    let fileSize: Int64?
+    let underlyingError: NSError?
+
+    var errorDescription: String? {
+        if !fileExists {
+            return "\(assetID) is missing from the installed resource bundle."
+        }
+        guard let underlyingError else {
+            return "\(assetID) could not be decoded by RealityKit."
+        }
+        return "\(assetID) could not be decoded (\(underlyingError.domain) \(underlyingError.code)): \(underlyingError.localizedDescription)"
+    }
+
+    var diagnosticDescription: String {
+        let bytes = fileSize.map(String.init) ?? "unknown"
+        let underlying = underlyingError.map {
+            "domain=\($0.domain) code=\($0.code) description=\($0.localizedDescription) userInfo=\($0.userInfo)"
+        } ?? "none"
+        return "asset_id=\(assetID) source_path=\(sourcePath) url=\(fileURL.path) exists=\(fileExists) bytes=\(bytes) underlying={\(underlying)}"
+    }
+}
+
+/// One loader is shared by the window and immersive stages so failures expose
+/// the actual package URL and RealityKit error instead of only an asset ID.
+enum RuntimeRealityAssetLoader {
+    static func loadEntity(
+        assetID: String,
+        sourcePath: String,
+        resourceRoot: URL
+    ) async throws -> Entity {
+        let url = resourceRoot
+            .appending(path: sourcePath, directoryHint: .notDirectory)
+            .standardizedFileURL
+        let attributes = try? FileManager.default.attributesOfItem(atPath: url.path)
+        let exists = FileManager.default.fileExists(atPath: url.path)
+        let bytes = (attributes?[.size] as? NSNumber)?.int64Value
+
+        guard exists else {
+            let failure = RuntimeAssetLoadFailure(
+                assetID: assetID,
+                sourcePath: sourcePath,
+                fileURL: url,
+                fileExists: false,
+                fileSize: bytes,
+                underlyingError: nil
+            )
+            NSLog("[StrokeAssetLoader] FAILURE %@", failure.diagnosticDescription)
+            throw failure
+        }
+
+        do {
+            let entity = try await Entity(contentsOf: url)
+            NSLog(
+                "[StrokeAssetLoader] SUCCESS asset_id=%@ source_path=%@ url=%@ bytes=%lld",
+                assetID,
+                sourcePath,
+                url.path,
+                bytes ?? -1
+            )
+            return entity
+        } catch {
+            let failure = RuntimeAssetLoadFailure(
+                assetID: assetID,
+                sourcePath: sourcePath,
+                fileURL: url,
+                fileExists: true,
+                fileSize: bytes,
+                underlyingError: error as NSError
+            )
+            NSLog("[StrokeAssetLoader] FAILURE %@", failure.diagnosticDescription)
+            throw failure
+        }
+    }
+}
 
 struct WindowModelStage: View {
     @EnvironmentObject private var model: ExperienceShellModel
@@ -12,7 +93,9 @@ struct WindowModelStage: View {
     @GestureState private var dragOffset = CGSize.zero
 
     private var modelURL: URL? {
-        Bundle.main.resourceURL?.appending(path: model.selectedAssetPath)
+        Bundle.main.resourceURL?
+            .appending(path: model.selectedAssetPath, directoryHint: .notDirectory)
+            .standardizedFileURL
     }
 
     var body: some View {
@@ -152,6 +235,7 @@ private struct WindowRecipeRealityView: View {
     @Environment(\.accessibilityReduceMotion) private var reduceMotion
     let recipe: ResolvedExperienceSceneRecipe
     @State private var loadError: String?
+    @State private var loadAttempt = 0
 
     var body: some View {
         RealityView { content in
@@ -168,18 +252,20 @@ private struct WindowRecipeRealityView: View {
             var requiredFailure: String?
             for binding in recipe.assets {
                 let id = binding.asset.asset.assetID
-                let url = resourceRoot.appending(path: binding.asset.sourcePath)
-                guard FileManager.default.fileExists(atPath: url.path()) else {
-                    if binding.binding.required { requiredFailure = id; break }
-                    continue
-                }
                 do {
-                    let entity = try await Entity(contentsOf: url)
+                    let entity = try await RuntimeRealityAssetLoader.loadEntity(
+                        assetID: id,
+                        sourcePath: binding.asset.sourcePath,
+                        resourceRoot: resourceRoot
+                    )
                     entity.name = "WindowBoundAsset::\(id)"
                     entity.isEnabled = binding.binding.initiallyVisible
                     registrationRoot.addChild(entity)
                 } catch {
-                    if binding.binding.required { requiredFailure = id; break }
+                    if binding.binding.required {
+                        requiredFailure = error.localizedDescription
+                        break
+                    }
                 }
             }
 
@@ -208,13 +294,24 @@ private struct WindowRecipeRealityView: View {
             ProgressView("Composing \(recipe.assets.count) bounded scene assets…")
                 .controlSize(.large)
         }
+        .id("\(recipe.recipe.id.rawValue)::load-\(loadAttempt)")
         .saturation(averageSaturation)
         .overlay {
             if let loadError {
                 ContentUnavailableView(
-                    "Scene unavailable",
-                    systemImage: "exclamationmark.triangle.fill",
-                    description: Text(loadError)
+                    label: {
+                        Label("Scene unavailable", systemImage: "exclamationmark.triangle.fill")
+                    },
+                    description: {
+                        Text(loadError)
+                    },
+                    actions: {
+                        Button("Retry asset loading") {
+                            self.loadError = nil
+                            loadAttempt &+= 1
+                        }
+                        .buttonStyle(.borderedProminent)
+                    }
                 )
             }
         }

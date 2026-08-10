@@ -69,7 +69,13 @@ It provides:
   separately flagged and confirmed non-graphic open-cranial developer branch;
 - visionOS-owned gaze/focus and pinch selection for native controls, a spatial
   tap that toggles the toolbox, and reversible scripted visibility/state
-  previews—never free-form surgery or tissue/device physics.
+  previews—never free-form surgery or tissue/device physics;
+- seven project-owned, low-level interaction earcons plus one optional,
+  default-off water/rain ambience loop, with separate sound controls, no
+  continuous gaze/head-motion audio, and no anxiety-treatment claim;
+- package-safe RealityKit diagnostics, Retry controls, and an installed-bundle
+  probe that has decoded the 25 assets used by the built-in scenes without a
+  failure after a clean Simulator install.
 
 The app currently runs in a developer content context even when the UI uses
 “Family” or “Presenter” framing. Those labels change placeholder presentation,
@@ -83,6 +89,12 @@ From the repository root:
 ```bash
 # Pure-core contract tests
 Apps/StrokeImmersiveExperience/Scripts/run_core_smoke_tests.sh
+
+# Deterministic sound-pack regeneration/integrity/acoustic checks
+Apps/StrokeImmersiveExperience/Scripts/InteractionFeedback/validate_earcons.py
+
+# Installed-package RealityKit decoding regression
+Apps/StrokeImmersiveExperience/Tests/RuntimeAssetLoading/run_packaged_xros_probe.sh
 
 # Compile and stage the complete 150-asset Simulator bundle
 Apps/StrokeImmersiveExperience/Scripts/build_install_launch.sh --build-only
@@ -99,7 +111,7 @@ Apps/StrokeImmersiveExperience/Scripts/build_install_launch.sh --enable-open-pre
 ```
 
 These commands are Simulator evidence only. They do not provision the physical
-physical headset, establish device performance or comfort, approve
+headset, establish device performance or comfort, approve
 medical content, or authorize patient display.
 
 ## Original MVP direction and implemented subset
@@ -419,6 +431,8 @@ The repository now uses native visionOS:
   controls, detached notes, toolbox, and other glass attachments;
 - **RealityKit** for USDZ loading, the bounded spatial stage, authored
   animations, shared-root fitting, and a coarse spatial-tap target;
+- **AVFAudio** for sparse project-owned earcons and optional independently
+  controlled ambience using a mixable ambient session;
 - **Foundation-only ExperienceCore** for the 150/450 catalog, tier hysteresis,
   state machine, safety policy, 14 recipes, toolbox policy, and smoke tests;
 - **Apple Vision Pro Simulator** for the repository-owned build/install/launch
@@ -446,9 +460,12 @@ Stroke-VisionOS/
 │   └── StrokeImmersiveExperience/
 │       ├── StrokeImmersiveExperience.xcodeproj
 │       ├── Sources/ExperienceCore/ # Catalog, tiers, recipes, gates, state
+│       ├── Sources/InteractionFeedback/ # Sound and accessory-haptic semantics
 │       ├── Sources/StrokeImmersiveExperience/ # SwiftUI + RealityKit app
 │       ├── Tests/ExperienceCoreTests/
-│       ├── Scripts/                # Test, stage, build/install/launch
+│       ├── Tests/RuntimeAssetLoading/
+│       ├── Resources/InteractionFeedback/ # Original WAVs + manifest/provenance
+│       ├── Scripts/                # Test, audio generation, stage, build/install/launch
 │       ├── Config/
 │       ├── Info.plist
 │       └── README.md               # Exact developer handoff
@@ -640,6 +657,12 @@ app now has repository-owned verification and build commands:
 # 150 assets, 450 bindings and 14 bounded-recipe/core policy checks
 Apps/StrokeImmersiveExperience/Scripts/run_core_smoke_tests.sh
 
+# 7 earcons + 1 optional ambience: deterministic audio and policy checks
+Apps/StrokeImmersiveExperience/Scripts/InteractionFeedback/validate_earcons.py
+
+# Clean-install packaged RealityKit loading regression
+Apps/StrokeImmersiveExperience/Tests/RuntimeAssetLoading/run_packaged_xros_probe.sh
+
 # Direct arm64 visionOS 27 Simulator build; stages and hash-checks 150 USDZ
 Apps/StrokeImmersiveExperience/Scripts/build_install_launch.sh --build-only
 
@@ -667,9 +690,12 @@ xcodebuild \
   build
 ```
 
-The direct script stages and verifies the 150 catalogued USDZ packages and
-three InterfaceMedia packs, signs the Simulator bundle, and can install/launch
-it. This is local Simulator proof only. There is no repository evidence yet for
+The direct script stages and verifies the 150 catalogued USDZ packages, three
+InterfaceMedia packs, and eight project-owned interaction-feedback WAV files;
+it signs the Simulator bundle and can install/launch it. Vision Pro has no
+general-purpose headset vibration, so external-accessory haptic intents remain
+disabled unless capability is explicitly detected. This is local Simulator
+proof only. There is no repository evidence yet for
 physical Vision Pro signing or execution, headset frame timing, comfort,
 human-factors validation, clinical correctness, or patient display. Do not
 upgrade Simulator evidence into any of those claims.

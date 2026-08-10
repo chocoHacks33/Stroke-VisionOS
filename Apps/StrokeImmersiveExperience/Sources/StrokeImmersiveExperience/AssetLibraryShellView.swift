@@ -98,6 +98,8 @@ struct AssetLibraryShellView: View {
             } label: {
                 Label("Clear", systemImage: "xmark.circle")
             }
+
+            InteractionFeedbackSettingsButton()
         }
         .padding(.horizontal, 28)
         .padding(.top, 24)

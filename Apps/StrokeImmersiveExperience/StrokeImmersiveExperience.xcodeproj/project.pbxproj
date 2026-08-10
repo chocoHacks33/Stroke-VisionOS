@@ -27,6 +27,8 @@
 		B1000000000000000000000A /* StrokeImmersiveExperienceApp.swift in Sources */ = {isa = PBXBuildFile; fileRef = A1000000000000000000000A /* StrokeImmersiveExperienceApp.swift */; };
 		B1000000000000000000000B /* WindowModelStage.swift in Sources */ = {isa = PBXBuildFile; fileRef = A1000000000000000000000B /* WindowModelStage.swift */; };
 		B1000000000000000000000C /* RealityPresentationSidecars.swift in Sources */ = {isa = PBXBuildFile; fileRef = A1000000000000000000000C /* RealityPresentationSidecars.swift */; };
+		B1000000000000000000000D /* InteractionFeedbackController.swift in Sources */ = {isa = PBXBuildFile; fileRef = A1000000000000000000000D /* InteractionFeedbackController.swift */; };
+		E10000000000000000000001 /* InteractionFeedbackRecipes.swift in Sources */ = {isa = PBXBuildFile; fileRef = E20000000000000000000001 /* InteractionFeedbackRecipes.swift */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
@@ -50,6 +52,8 @@
 		A1000000000000000000000A /* StrokeImmersiveExperienceApp.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = StrokeImmersiveExperienceApp.swift; sourceTree = "<group>"; };
 		A1000000000000000000000B /* WindowModelStage.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = WindowModelStage.swift; sourceTree = "<group>"; };
 		A1000000000000000000000C /* RealityPresentationSidecars.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RealityPresentationSidecars.swift; sourceTree = "<group>"; };
+		A1000000000000000000000D /* InteractionFeedbackController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = InteractionFeedbackController.swift; sourceTree = "<group>"; };
+		E20000000000000000000001 /* InteractionFeedbackRecipes.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = InteractionFeedbackRecipes.swift; sourceTree = "<group>"; };
 		F10000000000000000000001 /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
 		F10000000000000000000002 /* Base.xcconfig */ = {isa = PBXFileReference; lastKnownFileType = text.xcconfig; path = Base.xcconfig; sourceTree = "<group>"; };
 		F10000000000000000000003 /* Debug.xcconfig */ = {isa = PBXFileReference; lastKnownFileType = text.xcconfig; path = Debug.xcconfig; sourceTree = "<group>"; };
@@ -86,6 +90,7 @@
 			isa = PBXGroup;
 			children = (
 				110000000000000000000002 /* ExperienceCore */,
+				110000000000000000000007 /* InteractionFeedback */,
 				110000000000000000000003 /* StrokeImmersiveExperience */,
 			);
 			path = Sources;
@@ -121,8 +126,17 @@
 				A1000000000000000000000A /* StrokeImmersiveExperienceApp.swift */,
 				A1000000000000000000000B /* WindowModelStage.swift */,
 				A1000000000000000000000C /* RealityPresentationSidecars.swift */,
+				A1000000000000000000000D /* InteractionFeedbackController.swift */,
 			);
 			path = StrokeImmersiveExperience;
+			sourceTree = "<group>";
+		};
+		110000000000000000000007 /* InteractionFeedback */ = {
+			isa = PBXGroup;
+			children = (
+				E20000000000000000000001 /* InteractionFeedbackRecipes.swift */,
+			);
+			path = InteractionFeedback;
 			sourceTree = "<group>";
 		};
 		110000000000000000000004 /* Config */ = {
@@ -268,6 +282,8 @@
 				B1000000000000000000000A /* StrokeImmersiveExperienceApp.swift in Sources */,
 				B1000000000000000000000B /* WindowModelStage.swift in Sources */,
 				B1000000000000000000000C /* RealityPresentationSidecars.swift in Sources */,
+				B1000000000000000000000D /* InteractionFeedbackController.swift in Sources */,
+				E10000000000000000000001 /* InteractionFeedbackRecipes.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};

@@ -6,9 +6,11 @@ import ExperienceCore
 
 struct ImmersiveExperienceView: View {
     @EnvironmentObject private var model: ExperienceShellModel
+    @EnvironmentObject private var feedback: InteractionFeedbackController
     @Environment(\.dismissImmersiveSpace) private var dismissImmersiveSpace
     @Environment(\.accessibilityReduceMotion) private var reduceMotion
     @State private var loadMessage: String?
+    @State private var loadAttempt = 0
 
     var body: some View {
         RealityView { content, attachments in
@@ -70,13 +72,15 @@ struct ImmersiveExperienceView: View {
                     }
                 )
                 .environmentObject(model)
+                .environmentObject(feedback)
             }
         }
-        .id(activeRecipeKey)
+        .id("\(activeRecipeKey)::load-\(loadAttempt)")
         .gesture(
             SpatialTapGesture()
                 .targetedToAnyEntity()
                 .onEnded { _ in
+                    feedback.emit(.controlCommit)
                     withAnimation(.easeInOut(duration: 0.2)) {
                         model.isToolboxVisible.toggle()
                     }
@@ -87,12 +91,21 @@ struct ImmersiveExperienceView: View {
         }
         .overlay(alignment: .top) {
             if let loadMessage {
-                Label(loadMessage, systemImage: "exclamationmark.triangle.fill")
-                    .font(.caption.weight(.semibold))
-                    .foregroundStyle(ExperienceTheme.amber)
-                    .padding(12)
-                    .experienceGlassPanel(cornerRadius: 16)
-                    .padding(.top, 30)
+                VStack(spacing: 8) {
+                    Label(loadMessage, systemImage: "exclamationmark.triangle.fill")
+                        .font(.caption.weight(.semibold))
+                        .foregroundStyle(ExperienceTheme.amber)
+                    if loadMessage.hasPrefix("Required scene asset failed closed") {
+                        Button("Retry asset loading") {
+                            self.loadMessage = nil
+                            loadAttempt &+= 1
+                        }
+                        .buttonStyle(.bordered)
+                    }
+                }
+                .padding(12)
+                .experienceGlassPanel(cornerRadius: 16)
+                .padding(.top, 30)
             }
         }
         .confirmationDialog(
@@ -147,23 +160,18 @@ struct ImmersiveExperienceView: View {
 
         for resolvedBinding in recipe.assets {
             let assetID = resolvedBinding.asset.asset.assetID
-            let url = resourceRoot.appending(path: resolvedBinding.asset.sourcePath)
-            guard FileManager.default.fileExists(atPath: url.path()) else {
-                if resolvedBinding.binding.required {
-                    requiredFailure = assetID
-                    break
-                }
-                loadFailures.append(assetID)
-                continue
-            }
             do {
-                let source = try await Entity(contentsOf: url)
+                let source = try await RuntimeRealityAssetLoader.loadEntity(
+                    assetID: assetID,
+                    sourcePath: resolvedBinding.asset.sourcePath,
+                    resourceRoot: resourceRoot
+                )
                 source.name = "BoundAsset::\(assetID)"
                 source.isEnabled = resolvedBinding.binding.initiallyVisible
                 sharedRegistrationRoot.addChild(source)
             } catch {
                 if resolvedBinding.binding.required {
-                    requiredFailure = assetID
+                    requiredFailure = error.localizedDescription
                     break
                 }
                 loadFailures.append(assetID)
@@ -617,6 +625,7 @@ private struct ImmersiveControlBar: View {
             Text(model.detailTierTitle)
                 .font(.caption.weight(.semibold))
                 .foregroundStyle(ExperienceTheme.mint)
+            InteractionFeedbackSettingsButton()
             Button(action: exit) {
                 Label("Exit", systemImage: "xmark.circle.fill")
             }

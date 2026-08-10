@@ -1,0 +1,52 @@
+{
+  "schema_version": "1.0.0",
+  "target": "optional_supported_external_adapter_only",
+  "vision_pro_headset_haptic_assumed": false,
+  "default_enabled": false,
+  "requires_explicit_user_opt_in": true,
+  "requires_runtime_capability_check": true,
+  "continuous_motion_feedback": false,
+  "fallback_when_unavailable": "preserve_equivalent_visual_and_optional_audio_feedback",
+  "mapping_policy": "Adapters translate semantic intensity classes to their own supported, user-adjustable output; values are not hardware amplitudes.",
+  "intents": [
+    {
+      "id": "light_selection_transient",
+      "semantic_intensity": "very_light",
+      "transient_count": 1,
+      "minimum_interval_ms": 90,
+      "allowed_events": [
+        "control_commit"
+      ]
+    },
+    {
+      "id": "soft_confirmation_transient",
+      "semantic_intensity": "soft",
+      "transient_count": 1,
+      "minimum_interval_ms": 500,
+      "allowed_events": [
+        "confirmed_state_change",
+        "restore_complete"
+      ]
+    },
+    {
+      "id": "light_navigation_transient",
+      "semantic_intensity": "very_light",
+      "transient_count": 1,
+      "minimum_interval_ms": 160,
+      "allowed_events": [
+        "navigate_back"
+      ]
+    },
+    {
+      "id": "attention_transient",
+      "semantic_intensity": "soft_distinct",
+      "transient_count": 2,
+      "transient_spacing_ms": 110,
+      "minimum_interval_ms": 1000,
+      "allowed_events": [
+        "action_requires_attention"
+      ],
+      "restriction": "Interface attention only; never map to a medical alarm or patient-state alert."
+    }
+  ]
+}

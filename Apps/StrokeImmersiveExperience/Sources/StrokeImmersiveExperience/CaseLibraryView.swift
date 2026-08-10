@@ -68,6 +68,7 @@ struct CaseLibraryView: View {
             } label: {
                 Label("Asset library", systemImage: "square.grid.3x3")
             }
+            InteractionFeedbackSettingsButton()
         }
         .padding(.horizontal, 44)
         .padding(.top, 34)

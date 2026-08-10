@@ -89,6 +89,14 @@ When files disagree, use this order:
     authoritative for the subset that currently runs in visionOS Simulator.
     They do not override the manifests, exclusion graph, null copy/anchor
     gates, or clinical-release requirements above.
+15. The native app's
+    [interaction-feedback manifest](Apps/StrokeImmersiveExperience/Resources/InteractionFeedback/feedback_manifest_v1.json),
+    [provenance](Apps/StrokeImmersiveExperience/Resources/InteractionFeedback/PROVENANCE.md),
+    and [integration notes](Apps/StrokeImmersiveExperience/Resources/InteractionFeedback/README.md)
+    are authoritative for the seven original earcons, one optional ambience
+    loop, acoustic limits, cooldowns, default-off controls, and external-haptic
+    boundary. They carry no therapeutic efficacy or built-in headset-vibration
+    claim and do not override system accessibility settings.
 
 The word **must** below means a release-blocking requirement. **Should** means
 the default implementation unless a reviewed design decision says otherwise.
@@ -102,6 +110,8 @@ is visionOS 27.0, and its canonical Simulator commands are:
 
 ```bash
 Apps/StrokeImmersiveExperience/Scripts/run_core_smoke_tests.sh
+Apps/StrokeImmersiveExperience/Scripts/InteractionFeedback/validate_earcons.py
+Apps/StrokeImmersiveExperience/Tests/RuntimeAssetLoading/run_packaged_xros_probe.sh
 Apps/StrokeImmersiveExperience/Scripts/build_install_launch.sh --build-only
 Apps/StrokeImmersiveExperience/Scripts/build_install_launch.sh
 Apps/StrokeImmersiveExperience/Scripts/build_install_launch.sh --device 'Stroke Care Vision Pro'
@@ -129,7 +139,15 @@ Implemented, with these exact boundaries:
   confirmed, developer-authorized open-cranial branch;
 - visionOS owns gaze/focus and pinch selection; a spatial tap toggles the
   toolbox; “device,” “clot removal,” “access,” and “closure” interactions are
-  reversible scripted visibility/state previews only.
+  reversible scripted visibility/state previews only;
+- seven short original earcons mark sparse committed events, and one seamless
+  water/rain ambience loop is available as an independent, default-off user
+  preference. Continuous gaze, head pose, hand tracking, anatomy movement, and
+  raw slider updates remain silent;
+- a shared package-safe RealityKit loader retains URL/existence/byte/error
+  diagnostics, exposes Retry in window and immersive views, and supports an
+  installed-package probe. A clean Simulator package probe has loaded the 25
+  assets used by built-in recipes/demos with zero decode failures.
 
 Not implemented or proven:
 
@@ -148,7 +166,11 @@ Not implemented or proven:
   saturation/contrast, label/information framing, and authored motion controls.
   It performs no inferred descendant/volume culling because semantic child
   mappings do not exist. Particle-count, texture-resolution, and specular
-  values remain advisory until authored safe mappings are supplied.
+  values remain advisory until authored safe mappings are supplied;
+- built-in tactile headset haptics. Vision Pro has no general-purpose vibration;
+  only capability-detected, opted-in external accessories may consume the
+  semantic haptic intents. Physical-device sound comfort, hearing-device
+  behavior, and ambience preference have not been validated.
 
 Simulator build/install evidence must remain distinct from physical-device,
 clinical, accessibility, and patient-comprehension evidence.
@@ -1972,6 +1994,24 @@ coverage, missing-anatomy audit, and replacement rationale are in
 35. Keep the lower-tier response in developer preview while
     `patient_display_authorized=false`. Renderer integration may not treat a
     successful catalog lookup as clinical or human-factors approval.
+36. Decode `feedback_manifest_v1.json` independently of the USDZ and interface
+    manifests. Require exactly seven earcons plus one optional ambience file,
+    verify byte counts/SHA-256/PCM format, and fail sound playback without
+    blocking visible UI state.
+37. Emit interaction feedback only after a committed action, semantic detail
+    tier crossing, explicit warning/confirmation requirement, restore, or major
+    view transition. Never emit from raw gaze, hover dwell, continuous head or
+    hand motion, anatomy motion, every slider sample, or inferred anxiety.
+38. Keep UI feedback and nature ambience independently mutable and fully
+    muteable. Ambience starts off, uses the ambient/mixable audio session,
+    honors the system secondary-audio silence hint, fades rather than abruptly
+    starts/stops, and never attaches to or spatially tracks anatomical content.
+39. Retain visible labels, selection state, dialogs, timeline progress, Retry,
+    and Restore. Sound or accessory vibration may not be the sole carrier of a
+    state, warning, error, or medical fact.
+40. Treat `OptionalExternalHapticIntent` as a capability-gated adapter boundary,
+    not proof that Vision Pro can vibrate. Default it off; require explicit user
+    choice and a supported external controller/spatial accessory before emit.
 
 The application, not a USD file, owns:
 
@@ -2303,6 +2343,15 @@ Every generated or modified asset must pass all applicable gates:
 - The browser/service selector rejects missing, unknown, implicit, stale, or
   biometric/anxiety-derived selections. Patient display and automatic renderer
   application remain false until separately governed review passes.
+- The interaction-feedback generator reproduces all seven earcons and the
+  ambience loop byte-for-byte. Validation checks format, duration, peak/RMS/DC,
+  clipping, hashes, cooldowns, independent/default-off ambience policy, and
+  loop sample/slope continuity. App staging must report eight verified audio
+  resources.
+- The installed-package RealityKit probe must load every asset used by built-in
+  recipes and demo heroes from the application bundle. A failure must retain
+  its underlying error and offer Retry; it must never be reported only as the
+  first required asset ID.
 
 ### Visual/interaction gate
 
@@ -2336,6 +2385,11 @@ Every generated or modified asset must pass all applicable gates:
   static Reduce Motion closure, interruption and reset of host flap animation,
   attachment occlusion/readability, and rejection of every ordinary-EVT open
   asset request. Simulator evidence remains distinct from physical-device proof.
+- Interaction-feedback QA verifies UI and ambience mute/volume independence,
+  tier-detent rather than continuous-slider triggers, zero gaze/head-motion
+  triggers, warning ducking, system-audio coexistence, visible equivalents,
+  and absence of any headset-vibration or anxiety-treatment claim. Physical
+  Vision Pro, hearing-device, and external-accessory testing remain release gates.
 
 ### Clinical/release gate
 
