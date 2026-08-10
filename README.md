@@ -3,10 +3,14 @@
 An Apple Vision Pro learning experience for exploring how an ischemic stroke can interrupt blood flow, inspecting the affected vessel in 3D, and comparing conceptual response paths in spatial context.
 
 > [!IMPORTANT]
-> This repository now contains a validated runtime asset catalog, but it does
-> not yet contain the planned Xcode application scaffold. The experience below
-> remains product direction unless a specific capability is present and
-> independently verified in the repository.
+> This repository now contains a native SwiftUI + RealityKit visionOS
+> developer preview at
+> [`Apps/StrokeImmersiveExperience`](Apps/StrokeImmersiveExperience), including
+> an Xcode project, a visionOS Simulator build/install script, and pure-core
+> smoke tests. It is not clinically approved, every catalogued variant remains
+> blocked for patient/family display, and no physical Apple Vision Pro result
+> has been established. Roadmap material below remains intent unless it is
+> identified as implemented in the native-app section.
 
 ## Product promise
 
@@ -46,7 +50,66 @@ This is an educational prototype. It is not a medical device and must not:
 
 Educational simplifications must be labelled in the interface and documentation. Scientific or clinical statements should be traceable to reputable sources before release.
 
-## MVP scope
+## Implemented native visionOS developer preview
+
+The current app is documented in its
+[`developer handoff`](Apps/StrokeImmersiveExperience/README.md) and opens from
+[`StrokeImmersiveExperience.xcodeproj`](Apps/StrokeImmersiveExperience/StrokeImmersiveExperience.xcodeproj).
+It provides:
+
+- a black, Figma-inspired window and full immersive space with native glass
+  panels, fictional scenario cards, a lesson timeline, detached placeholder
+  notes, a state-filtered toolbox, and an explicit Comfort & Visual Detail
+  slider;
+- a searchable/category-filtered index of all 150 release USDZ packages, while
+  loading only one to eight compatible assets for an active recipe;
+- 450 virtual `minimal`, `reduced80`, and `full` bindings that reuse the same
+  150 source USDZ packages rather than duplicating geometry;
+- 14 bounded step recipes, a default endovascular educational branch, and a
+  separately flagged and confirmed non-graphic open-cranial developer branch;
+- visionOS-owned gaze/focus and pinch selection for native controls, a spatial
+  tap that toggles the toolbox, and reversible scripted visibility/state
+  previews—never free-form surgery or tissue/device physics.
+
+The app currently runs in a developer content context even when the UI uses
+“Family” or “Presenter” framing. Those labels change placeholder presentation,
+not authorization. Clinical copy and Figma/Page 2 anatomy anchors remain null
+or unapproved, so notes and vignettes are detached and visibly labelled as
+developer placeholders. Decompressive-craniectomy, optional-EVD, comprehensive
+pre-operative/post-care, and complete Page 2 branches are not implemented.
+
+From the repository root:
+
+```bash
+# Pure-core contract tests
+Apps/StrokeImmersiveExperience/Scripts/run_core_smoke_tests.sh
+
+# Compile and stage the complete 150-asset Simulator bundle
+Apps/StrokeImmersiveExperience/Scripts/build_install_launch.sh --build-only
+
+# Build, boot a matching visionOS Simulator, install, and launch
+Apps/StrokeImmersiveExperience/Scripts/build_install_launch.sh
+
+# Select an exact available Simulator by UDID or exact name
+Apps/StrokeImmersiveExperience/Scripts/build_install_launch.sh \
+  --device 'Stroke Care Vision Pro'
+
+# Separately gated open-cranial developer QA
+Apps/StrokeImmersiveExperience/Scripts/build_install_launch.sh --enable-open-preview
+```
+
+These commands are Simulator evidence only. They do not provision the physical
+physical headset, establish device performance or comfort, approve
+medical content, or authorize patient display.
+
+## Original MVP direction and implemented subset
+
+The following is the product direction that preceded the native app. The
+current developer preview implements the gallery/library, bounded 3D scene
+loading, explicit detail tiers, user-paced transport, detached vessel vignette,
+and Reset/Restore behavior. Orbit/translation, true anatomical camera
+fly-through, Plan A/Plan B, report generation, and free-form manipulation are
+not complete.
 
 The first coherent vertical slice should include:
 
@@ -73,8 +136,8 @@ assets**:
   microanatomy teaching assets;
 - 26 release-eligible v3 surgical-tool packages: 12 endovascular support-tool
   packages and 14 open-cranial tool packages;
-- one comfort-oriented, reduced-graphic HRA brain derivative for adaptive
-  patient/family orientation;
+- one comfort-oriented, reduced-graphic HRA brain derivative as a
+  display-blocked candidate for future governed patient/family orientation;
 - ten original spatial-care environment packages: nine independently loadable
   room components plus one registered review assembly;
 - five Page 2 surgical-state presentation packages: registered scalp, cranial
@@ -102,7 +165,7 @@ instructions, device specifications, or training simulators.
 The adaptive derivative is a presentation alternative, not an extra anatomy
 layer. In its lowest-detail profile it replaces the detailed brain view; it
 must not be co-loaded over the source anatomy or used to hide
-clinician-approved facts.
+facts required by a future governed release.
 
 ### Three visual-detail variants for every asset
 
@@ -115,12 +178,24 @@ component selection. The source catalog therefore remains 150 USDZ packages.
 
 - `minimal` preserves the recognizable shape, selected learning objective,
   laterality/pathway, warnings, and medical facts while showing the smallest
-  reviewed explanation. Blood/flow views use sparse static direction markers
-  rather than continuous cells or flowing blood.
-- `reduced80` targets approximately 80% of approved semantic information—not
+  policy-defined meaning-preserving explanation. Its catalog policy requests
+  sparse/static flow cues, but the current native app does not synthesize or
+  count those markers.
+- `reduced80` targets approximately 80% of catalogued semantic information—not
   80% of polygons—with fewer secondary layers, labels, particles, highlights,
   and slower motion.
 - `full` is the unmodified 100% source asset already in the repository.
+
+Those values define the catalog contract, not a claim that the current native
+renderer applies every parameter. The app applies a partial, reversible,
+non-destructive subset: explicit tier selection, safe whole-role/optional-layer
+visibility, view-level saturation/contrast, label/information framing, and
+authored animation pause/speed. It performs no inferred descendant or
+volume-ranked culling on flow, anatomy, pathology, assemblies, or tools because
+authored semantic child mappings do not yet exist. `particleOrFlowCountRatio`,
+`textureResolutionScale`, and `specularMultiplier` remain advisory until
+semantic mappings and material/particle-safe runtime paths exist. No tier
+rewrites source geometry.
 
 The exhaustive text classification is
 [`VISUAL_DETAIL_ASSET_CATEGORIES.txt`](RealityKitContent/InterfaceMedia/visual_detail_variants_v1/VISUAL_DETAIL_ASSET_CATEGORIES.txt).
@@ -136,10 +211,11 @@ sent to this selector, and that upstream label must not be presented as a
 diagnosis or sensor-derived measurement.
 
 The environment module is also a presentation option, not clinical content.
-On Vision Pro the default remains system passthrough; in Simulator the default
-remains the selected Simulator environment. The synthetic consultation room is
-disabled by default and may be loaded only for an explicitly selected
-fully-immersive developer demo or governed design review.
+Its general asset contract keeps system passthrough/Simulator presentation as
+the safe default and the synthetic consultation room disabled. The current
+native app deliberately uses a black full-immersion developer stage and loads
+none of the synthetic room packages. That implemented black stage is not
+physical-space, safe-boundary, or comfort validation.
 
 The complete one-by-one catalog, paths, descriptions, runtime notes, manifests,
 and loading guidance are in
@@ -252,6 +328,14 @@ clinical copy or an operative checklist. `EVT`, `OPEN_CRANIOTOMY`,
 `DECOMPRESSIVE_CRANIECTOMY`, and conditional `OPTIONAL_EVD` remain distinct
 state-machine pathways; cross-pathway transitions are disabled.
 
+The native developer preview implements only the generic orientation/default
+EVT lesson and the separately gated six-state non-graphic open-craniotomy
+preview. It does not implement the Page 2 decompressive-craniectomy sequence,
+optional EVD pathway, a comprehensive pre-surgery/post-care journey, governed
+hotspots, or anatomy-pinned clinical notes. The interface pack still describes
+those wider pathways as a handoff contract; it is not evidence that they run in
+the app.
+
 All title pills, glass cards, sticker/tool rails, hotspots, warnings, and the
 bottom timeline are native SwiftUI/RealityKit attachments. The ten-resource
 contract keeps every clinical-copy and anatomical-anchor binding null and
@@ -266,6 +350,12 @@ performance, exclusions, and validation gates.
 The three access/closure layers inherit the generic-v2 `HeadRegisteredRoot`.
 Legacy open tools remain under a separate root and may appear with them only
 through an explicit reviewed tool-to-anatomy placement transform.
+
+In the current app, open-cranial interactions are scripted asset visibility or
+state changes behind an environment flag, an explicit confirmation, and an
+in-session developer gate. There is no cutting, drilling, clot manipulation,
+bleeding/fluid simulation, force/depth/trajectory model, suturing, fixation, or
+operative physics.
 
 ## Adaptive visual-comfort endpoint
 
@@ -321,49 +411,59 @@ external authenticated clinical-review workflow approves them.
 The reproducible checks and remaining gates are recorded in
 [`ADAPTIVE_ENDPOINT_VALIDATION.md`](docs/adaptive-visuals/ADAPTIVE_ENDPOINT_VALIDATION.md).
 
-## Intended Apple stack
+## Implemented Apple stack
 
-The implementation direction is native visionOS:
+The repository now uses native visionOS:
 
-- **SwiftUI** for windows, navigation, controls, and report surfaces;
-- **RealityKit** for spatial anatomy, animation, materials, particles, and interactions;
-- **Reality Composer Pro** where authored scene composition is useful;
-- **XCTest or Swift Testing** for deterministic logic and state transitions;
-- **Apple Vision Pro Simulator** for automated/local build evidence, followed by separate physical-device and human usability checks.
+- **SwiftUI** for the window, navigation, explicit detail slider, lesson
+  controls, detached notes, toolbox, and other glass attachments;
+- **RealityKit** for USDZ loading, the bounded spatial stage, authored
+  animations, shared-root fitting, and a coarse spatial-tap target;
+- **Foundation-only ExperienceCore** for the 150/450 catalog, tier hysteresis,
+  state machine, safety policy, 14 recipes, toolbox policy, and smoke tests;
+- **Apple Vision Pro Simulator** for the repository-owned build/install/launch
+  workflow. Physical-device and human-usability validation remain separate and
+  uncompleted.
 
-Exact deployment target, Xcode version, project name, scheme, and package choices must be recorded after the initial Xcode scaffold is merged. Do not guess them in code or documentation.
+The current project is
+[`Apps/StrokeImmersiveExperience/StrokeImmersiveExperience.xcodeproj`](Apps/StrokeImmersiveExperience/StrokeImmersiveExperience.xcodeproj),
+the shared scheme is `StrokeImmersiveExperience`, and the preview deployment
+target is visionOS 27.0. The canonical scripts default to
+`/Applications/Xcode-beta.app/Contents/Developer`; override that with
+`STROKE_XCODE_DEVELOPER` when another installed Xcode provides the required
+SDK. See the [app handoff](Apps/StrokeImmersiveExperience/README.md) for exact
+flags and limitations.
 
-## Repository layout and planned app scaffold
+## Repository layout and native app
 
-The adaptive service and asset/docs trees below exist now. A future Xcode app
-scaffolding pull request may refine the planned `StrokeVisionOS/` and `Tests/`
-directories while keeping feature ownership obvious:
+The implemented app lives under `Apps/StrokeImmersiveExperience`; it does not
+use the earlier proposed `StrokeVisionOS/` directory:
 
 ```text
 Stroke-VisionOS/
 ├── README.md
-├── StrokeVisionOS/                 # App source after project creation
-│   ├── App/                        # App entry point and navigation
-│   ├── Experience/                 # Shared spatial state and lesson flow
-│   ├── Features/
-│   │   ├── ModuleGallery/
-│   │   ├── VesselExplorer/
-│   │   ├── StrokeSimulation/
-│   │   ├── PlanComparison/
-│   │   └── LearningReport/
-│   ├── Models/                     # Domain and lesson-state models
-│   ├── Components/                 # Reusable SwiftUI/RealityKit pieces
-│   └── Resources/                  # App-owned resources
+├── Apps/
+│   └── StrokeImmersiveExperience/
+│       ├── StrokeImmersiveExperience.xcodeproj
+│       ├── Sources/ExperienceCore/ # Catalog, tiers, recipes, gates, state
+│       ├── Sources/StrokeImmersiveExperience/ # SwiftUI + RealityKit app
+│       ├── Tests/ExperienceCoreTests/
+│       ├── Scripts/                # Test, stage, build/install/launch
+│       ├── Config/
+│       ├── Info.plist
+│       └── README.md               # Exact developer handoff
 ├── RealityKitContent/
 │   ├── Assets/                     # 150 manifest-backed USDZ packages
 │   └── InterfaceMedia/             # UI/config plus 450 virtual detail bindings
 ├── Services/
 │   └── AdaptiveAssetService/       # Local visual-preference recipe endpoint
-├── Tests/                          # Unit, contract, and UI tests
 └── docs/                           # Decisions, evidence, sources, and asset records
 ```
 
-Keep shared transform state—zoom, orbit, translation, cutaway state, and reset behavior—in one explicit experience-state owner. A Reset/Home action must restore the complete spatial view, not only one transform.
+The app keeps lesson/tier/pathway state in one shell/core owner and provides
+Reset/Home restoration. Rich orbit, translation, bounded zoom, camera
+fly-through, and incremental residency-planner integration remain incomplete;
+their type-level contracts must not be reported as finished interactions.
 
 ## Collaboration model
 
@@ -392,18 +492,12 @@ fix/sam-reset-transform
 
 Use lowercase words separated by hyphens. Do not create vague branches such as `updates`, `final`, or `new-version`.
 
-### One-time repository bootstrap
+### Repository bootstrap status
 
-Because the remote repository began empty, the project lead must seed `main` before teammates create branches:
-
-```bash
-git add README.md
-git commit -m "docs: add project and collaboration guide"
-git branch -M main
-git push -u origin main
-```
-
-The lead should then merge an Xcode scaffolding pull request before feature work fans out. This prevents every teammate from independently creating a conflicting project file.
+The remote and native Xcode project already exist. Do not repeat the historical
+empty-repository bootstrap or create a second scaffold. Clone the repository,
+start from the current integration branch selected by the project lead, and
+coordinate before editing the existing project file or shared scheme.
 
 ### Teammate workflow
 
@@ -448,7 +542,7 @@ Before editing, claim a workstream in the team chat or GitHub issue. This is esp
 
 | Workstream | Typical ownership boundary | Example branch |
 |---|---|---|
-| Project scaffold | Xcode project, targets, packages, signing placeholders | `chore/arnav-project-scaffold` |
+| Native app/project | Existing Xcode project, app/core sources, scripts, scheme and signing placeholders | `feature/name-native-app-scope` |
 | Vessel explorer | Scene placement, transforms, cutaway, Reset/Home | `feature/carman-vessel-cutaway` |
 | Flow and clot states | Deterministic lesson states, visuals, transitions | `feature/name-clot-flow-states` |
 | Lesson UI | Gallery, step controls, labels, accessibility | `feature/name-guided-lesson-ui` |
@@ -539,19 +633,46 @@ the exact verification result, the nearest blocker, and one next safe action.
 
 The asset catalog has package-level USD/RealityKit validation documented in
 [`docs/assets/VALIDATION.md`](docs/assets/VALIDATION.md). The adaptive service
-has the Python test command documented above and in its own README. No Xcode
-project or repository-owned app build command exists yet. The scaffolding pull request must
-replace this section with:
+has the Python test command documented above and in its own README. The native
+app now has repository-owned verification and build commands:
 
-- required macOS and Xcode versions;
-- visionOS deployment target;
-- project/workspace name and scheme;
-- package or asset setup steps;
-- exact simulator build command;
-- exact test command;
-- known physical-device and human-test gaps.
+```bash
+# 150 assets, 450 bindings and 14 bounded-recipe/core policy checks
+Apps/StrokeImmersiveExperience/Scripts/run_core_smoke_tests.sh
 
-Until then, do not report `BUILD SUCCEEDED`, simulator support, device support, or completed interactions for this repository.
+# Direct arm64 visionOS 27 Simulator build; stages and hash-checks 150 USDZ
+Apps/StrokeImmersiveExperience/Scripts/build_install_launch.sh --build-only
+
+# Install and launch on an auto-selected Vision Pro/Stroke Care Simulator
+Apps/StrokeImmersiveExperience/Scripts/build_install_launch.sh
+
+# Or select an exact available Simulator by UDID or exact name
+Apps/StrokeImmersiveExperience/Scripts/build_install_launch.sh \
+  --device 'Stroke Care Vision Pro'
+
+# Optional absolute-path screenshot after launch
+Apps/StrokeImmersiveExperience/Scripts/build_install_launch.sh \
+  --screenshot /absolute/path/stroke-care.png
+```
+
+An Xcode build of the checked-in project uses:
+
+```bash
+DEVELOPER_DIR=/Applications/Xcode-beta.app/Contents/Developer \
+xcodebuild \
+  -project Apps/StrokeImmersiveExperience/StrokeImmersiveExperience.xcodeproj \
+  -scheme StrokeImmersiveExperience \
+  -sdk xrsimulator \
+  -destination 'generic/platform=visionOS Simulator' \
+  build
+```
+
+The direct script stages and verifies the 150 catalogued USDZ packages and
+three InterfaceMedia packs, signs the Simulator bundle, and can install/launch
+it. This is local Simulator proof only. There is no repository evidence yet for
+physical Vision Pro signing or execution, headset frame timing, comfort,
+human-factors validation, clinical correctness, or patient display. Do not
+upgrade Simulator evidence into any of those claims.
 
 ## Merge and conflict recovery
 
@@ -572,7 +693,8 @@ If rebase conflicts touch another person's scene, Xcode project settings, or bin
 - visual language for clot, restricted flow, and restored flow;
 - meaning and wording of Plan A / Plan B;
 - whether the report is an on-screen recap, export, or both;
-- minimum supported visionOS/Xcode versions;
+- production-supported visionOS/Xcode matrix beyond the current visionOS 27
+  developer-preview target;
 - simulator performance budget and physical-device test plan;
 - accessibility and reduced-motion behavior;
 - repository licence.

@@ -2,7 +2,9 @@
 
 This document is the implementation contract for assembling the repository's
 150 release-catalog runtime assets into one coherent Apple Vision Pro
-educational experience. The full source build has 152 unique package records;
+educational library and lesson system—not one 150-model scene. The native app
+indexes all 150 and resolves only one to eight compatible packages for an
+active recipe. The full source build has 152 unique package records;
 two inner-ear-containing records are licence-held and not present as runtime
 binaries in this publishing tree. Each release asset also has three explicit,
 non-geometry presentation bindings (`minimal`, `reduced80`, and `full`) for 450
@@ -80,9 +82,76 @@ When files disagree, use this order:
     [text classification](RealityKitContent/InterfaceMedia/visual_detail_variants_v1/VISUAL_DETAIL_ASSET_CATEGORIES.txt)
     are authoritative for the 450 virtual `minimal`, `reduced80`, and `full`
     bindings. They add no USDZ geometry and grant no patient-display approval.
+14. The native app's
+    [developer handoff](Apps/StrokeImmersiveExperience/README.md),
+    [Xcode project](Apps/StrokeImmersiveExperience/StrokeImmersiveExperience.xcodeproj),
+    and app/core source under `Apps/StrokeImmersiveExperience/Sources` are
+    authoritative for the subset that currently runs in visionOS Simulator.
+    They do not override the manifests, exclusion graph, null copy/anchor
+    gates, or clinical-release requirements above.
 
 The word **must** below means a release-blocking requirement. **Should** means
 the default implementation unless a reviewed design decision says otherwise.
+
+### 1.1 Current native implementation status
+
+The repository now contains a native SwiftUI + RealityKit app at
+[`Apps/StrokeImmersiveExperience`](Apps/StrokeImmersiveExperience). Its shared
+scheme is `StrokeImmersiveExperience`, its developer-preview deployment target
+is visionOS 27.0, and its canonical Simulator commands are:
+
+```bash
+Apps/StrokeImmersiveExperience/Scripts/run_core_smoke_tests.sh
+Apps/StrokeImmersiveExperience/Scripts/build_install_launch.sh --build-only
+Apps/StrokeImmersiveExperience/Scripts/build_install_launch.sh
+Apps/StrokeImmersiveExperience/Scripts/build_install_launch.sh --device 'Stroke Care Vision Pro'
+Apps/StrokeImmersiveExperience/Scripts/build_install_launch.sh --enable-open-preview
+```
+
+`--device` accepts an available Simulator UDID or exact name;
+`--screenshot /absolute/path.png` captures after launch. The ordinary launch
+keeps the open branch off. `--enable-open-preview` injects
+`SIMCTL_CHILD_STROKE_ENABLE_OPEN_CRANIAL_DEVELOPER_PREVIEW=1` for that Simulator
+process and still requires the in-app confirmation and developer state gate.
+
+Implemented, with these exact boundaries:
+
+- all 150 release USDZ packages are staged, integrity-checked, indexed, and
+  searchable; an active recipe resolves only one to eight compatible packages;
+- the 450 detail bindings are virtual sidecars over the same 150 USDZ packages,
+  not 300 extra models; the 152-record source/build map and two held records are
+  unchanged;
+- the app has a black Figma-inspired window and full immersive developer space,
+  fictional scenario cards, a lesson timeline, an explicit non-biometric
+  detail slider, detached placeholder notes/vignettes, native controls, and a
+  state-filtered toolbox;
+- 14 bounded step recipes drive a default EVT lesson and a separately flagged,
+  confirmed, developer-authorized open-cranial branch;
+- visionOS owns gaze/focus and pinch selection; a spatial tap toggles the
+  toolbox; “device,” “clot removal,” “access,” and “closure” interactions are
+  reversible scripted visibility/state previews only.
+
+Not implemented or proven:
+
+- patient/family display (all current variant bindings remain blocked), clinical
+  approval, medical-device use, physical Vision Pro execution, headset
+  performance/comfort, or human usability;
+- governed anatomy-pinned Figma/Page 2 notes, evidence cards, hotspots, leader
+  lines, clinical copy, or completed anchor transforms; current notes and the
+  vessel/micro views are detached developer placeholders;
+- Page 2 decompressive-craniectomy, optional-EVD, or comprehensive pre-surgery
+  and post-care branches beyond the narrow generic states in the 14 recipes;
+- free-form cutting, drilling, catheter/clot manipulation, suturing, bleeding,
+  fluid/tissue/device physics, force/depth/trajectory, or operative training;
+- complete execution of every sidecar field. The native app preserves authored
+  geometry and applies only safe whole-role/optional-layer visibility,
+  saturation/contrast, label/information framing, and authored motion controls.
+  It performs no inferred descendant/volume culling because semantic child
+  mappings do not exist. Particle-count, texture-resolution, and specular
+  values remain advisory until authored safe mappings are supplied.
+
+Simulator build/install evidence must remain distinct from physical-device,
+clinical, accessibility, and patient-comprehension evidence.
 
 ## 2. Coordinate, scale, and registration contract
 
@@ -131,6 +200,12 @@ the default implementation unless a reviewed design decision says otherwise.
   an explicit fully immersive developer-demo or governed-review state enables
   it. Never load room geometry behind an ordinary window/volume merely to
   imitate a concept render.
+- The checked-in native developer preview is a deliberate narrower exception:
+  its `ImmersiveSpace` uses a black full-immersion stage and loads zero
+  `spatial_care_environment_v1` packages. This is visual presentation only—not
+  physical-space, boundary, reach, comfort, or device validation. A future
+  patient-facing build must make its environment choice explicit and re-pass
+  the governed environment and device gates.
 - Tool-v3 packages use metre/Y-up presentation frames but are not registered
   patient anatomy or measured products. Handheld/display bounds are plausible
   authoring dimensions only; no asset may supply device sizing, compatibility,
@@ -728,15 +803,17 @@ technical/visual QA, specialist review, and an updated release count.
 
 The project-owned
 [`spatial_scene_preset_catalog_v1.json`](RealityKitContent/InterfaceMedia/spatial_care_interface_v1/spatial_scene_preset_catalog_v1.json)
-maps the supplied reference to four deterministic app states. It is
-developer-preview configuration, not a clinically approved screen.
+maps the supplied reference to four design-contract states. The checked-in
+native app implements a black, Figma-inspired developer-preview interpretation
+of this composition, not every unresolved preset field. It is not a clinically
+approved screen.
 
 | State | USDZ composition | Native visionOS / app composition | Required boundary |
 |---|---|---|---|
-| `landing` | No detailed anatomy. A future governed release may place `brain_orientation_calm_educational_v1` under `AdaptivePresentationRoot`; current fallback is no 3D brain. Optional synthetic room remains separately gated. | Wordmark, short orientation copy, Family and Presenter actions, persistent developer/review status. | Calm brain is display-blocked and replaces rather than overlays anatomy. Family entry requires participation/authorization and privacy confirmation. |
-| `caseBrowser` | Keep anatomy unloaded; optional environment stays static if already in the gated demo. | Horizontal native case-card carousel using the four synthetic portraits and fictional scenario records. | Always show “Fictional educational scenario — not a patient record.” No PHI, real timestamps, recommendations, eligibility, or outcomes. |
-| `guidedHead` | Components: `external_head_scalp_cutaway_v2`, `brain_anatomy_realistic_v2`, `cerebral_arteries_realistic_v2`, `neck_access_arteries_realistic_v2`; add `ischemic_mca_clot_v2`, the qualitative overlay, and baked flow animation only by state. | Three-step rail, short fact panel, reviewed labels, tool rail, flow control, Pause/Replay, Reset/Home, and system hand/pointer affordances. | Copy must say **conceptual right-M1 occlusion**. Never stack hero/registered aggregate over components; no left-MCA text; flow is non-CFD/nonquantitative. |
-| `scholarHead` | Brain + arteries + right-M1 marker, with at most one semantic focus asset. A detached vignette may load `artery_cutaway_complete_v2` or one conceptual micro package under its separate scale root. | Detail-mode selector, structural labels, circular vignette frame, evidence placeholder, topic rail, warnings, Reset/Home. | “Scholar” means higher information density, not diagnosis or approval. Functional/deficit claims remain off; evidence cards fail closed; micro warning stays visible. |
+| `landing` | The Presenter-framing preview may load `brain_orientation_calm_educational_v1`; Family framing uses an abstract fallback. No synthetic room is loaded. | Wordmark, short placeholder orientation copy, Family/Presenter framing actions, persistent developer status. | The calm brain remains unauthorized for patient display and replaces rather than overlays detailed anatomy. The framing choice grants no authorization. |
+| `caseBrowser` | Keep lesson anatomy unloaded until selection. | Four native fictional scenario cards. Current card artwork is app-owned/SF Symbol presentation; the InterfaceMedia portraits remain supporting resources rather than proof of use. | No PHI, real timestamps, recommendations, eligibility, or outcomes. |
+| `guidedHead` | Bounded recipes load compatible subsets of the v2 cutaway, brain, arterial/neck route, right-M1 marker, and qualitative flow packages. Never more than eight; current recipes are smaller. | Native step rail, detached placeholder note, state-filtered toolbox, explicit detail slider, Pause/Replay, Previous/Next, Reset/Home, and system gaze/pinch controls. | Notes/anchors are not approved or anatomy-pinned. Never stack aggregate over components; flow remains non-CFD/nonquantitative. |
+| `scholarHead` | Brain + arteries + right-M1 marker, with at most one focus. A detached vignette may load the artery cutaway or one conceptual micro package under a separate presentation. | Calm/Guided/Scholar framing, circular detached vignette, topic rail, warnings, and Reset/Home. No evidence claim is rendered. | “Scholar” means more placeholder information density, not diagnosis or approval. Micro warnings stay visible. |
 
 System-owned hands, gaze, hover, pinch, passthrough, safe-space boundaries, and
 Simulator environment are never represented by authored meshes. SwiftUI or
@@ -770,6 +847,10 @@ count these non-USDZ resources as 3D runtime assets.
 
 #### 6.0.2 Optional environment loading
 
+The following remains the general environment contract. The current native app
+does not expose the synthetic-room toggle: it renders the lesson against a
+black full-immersion developer stage and loads zero room USDZ packages.
+
 1. Default `environmentMode = systemPassthroughOrSimulatorScene`; load no
    `spatial_care_environment_v1` geometry.
 2. Only an explicit developer-demo/governed-review action may set
@@ -789,6 +870,14 @@ while failing closed on anatomy anchors and clinical copy. The open walkthrough
 is reachable only after `OPEN_CRANIOTOMY` is selected and the clinician open
 gate is true. `DECOMPRESSIVE_CRANIECTOMY` has a separate closure sequence, and
 ordinary `EVT` never enters this table.
+
+Implementation status: the native app currently provides a separately flagged,
+confirmed, developer-authorized six-state **open-craniotomy** preview using
+non-graphic visibility/state swaps. It does not implement the table's governed
+hotspots or anatomy-pinned copy, the separate decompressive-craniectomy closure
+path, optional EVD, or a comprehensive pre-operative/post-care pathway. The
+rows below remain the wider Page 2 handoff contract, not proof that every branch
+runs in the app.
 
 | UI step | Interface scene ID | USDZ/state recipe | Native attachment responsibility |
 |---:|---|---|---|
@@ -824,6 +913,11 @@ native SwiftUI/RealityKit attachments under `InterfaceAttachmentRoot`.
 
 #### 6.1.1 Adaptive visual-comfort presentation
 
+The checked-in native app does not call the HTTP adaptive endpoint. Its explicit
+0–1 slider resolves `minimal|reduced80|full` locally from the 450-binding
+catalog with hysteresis and no biometric input. The numbered endpoint flow
+below remains a governed integration contract for a future client.
+
 1. Ask the viewer directly for `overview`, `simplified`, `standard`, or
    `clinical_detail`, plus `system_default`, `reduced`, or `static` motion.
    Never turn pupil, gaze, hand-joint, or body movement into an anxiety score.
@@ -833,9 +927,13 @@ native SwiftUI/RealityKit attachments under `InterfaceAttachmentRoot`.
    only. `patient_display_authorized` is always false until a governed external
    release approves the exact source asset, semantic entity mapping, and
    adaptive policy/profile together.
-4. Apply visibility, material, opacity, motion, label-density, and pacing values
-   as a non-destructive app-side presentation layer. If semantic groups do not
-   match, use the safe 2D/source fallback; never hide content silently.
+4. Apply only semantically mapped, reviewed visibility, material, opacity,
+   motion, label-density, and pacing values as a non-destructive app-side
+   presentation layer. The current native executor implements only safe
+   whole-role/optional-layer visibility, saturation/contrast,
+   label/information framing, and authored motion controls. It performs no
+   inferred semantic-child culling. If semantic groups do not match, use the
+   safe 2D/source fallback; never hide content silently.
 5. Treat `brain_orientation_calm_educational_v1` as a display-blocked
    orientation candidate. After future exact-version approval, it may replace
    the detailed brain under `AdaptivePresentationRoot`; never overlay it.
@@ -851,13 +949,22 @@ native SwiftUI/RealityKit attachments under `InterfaceAttachmentRoot`.
 
 This is a separate, narrower state dimension from the lesson-level adaptive
 profile above. Every release asset has exactly three revision-bound virtual
-variants; the runtime USDZ inventory remains 150 packages.
+variants; the runtime USDZ inventory remains 150 packages. The table records
+catalog policy intent. It is not evidence that the current renderer executes
+every field.
 
-| Tier | Required asset behavior | Blood/flow behavior |
+| Tier | Catalog policy target | Blood/flow policy target and current boundary |
 | --- | --- | --- |
-| `minimal` | Use the smallest reviewed, meaning-preserving presentation: recognizable silhouette or reviewed equivalent, active learning objective, pathway/laterality, warnings, and accessible material facts | Replace continuous cells/flow with sparse static direction markers; no continuous cell animation |
-| `reduced80` | Target `0.8` semantic density, not polygon count: retain the focus and most landmarks while reducing secondary layers, labels, shine, particles, and motion | Reduce cell/flow-marker density and use slower motion while retaining qualitative direction |
+| `minimal` | Request the smallest meaning-preserving presentation: recognizable silhouette/equivalent, active learning objective, pathway/laterality, warnings, and accessible material facts | Policy requests sparse/static direction cues. The current app can suppress a whole mapped qualitative-flow role or stop authored motion; it does not synthesize markers, count particles, or cull descendants. |
+| `reduced80` | Target `0.8` semantic density, not polygon count: retain the focus and most landmarks while reducing mapped secondary roles, labels, shine, particles, and motion | Policy requests reduced flow density and slower motion. Current code applies authored motion controls but does not enforce a particle count without an authored particle/semantic mapping. |
 | `full` | Load the exact source USDZ bytes/SHA and apply no presentation mutation | Preserve the source-authored presentation and its conceptual/non-CFD warning |
+
+Across all three tiers, the current app retains authored geometry. It never
+uses visual bounds or child volume to infer which anatomy, pathology, assembly,
+tool, or flow descendants are expendable. `particleOrFlowCountRatio`,
+`textureResolutionScale`, and `specularMultiplier` remain advisory. Adding a
+runtime implementation for any of them requires authored semantic/material or
+particle mappings plus new regression tests.
 
 For every selection:
 

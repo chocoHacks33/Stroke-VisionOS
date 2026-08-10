@@ -1,0 +1,345 @@
+// !$*UTF8*$!
+{
+	archiveVersion = 1;
+	classes = {
+	};
+	objectVersion = 77;
+	objects = {
+
+/* Begin PBXBuildFile section */
+		D10000000000000000000001 /* ExperienceAnnotations.swift in Sources */ = {isa = PBXBuildFile; fileRef = C10000000000000000000001 /* ExperienceAnnotations.swift */; };
+		D10000000000000000000002 /* ExperienceAssetCatalog.swift in Sources */ = {isa = PBXBuildFile; fileRef = C10000000000000000000002 /* ExperienceAssetCatalog.swift */; };
+		D10000000000000000000003 /* ExperienceAssetSafetyPolicy.swift in Sources */ = {isa = PBXBuildFile; fileRef = C10000000000000000000003 /* ExperienceAssetSafetyPolicy.swift */; };
+		D10000000000000000000004 /* ExperienceCameraPresets.swift in Sources */ = {isa = PBXBuildFile; fileRef = C10000000000000000000004 /* ExperienceCameraPresets.swift */; };
+		D10000000000000000000005 /* ExperienceSceneRecipes.swift in Sources */ = {isa = PBXBuildFile; fileRef = C10000000000000000000005 /* ExperienceSceneRecipes.swift */; };
+		D10000000000000000000006 /* ExperienceToolbox.swift in Sources */ = {isa = PBXBuildFile; fileRef = C10000000000000000000006 /* ExperienceToolbox.swift */; };
+		D10000000000000000000007 /* ProcedureExperienceStateMachine.swift in Sources */ = {isa = PBXBuildFile; fileRef = C10000000000000000000007 /* ProcedureExperienceStateMachine.swift */; };
+		D10000000000000000000008 /* VisualDetailTier.swift in Sources */ = {isa = PBXBuildFile; fileRef = C10000000000000000000008 /* VisualDetailTier.swift */; };
+		B10000000000000000000001 /* AssetLibraryShellView.swift in Sources */ = {isa = PBXBuildFile; fileRef = A10000000000000000000001 /* AssetLibraryShellView.swift */; };
+		B10000000000000000000002 /* CaseLibraryView.swift in Sources */ = {isa = PBXBuildFile; fileRef = A10000000000000000000002 /* CaseLibraryView.swift */; };
+		B10000000000000000000003 /* ExperienceRootView.swift in Sources */ = {isa = PBXBuildFile; fileRef = A10000000000000000000003 /* ExperienceRootView.swift */; };
+		B10000000000000000000004 /* ExperienceShellModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = A10000000000000000000004 /* ExperienceShellModel.swift */; };
+		B10000000000000000000005 /* ExperienceTheme.swift in Sources */ = {isa = PBXBuildFile; fileRef = A10000000000000000000005 /* ExperienceTheme.swift */; };
+		B10000000000000000000006 /* ExploreShellView.swift in Sources */ = {isa = PBXBuildFile; fileRef = A10000000000000000000006 /* ExploreShellView.swift */; };
+		B10000000000000000000007 /* ImmersiveExperienceView.swift in Sources */ = {isa = PBXBuildFile; fileRef = A10000000000000000000007 /* ImmersiveExperienceView.swift */; };
+		B10000000000000000000008 /* LandingView.swift in Sources */ = {isa = PBXBuildFile; fileRef = A10000000000000000000008 /* LandingView.swift */; };
+		B10000000000000000000009 /* ProcedureControls.swift in Sources */ = {isa = PBXBuildFile; fileRef = A10000000000000000000009 /* ProcedureControls.swift */; };
+		B1000000000000000000000A /* StrokeImmersiveExperienceApp.swift in Sources */ = {isa = PBXBuildFile; fileRef = A1000000000000000000000A /* StrokeImmersiveExperienceApp.swift */; };
+		B1000000000000000000000B /* WindowModelStage.swift in Sources */ = {isa = PBXBuildFile; fileRef = A1000000000000000000000B /* WindowModelStage.swift */; };
+		B1000000000000000000000C /* RealityPresentationSidecars.swift in Sources */ = {isa = PBXBuildFile; fileRef = A1000000000000000000000C /* RealityPresentationSidecars.swift */; };
+/* End PBXBuildFile section */
+
+/* Begin PBXFileReference section */
+		C10000000000000000000001 /* ExperienceAnnotations.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ExperienceAnnotations.swift; sourceTree = "<group>"; };
+		C10000000000000000000002 /* ExperienceAssetCatalog.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ExperienceAssetCatalog.swift; sourceTree = "<group>"; };
+		C10000000000000000000003 /* ExperienceAssetSafetyPolicy.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ExperienceAssetSafetyPolicy.swift; sourceTree = "<group>"; };
+		C10000000000000000000004 /* ExperienceCameraPresets.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ExperienceCameraPresets.swift; sourceTree = "<group>"; };
+		C10000000000000000000005 /* ExperienceSceneRecipes.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ExperienceSceneRecipes.swift; sourceTree = "<group>"; };
+		C10000000000000000000006 /* ExperienceToolbox.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ExperienceToolbox.swift; sourceTree = "<group>"; };
+		C10000000000000000000007 /* ProcedureExperienceStateMachine.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ProcedureExperienceStateMachine.swift; sourceTree = "<group>"; };
+		C10000000000000000000008 /* VisualDetailTier.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = VisualDetailTier.swift; sourceTree = "<group>"; };
+		A10000000000000000000001 /* AssetLibraryShellView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AssetLibraryShellView.swift; sourceTree = "<group>"; };
+		A10000000000000000000002 /* CaseLibraryView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CaseLibraryView.swift; sourceTree = "<group>"; };
+		A10000000000000000000003 /* ExperienceRootView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ExperienceRootView.swift; sourceTree = "<group>"; };
+		A10000000000000000000004 /* ExperienceShellModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ExperienceShellModel.swift; sourceTree = "<group>"; };
+		A10000000000000000000005 /* ExperienceTheme.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ExperienceTheme.swift; sourceTree = "<group>"; };
+		A10000000000000000000006 /* ExploreShellView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ExploreShellView.swift; sourceTree = "<group>"; };
+		A10000000000000000000007 /* ImmersiveExperienceView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ImmersiveExperienceView.swift; sourceTree = "<group>"; };
+		A10000000000000000000008 /* LandingView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LandingView.swift; sourceTree = "<group>"; };
+		A10000000000000000000009 /* ProcedureControls.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ProcedureControls.swift; sourceTree = "<group>"; };
+		A1000000000000000000000A /* StrokeImmersiveExperienceApp.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = StrokeImmersiveExperienceApp.swift; sourceTree = "<group>"; };
+		A1000000000000000000000B /* WindowModelStage.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = WindowModelStage.swift; sourceTree = "<group>"; };
+		A1000000000000000000000C /* RealityPresentationSidecars.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RealityPresentationSidecars.swift; sourceTree = "<group>"; };
+		F10000000000000000000001 /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
+		F10000000000000000000002 /* Base.xcconfig */ = {isa = PBXFileReference; lastKnownFileType = text.xcconfig; path = Base.xcconfig; sourceTree = "<group>"; };
+		F10000000000000000000003 /* Debug.xcconfig */ = {isa = PBXFileReference; lastKnownFileType = text.xcconfig; path = Debug.xcconfig; sourceTree = "<group>"; };
+		F10000000000000000000004 /* Release.xcconfig */ = {isa = PBXFileReference; lastKnownFileType = text.xcconfig; path = Release.xcconfig; sourceTree = "<group>"; };
+		F10000000000000000000005 /* build_install_launch.sh */ = {isa = PBXFileReference; lastKnownFileType = text.script.sh; path = build_install_launch.sh; sourceTree = "<group>"; };
+		F10000000000000000000006 /* stage_release_resources.sh */ = {isa = PBXFileReference; lastKnownFileType = text.script.sh; path = stage_release_resources.sh; sourceTree = "<group>"; };
+		F10000000000000000000007 /* run_core_smoke_tests.sh */ = {isa = PBXFileReference; lastKnownFileType = text.script.sh; path = run_core_smoke_tests.sh; sourceTree = "<group>"; };
+		F10000000000000000000008 /* StrokeImmersiveExperience.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = StrokeImmersiveExperience.app; sourceTree = BUILT_PRODUCTS_DIR; };
+/* End PBXFileReference section */
+
+/* Begin PBXFrameworksBuildPhase section */
+		210000000000000000000003 /* Frameworks */ = {
+			isa = PBXFrameworksBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+/* End PBXFrameworksBuildPhase section */
+
+/* Begin PBXGroup section */
+		100000000000000000000001 = {
+			isa = PBXGroup;
+			children = (
+				110000000000000000000001 /* Sources */,
+				110000000000000000000004 /* Config */,
+				110000000000000000000005 /* Scripts */,
+				F10000000000000000000001 /* Info.plist */,
+				110000000000000000000006 /* Products */,
+			);
+			sourceTree = "<group>";
+		};
+		110000000000000000000001 /* Sources */ = {
+			isa = PBXGroup;
+			children = (
+				110000000000000000000002 /* ExperienceCore */,
+				110000000000000000000003 /* StrokeImmersiveExperience */,
+			);
+			path = Sources;
+			sourceTree = "<group>";
+		};
+		110000000000000000000002 /* ExperienceCore */ = {
+			isa = PBXGroup;
+			children = (
+				C10000000000000000000001 /* ExperienceAnnotations.swift */,
+				C10000000000000000000002 /* ExperienceAssetCatalog.swift */,
+				C10000000000000000000003 /* ExperienceAssetSafetyPolicy.swift */,
+				C10000000000000000000004 /* ExperienceCameraPresets.swift */,
+				C10000000000000000000005 /* ExperienceSceneRecipes.swift */,
+				C10000000000000000000006 /* ExperienceToolbox.swift */,
+				C10000000000000000000007 /* ProcedureExperienceStateMachine.swift */,
+				C10000000000000000000008 /* VisualDetailTier.swift */,
+			);
+			path = ExperienceCore;
+			sourceTree = "<group>";
+		};
+		110000000000000000000003 /* StrokeImmersiveExperience */ = {
+			isa = PBXGroup;
+			children = (
+				A10000000000000000000001 /* AssetLibraryShellView.swift */,
+				A10000000000000000000002 /* CaseLibraryView.swift */,
+				A10000000000000000000003 /* ExperienceRootView.swift */,
+				A10000000000000000000004 /* ExperienceShellModel.swift */,
+				A10000000000000000000005 /* ExperienceTheme.swift */,
+				A10000000000000000000006 /* ExploreShellView.swift */,
+				A10000000000000000000007 /* ImmersiveExperienceView.swift */,
+				A10000000000000000000008 /* LandingView.swift */,
+				A10000000000000000000009 /* ProcedureControls.swift */,
+				A1000000000000000000000A /* StrokeImmersiveExperienceApp.swift */,
+				A1000000000000000000000B /* WindowModelStage.swift */,
+				A1000000000000000000000C /* RealityPresentationSidecars.swift */,
+			);
+			path = StrokeImmersiveExperience;
+			sourceTree = "<group>";
+		};
+		110000000000000000000004 /* Config */ = {
+			isa = PBXGroup;
+			children = (
+				F10000000000000000000002 /* Base.xcconfig */,
+				F10000000000000000000003 /* Debug.xcconfig */,
+				F10000000000000000000004 /* Release.xcconfig */,
+			);
+			path = Config;
+			sourceTree = "<group>";
+		};
+		110000000000000000000005 /* Scripts */ = {
+			isa = PBXGroup;
+			children = (
+				F10000000000000000000005 /* build_install_launch.sh */,
+				F10000000000000000000006 /* stage_release_resources.sh */,
+				F10000000000000000000007 /* run_core_smoke_tests.sh */,
+			);
+			path = Scripts;
+			sourceTree = "<group>";
+		};
+		110000000000000000000006 /* Products */ = {
+			isa = PBXGroup;
+			children = (
+				F10000000000000000000008 /* StrokeImmersiveExperience.app */,
+			);
+			name = Products;
+			sourceTree = "<group>";
+		};
+/* End PBXGroup section */
+
+/* Begin PBXNativeTarget section */
+		200000000000000000000001 /* StrokeImmersiveExperience */ = {
+			isa = PBXNativeTarget;
+			buildConfigurationList = 410000000000000000000001 /* Build configuration list for PBXNativeTarget */;
+			buildPhases = (
+				210000000000000000000001 /* Sources */,
+				210000000000000000000003 /* Frameworks */,
+				210000000000000000000002 /* Resources */,
+				210000000000000000000004 /* Stage exact release resources */,
+			);
+			buildRules = (
+			);
+			dependencies = (
+			);
+			name = StrokeImmersiveExperience;
+			packageProductDependencies = (
+			);
+			productName = StrokeImmersiveExperience;
+			productReference = F10000000000000000000008 /* StrokeImmersiveExperience.app */;
+			productType = "com.apple.product-type.application";
+		};
+/* End PBXNativeTarget section */
+
+/* Begin PBXProject section */
+		300000000000000000000001 /* Project object */ = {
+			isa = PBXProject;
+			attributes = {
+				BuildIndependentTargetsInParallel = YES;
+				LastSwiftUpdateCheck = 2700;
+				LastUpgradeCheck = 2700;
+				TargetAttributes = {
+					200000000000000000000001 = {
+						CreatedOnToolsVersion = 27.0;
+					};
+				};
+			};
+			buildConfigurationList = 410000000000000000000002 /* Build configuration list for PBXProject */;
+			compatibilityVersion = "Xcode 16.0";
+			developmentRegion = en;
+			hasScannedForEncodings = 0;
+			knownRegions = (
+				en,
+				Base,
+			);
+			mainGroup = 100000000000000000000001;
+			preferredProjectObjectVersion = 77;
+			productRefGroup = 110000000000000000000006 /* Products */;
+			projectDirPath = "";
+			projectRoot = "";
+			targets = (
+				200000000000000000000001 /* StrokeImmersiveExperience */,
+			);
+		};
+/* End PBXProject section */
+
+/* Begin PBXResourcesBuildPhase section */
+		210000000000000000000002 /* Resources */ = {
+			isa = PBXResourcesBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+/* End PBXResourcesBuildPhase section */
+
+/* Begin PBXShellScriptBuildPhase section */
+		210000000000000000000004 /* Stage exact release resources */ = {
+			isa = PBXShellScriptBuildPhase;
+			alwaysOutOfDate = 1;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			inputFileListPaths = (
+			);
+			inputPaths = (
+			);
+			name = "Stage exact release resources";
+			outputFileListPaths = (
+			);
+			outputPaths = (
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+			shellPath = /bin/zsh;
+			shellScript = "\"${PROJECT_DIR}/Scripts/stage_release_resources.sh\" \"${TARGET_BUILD_DIR}/${UNLOCALIZED_RESOURCES_FOLDER_PATH}\"\n";
+			showEnvVarsInLog = 0;
+		};
+/* End PBXShellScriptBuildPhase section */
+
+/* Begin PBXSourcesBuildPhase section */
+		210000000000000000000001 /* Sources */ = {
+			isa = PBXSourcesBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				D10000000000000000000001 /* ExperienceAnnotations.swift in Sources */,
+				D10000000000000000000002 /* ExperienceAssetCatalog.swift in Sources */,
+				D10000000000000000000003 /* ExperienceAssetSafetyPolicy.swift in Sources */,
+				D10000000000000000000004 /* ExperienceCameraPresets.swift in Sources */,
+				D10000000000000000000005 /* ExperienceSceneRecipes.swift in Sources */,
+				D10000000000000000000006 /* ExperienceToolbox.swift in Sources */,
+				D10000000000000000000007 /* ProcedureExperienceStateMachine.swift in Sources */,
+				D10000000000000000000008 /* VisualDetailTier.swift in Sources */,
+				B10000000000000000000001 /* AssetLibraryShellView.swift in Sources */,
+				B10000000000000000000002 /* CaseLibraryView.swift in Sources */,
+				B10000000000000000000003 /* ExperienceRootView.swift in Sources */,
+				B10000000000000000000004 /* ExperienceShellModel.swift in Sources */,
+				B10000000000000000000005 /* ExperienceTheme.swift in Sources */,
+				B10000000000000000000006 /* ExploreShellView.swift in Sources */,
+				B10000000000000000000007 /* ImmersiveExperienceView.swift in Sources */,
+				B10000000000000000000008 /* LandingView.swift in Sources */,
+				B10000000000000000000009 /* ProcedureControls.swift in Sources */,
+				B1000000000000000000000A /* StrokeImmersiveExperienceApp.swift in Sources */,
+				B1000000000000000000000B /* WindowModelStage.swift in Sources */,
+				B1000000000000000000000C /* RealityPresentationSidecars.swift in Sources */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+/* End PBXSourcesBuildPhase section */
+
+/* Begin XCBuildConfiguration section */
+		400000000000000000000001 /* Debug */ = {
+			isa = XCBuildConfiguration;
+			baseConfigurationReference = F10000000000000000000003 /* Debug.xcconfig */;
+			buildSettings = {
+			};
+			name = Debug;
+		};
+		400000000000000000000002 /* Release */ = {
+			isa = XCBuildConfiguration;
+			baseConfigurationReference = F10000000000000000000004 /* Release.xcconfig */;
+			buildSettings = {
+			};
+			name = Release;
+		};
+		400000000000000000000003 /* Debug */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				ALWAYS_SEARCH_USER_PATHS = NO;
+				CLANG_ENABLE_MODULES = YES;
+				CLANG_ENABLE_OBJC_ARC = YES;
+				COPY_PHASE_STRIP = NO;
+				ENABLE_STRICT_OBJC_MSGSEND = YES;
+				GCC_C_LANGUAGE_STANDARD = gnu17;
+				GCC_NO_COMMON_BLOCKS = YES;
+				PRODUCT_NAME = "$(TARGET_NAME)";
+				SDKROOT = xros;
+			};
+			name = Debug;
+		};
+		400000000000000000000004 /* Release */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				ALWAYS_SEARCH_USER_PATHS = NO;
+				CLANG_ENABLE_MODULES = YES;
+				CLANG_ENABLE_OBJC_ARC = YES;
+				COPY_PHASE_STRIP = NO;
+				ENABLE_STRICT_OBJC_MSGSEND = YES;
+				GCC_C_LANGUAGE_STANDARD = gnu17;
+				GCC_NO_COMMON_BLOCKS = YES;
+				PRODUCT_NAME = "$(TARGET_NAME)";
+				SDKROOT = xros;
+			};
+			name = Release;
+		};
+/* End XCBuildConfiguration section */
+
+/* Begin XCConfigurationList section */
+		410000000000000000000001 /* Build configuration list for PBXNativeTarget */ = {
+			isa = XCConfigurationList;
+			buildConfigurations = (
+				400000000000000000000001 /* Debug */,
+				400000000000000000000002 /* Release */,
+			);
+			defaultConfigurationIsVisible = 0;
+			defaultConfigurationName = Release;
+		};
+		410000000000000000000002 /* Build configuration list for PBXProject */ = {
+			isa = XCConfigurationList;
+			buildConfigurations = (
+				400000000000000000000003 /* Debug */,
+				400000000000000000000004 /* Release */,
+			);
+			defaultConfigurationIsVisible = 0;
+			defaultConfigurationName = Release;
+		};
+/* End XCConfigurationList section */
+	};
+	rootObject = 300000000000000000000001 /* Project object */;
+}
