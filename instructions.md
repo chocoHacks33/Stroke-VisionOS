@@ -58,13 +58,12 @@ The repository does **not** currently contain an Xcode project, a visionOS app
 target, a built simulator app, or a patient-display approval. The app scaffold
 and its tests are the principal work still required.
 
-At the time this handoff was written, multiple adaptive service, native client,
-runtime-profile, UI, and test files were still untracked in the working tree.
-They do not exist for a fresh clone or a new Codex worktree until the project
-owner commits the complete adaptive branch. Before starting app integration,
-verify that `git ls-files` includes the service, native executor, runtime JSON,
-tests, this handoff, and the calm asset records. Do not build the app against an
-accidental mixture of committed and local-only files.
+The complete adaptive service, native client, runtime-profile, UI, test, and
+handoff baseline is committed on `codex/adaptive-visual-comfort`. A fresh clone
+must check out that branch, or a later branch that contains it, before starting
+app integration. Verify that `git ls-files` includes the service, native
+executor, runtime JSON, tests, this handoff, and the calm asset records. Do not
+build the app against an accidental mixture of branches or local-only files.
 
 The current native executor intentionally accepts only
 `AdaptiveExecutionContext.developerPreview`. Every source asset, edit response,
@@ -742,8 +741,9 @@ python3 -m unittest discover -s tests -v
 5. Add app-owned animation-state capture/restoration.
 6. Add simulator build, test, launch, and visible-content evidence.
 7. Make the service base URL build-configured and fail closed when unavailable.
-8. Commit the complete adaptive service/executor/profile baseline before asking
-   another agent or clean worktree to build on it.
+8. Preserve the committed adaptive service/executor/profile baseline and record
+   its exact branch/commit before asking another agent or clean worktree to
+   build on it.
 
 ### P1 — required before governed patient studies
 
