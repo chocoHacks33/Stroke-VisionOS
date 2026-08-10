@@ -10,8 +10,10 @@ from concurrent.futures import ThreadPoolExecutor
 from typing import Any
 
 from .catalog import AssetCatalog, valid_asset_id
+from .bindings import EntityBindingCatalog
 from .policy import NON_DIAGNOSTIC_NOTICE, POLICY_VERSION, make_recipe, recipe_fingerprint, simulate_preference
 from .procedural import ArtifactStore
+from .profiles import AdaptationProfileCatalog
 
 
 ALLOWED_FIELDS = {
@@ -57,13 +59,46 @@ class ServiceError(Exception):
 class AdaptationService:
     """Pure policy plus a constrained local artifact store."""
 
-    def __init__(self, catalog: AssetCatalog, artifacts: ArtifactStore):
+    def __init__(
+        self,
+        catalog: AssetCatalog,
+        artifacts: ArtifactStore,
+        profiles: AdaptationProfileCatalog | None = None,
+        bindings: EntityBindingCatalog | None = None,
+    ):
+        if (profiles is None) != (bindings is None):
+            raise ValueError("adaptation profiles and entity bindings must be configured together")
         self.catalog = catalog
         self.artifacts = artifacts
+        self.profiles = profiles
+        self.bindings = bindings
         self._jobs: dict[str, dict[str, Any]] = {}
         self._jobs_lock = threading.Lock()
         self._executor = ThreadPoolExecutor(max_workers=2, thread_name_prefix="adaptive-template")
         self._closed = False
+
+    @property
+    def executable_mapping_available(self) -> bool:
+        return self.profiles is not None and self.bindings is not None
+
+    def public_assets(self) -> list[dict[str, Any]]:
+        """Return developer catalog data enriched with path-free profile summaries."""
+        records: list[dict[str, Any]] = []
+        for record in self.catalog.public_assets():
+            enriched = dict(record)
+            if self.executable_mapping_available:
+                profile = self.profiles.get(record["asset_id"])
+                binding = self.bindings.get(record["asset_id"])
+                enriched["adaptation_profile"] = {
+                    "presentation_intensity": profile.presentation_intensity,
+                    "content_categories": list(profile.content_categories),
+                    "graphic_content_tags": list(profile.graphic_content_tags),
+                    "role": profile.replacement_rules["role"],
+                    "patient_display_authorized": False,
+                }
+                enriched["entity_mapping"] = binding.public_summary()
+            records.append(enriched)
+        return records
 
     @staticmethod
     def _validate(payload: Any) -> dict[str, Any]:
@@ -167,13 +202,41 @@ class AdaptationService:
         resolved_mode = "edit" if data["mode"] == "auto" else data["mode"]
         motion_preference = data.get("motion_preference", "system_default")
         recipe = make_recipe(asset.asset_id, data["audience"], preference, motion_preference)
+        recipe["source_asset_revision"] = {
+            "package_name": asset.package_name,
+            "package_bytes": asset.package_bytes,
+            "package_sha256": asset.package_sha256,
+            "package_integrity": asset.package_integrity,
+        }
+        profile = self.profiles.get(asset.asset_id) if self.profiles is not None else None
+        binding = self.bindings.get(asset.asset_id) if self.bindings is not None else None
+        if profile is not None and binding is not None:
+            recipe["catalog_profile_revision"] = self.profiles.document_sha256
+            recipe["entity_mapping_revision"] = self.bindings.document_sha256
+            recipe["entity_mapping_status"] = "exact_revision_bound"
+        else:
+            recipe["entity_mapping_status"] = "not_configured"
         calm_fallback = self.catalog.get(CALM_ORIENTATION_ASSET_ID)
         orientation_asset_candidate: dict[str, Any] | None = None
-        if preference == "overview" and calm_fallback is not None and asset.asset_id != calm_fallback.asset_id:
+        candidate_ids = (
+            set(profile.replacement_rules["candidate_replacement_asset_ids"])
+            if profile is not None
+            else set()
+        )
+        if (
+            preference == "overview"
+            and calm_fallback is not None
+            and asset.asset_id != calm_fallback.asset_id
+            and calm_fallback.asset_id in candidate_ids
+        ):
             orientation_asset_candidate = {
                 "asset_id": calm_fallback.asset_id,
                 "role": "orientation_only_candidate",
                 "clinical_review_status": calm_fallback.clinical_review_status,
+                "package_name": calm_fallback.package_name,
+                "package_bytes": calm_fallback.package_bytes,
+                "package_sha256": calm_fallback.package_sha256,
+                "package_integrity": calm_fallback.package_integrity,
                 "display_authorized": False,
                 "review_gate": "specialist_and_human_factors_review_required_before_patient_display",
                 "co_load_with_source": False,
@@ -200,6 +263,13 @@ class AdaptationService:
         }
         if orientation_asset_candidate is not None:
             response["orientation_asset_candidate"] = orientation_asset_candidate
+        if profile is not None and binding is not None:
+            response["catalog_adaptation_profile"] = profile.public_dict()
+            response["application_plan"] = self.bindings.application_plan(
+                asset.asset_id,
+                recipe,
+                profile,
+            )
 
         if resolved_mode == "edit":
             source_asset_manifest_approved = (
@@ -207,12 +277,21 @@ class AdaptationService:
             )
             response["status"] = "completed"
             response["latency_class"] = "immediate_sidecar"
+            application_plan = response.get("application_plan")
             response["application_contract"] = {
                 "engine": "RealityKit",
                 "operation": "apply_recipe_at_runtime",
                 "mutates_source_asset": False,
                 "fallback_if_semantic_layers_missing": recipe["recommended_fallback"],
                 "developer_preview_authorized": True,
+                "developer_runtime_application_authorized": application_plan is not None,
+                "semantic_mapping_status": (
+                    application_plan["mapping_status"] if application_plan is not None else "not_configured"
+                ),
+                "fallback_required": (
+                    application_plan is None
+                    or application_plan["unresolved_requested_changes"]
+                ),
                 "source_asset_manifest_approved": source_asset_manifest_approved,
                 "patient_display_authorized": False,
                 "patient_display_review_required": True,

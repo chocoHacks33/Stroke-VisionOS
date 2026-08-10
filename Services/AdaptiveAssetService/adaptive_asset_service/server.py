@@ -15,17 +15,49 @@ from typing import Any
 from urllib.parse import urlsplit
 
 from . import __version__
+from .bindings import BindingError, EntityBindingCatalog
 from .catalog import AssetCatalog, CatalogError
 from .procedural import ArtifactStore, JOB_ID_PATTERN
+from .profiles import AdaptationProfileCatalog, ProfileError
 from .service import AdaptationService, ServiceError
 
 
 MAX_REQUEST_BYTES = 16 * 1024
 LOGGER = logging.getLogger("adaptive_asset_service")
+UI_RESOURCES = {
+    "/": ("index.html", "text/html; charset=utf-8"),
+    "/ui": ("index.html", "text/html; charset=utf-8"),
+    "/ui/": ("index.html", "text/html; charset=utf-8"),
+    "/ui/app.css": ("app.css", "text/css; charset=utf-8"),
+    "/ui/app.js": ("app.js", "text/javascript; charset=utf-8"),
+}
+UI_SECURITY_HEADERS = {
+    "Content-Security-Policy": (
+        "default-src 'self'; script-src 'self'; style-src 'self'; img-src 'self' data:; "
+        "connect-src 'self'; object-src 'none'; base-uri 'none'; frame-ancestors 'none'; "
+        "form-action 'self'"
+    ),
+    "Cross-Origin-Opener-Policy": "same-origin",
+    "Cross-Origin-Resource-Policy": "same-origin",
+    "Permissions-Policy": (
+        "camera=(), microphone=(), geolocation=(), accelerometer=(), gyroscope=(), magnetometer=()"
+    ),
+    "Referrer-Policy": "no-referrer",
+    "X-Frame-Options": "DENY",
+}
 
 
 def _repo_root() -> Path:
     return Path(__file__).resolve().parents[3]
+
+
+def _profile_root() -> Path:
+    return Path(__file__).with_name("runtime_profiles")
+
+
+def _ui_resource(filename: str) -> bytes:
+    """Read one packaged, allow-listed UI resource without URL-to-path mapping."""
+    return (Path(__file__).with_name("static") / filename).read_bytes()
 
 
 def log_event(**fields: Any) -> None:
@@ -171,6 +203,18 @@ class AdaptiveRequestHandler(BaseHTTPRequestHandler):
         try:
             self._validate_bodyless_request()
             path = self._path()
+            if path in UI_RESOURCES:
+                filename, media_type = UI_RESOURCES[path]
+                route = "/ui" if filename == "index.html" else f"/ui/{filename}"
+                status = 200
+                self._send_bytes(
+                    status,
+                    _ui_resource(filename),
+                    media_type,
+                    extra_headers=UI_SECURITY_HEADERS,
+                )
+                return
+
             if path == "/healthz":
                 route = "/healthz"
                 status = 200
@@ -184,7 +228,35 @@ class AdaptiveRequestHandler(BaseHTTPRequestHandler):
                             "assets": self.server.service.catalog.asset_count,
                             "manifests": self.server.service.catalog.manifest_count,
                         },
+                        "adaptation_mapping": {
+                            "configured": self.server.service.executable_mapping_available,
+                            "profiled_assets": (
+                                self.server.service.profiles.asset_count
+                                if self.server.service.profiles is not None
+                                else 0
+                            ),
+                            "entity_mapped_assets": (
+                                self.server.service.bindings.asset_count
+                                if self.server.service.bindings is not None
+                                else 0
+                            ),
+                        },
                         "diagnostic_inference": False,
+                    },
+                )
+                return
+
+            if path == "/v1/catalog":
+                route = "/v1/catalog"
+                status = 200
+                self._send_json(
+                    status,
+                    {
+                        "catalog": {
+                            "assets": self.server.service.catalog.asset_count,
+                            "manifests": self.server.service.catalog.manifest_count,
+                        },
+                        "assets": self.server.service.public_assets(),
                     },
                 )
                 return
@@ -263,9 +335,18 @@ class AdaptiveRequestHandler(BaseHTTPRequestHandler):
             self._finish_log(started, status, route, error_code)
 
 
-def build_server(host: str, port: int, catalog_root: Path, output_root: Path) -> AdaptiveHTTPServer:
+def build_server(
+    host: str,
+    port: int,
+    catalog_root: Path,
+    output_root: Path,
+    profile_path: Path | None = None,
+    bindings_path: Path | None = None,
+) -> AdaptiveHTTPServer:
     catalog = AssetCatalog(catalog_root)
-    service = AdaptationService(catalog, ArtifactStore(output_root))
+    profiles = AdaptationProfileCatalog(profile_path, catalog) if profile_path is not None else None
+    bindings = EntityBindingCatalog(bindings_path, catalog) if bindings_path is not None else None
+    service = AdaptationService(catalog, ArtifactStore(output_root), profiles, bindings)
     return AdaptiveHTTPServer((host, port), service)
 
 
@@ -285,6 +366,18 @@ def _parser() -> argparse.ArgumentParser:
         default=Path(tempfile.gettempdir()) / "stroke-vision-adaptive-assets",
         help="Runtime directory for clinician-review drafts",
     )
+    parser.add_argument(
+        "--profile-map",
+        type=Path,
+        default=_profile_root() / "catalog_adaptation_profiles.json",
+        help="Catalog-wide allowed-action and replacement profiles",
+    )
+    parser.add_argument(
+        "--entity-bindings",
+        type=Path,
+        default=_profile_root() / "realitykit_entity_bindings.json",
+        help="Exact package-revision-bound RealityKit entity selectors",
+    )
     return parser
 
 
@@ -302,8 +395,15 @@ def main() -> None:
             )
         )
     try:
-        server = build_server(args.host, args.port, args.catalog_root, args.output_root)
-    except (CatalogError, OSError, RuntimeError) as exc:
+        server = build_server(
+            args.host,
+            args.port,
+            args.catalog_root,
+            args.output_root,
+            args.profile_map,
+            args.entity_bindings,
+        )
+    except (CatalogError, ProfileError, BindingError, OSError, RuntimeError) as exc:
         raise SystemExit(f"startup failed: {exc}") from exc
     LOGGER.info(
         json.dumps(
@@ -312,6 +412,7 @@ def main() -> None:
                 "host": args.host,
                 "port": server.server_port,
                 "assets": server.service.catalog.asset_count,
+                "executable_mapping": server.service.executable_mapping_available,
             },
             separators=(",", ":"),
         )

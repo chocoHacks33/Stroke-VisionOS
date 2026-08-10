@@ -67,9 +67,11 @@
         0.166934,
         0.145702
       ],
-      "usdc": "exports/usdc/brain_orientation_calm_educational_v1.usdc",
-      "usdc_bytes": 5242774,
-      "usdc_sha256": "ad938c5737f8e2aae552277360ea4826cef6b066e3f4cbbfb81112281143e2d8",
+      "source_interchange": {
+        "format": "USDC",
+        "included_in_runtime_repository": false,
+        "note": "The editable interchange file remains in the authoring source kit. This runtime repository distributes and integrity-checks only the USDZ package."
+      },
       "usdz": "exports/usdz/brain_orientation_calm_educational_v1.usdz",
       "usdz_bytes": 5243068,
       "usdz_sha256": "698016952f59068cb91cd6fb04fc50dbccec8c4c1495091e8e624bf21ec9efa6",

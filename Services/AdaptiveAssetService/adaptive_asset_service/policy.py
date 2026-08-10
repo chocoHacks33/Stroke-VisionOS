@@ -8,7 +8,7 @@ import secrets
 from typing import Any
 
 
-POLICY_VERSION = "presentation-preference-v1"
+POLICY_VERSION = "presentation-preference-v2"
 NON_DIAGNOSTIC_NOTICE = (
     "This is a presentation preference, not a measurement, diagnosis, or medical assessment. "
     "No pupil, motion, or other biometric inference is performed."
@@ -39,24 +39,16 @@ def tier_for_preference(preference: str) -> tuple[str, int]:
 def _tier_values(level: int) -> dict[str, Any]:
     detail = ("full", "balanced", "essential", "minimal")[level]
     visible = (
-        ["orientation", "anatomy_primary", "anatomy_secondary", "flow", "device", "labels"],
-        ["orientation", "anatomy_primary", "flow", "device", "labels"],
-        ["orientation", "anatomy_primary", "device", "labels"],
-        ["orientation", "anatomy_primary", "labels"],
+        ["orientation", "anatomy_primary", "anatomy_secondary", "pathology_primary", "blood_cells", "blood_volume", "flow_cues", "micro_detail", "incision_detail", "surgical_field", "device", "labels", "environment"],
+        ["orientation", "anatomy_primary", "anatomy_secondary", "pathology_primary", "blood_cells", "blood_volume", "flow_cues", "incision_detail", "surgical_field", "device", "labels", "environment"],
+        ["orientation", "anatomy_primary", "pathology_primary", "blood_volume", "flow_cues", "surgical_field", "device", "labels", "environment"],
+        ["orientation", "anatomy_primary", "pathology_primary", "flow_cues", "device", "labels", "environment"],
     )[level]
     hidden = (
         [],
         ["micro_detail"],
-        ["micro_detail", "secondary_vessels", "incision_detail", "free_particles"],
-        [
-            "micro_detail",
-            "secondary_vessels",
-            "incision_detail",
-            "free_particles",
-            "blood_cells",
-            "surgical_field",
-            "instrument_motion",
-        ],
+        ["anatomy_secondary", "micro_detail", "incision_detail", "blood_cells"],
+        ["anatomy_secondary", "micro_detail", "incision_detail", "blood_cells", "blood_volume", "surgical_field"],
     )[level]
     return {
         "detail": {
@@ -64,7 +56,7 @@ def _tier_values(level: int) -> dict[str, Any]:
             "lod_bias": (0, 0, 1, 2)[level],
             "visible_layer_groups": visible,
             "hidden_layer_groups": hidden,
-            "layer_match_behavior": "semantic_best_effort",
+            "layer_match_behavior": "exact_revision_bound_child_index_map_required",
         },
         "materials": {
             "tint_rgba": (
@@ -77,6 +69,7 @@ def _tier_values(level: int) -> dict[str, Any]:
             "roughness_floor": (0.35, 0.42, 0.50, 0.58)[level],
             "specular_multiplier": (1.0, 0.85, 0.70, 0.55)[level],
             "blood_tone": ("source", "muted_crimson", "muted_rose", "soft_rose")[level],
+            "emission_multiplier": (1.0, 0.82, 0.64, 0.48)[level],
             "preserve_legend": True,
         },
         "opacity": {
@@ -167,7 +160,8 @@ def make_recipe(asset_id: str, audience: str, preference: str, motion_preference
                 "speed_multiplier": 0.0,
                 "looping": False,
                 "reduce_sudden_camera_motion": True,
-                "select_representative_frame": True,
+                "static_pose_strategy": "initial_authored_pose",
+                "reviewed_static_frame_available": False,
             }
         )
     return recipe

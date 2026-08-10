@@ -1,0 +1,289 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://stroke-vision.local/schemas/catalog_adaptation_profiles.v1.json",
+  "title": "Stroke VisionOS catalog adaptation profiles",
+  "type": "object",
+  "additionalProperties": false,
+  "required": [
+    "$schema",
+    "schema_version",
+    "generated_from",
+    "scope",
+    "action_vocabulary",
+    "profiles"
+  ],
+  "properties": {
+    "$schema": {
+      "const": "./catalog_adaptation_profiles.schema.json"
+    },
+    "schema_version": {
+      "const": "1.0.0"
+    },
+    "generated_from": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": [
+        "manifest_count",
+        "released_asset_count",
+        "manifest_set_sha256",
+        "manifest_paths",
+        "held_asset_ids_excluded"
+      ],
+      "properties": {
+        "manifest_count": { "const": 12 },
+        "released_asset_count": { "const": 135 },
+        "manifest_set_sha256": {
+          "type": "string",
+          "pattern": "^[0-9a-f]{64}$"
+        },
+        "manifest_paths": {
+          "type": "array",
+          "minItems": 12,
+          "maxItems": 12,
+          "uniqueItems": true,
+          "items": { "type": "string" }
+        },
+        "held_asset_ids_excluded": {
+          "type": "array",
+          "const": [
+            "cranial_support_registered_assembly_v3",
+            "middle_inner_ear_bilateral_v3"
+          ]
+        }
+      }
+    },
+    "scope": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": [
+        "purpose",
+        "presentation_intensity_is_clinical_score",
+        "anxiety_inference_supported",
+        "biometric_inputs_supported",
+        "patient_display_authorization_conferred",
+        "profile_actions_mutate_source_usdz",
+        "material_facts_may_be_removed"
+      ],
+      "properties": {
+        "purpose": { "type": "string" },
+        "presentation_intensity_is_clinical_score": { "const": false },
+        "anxiety_inference_supported": { "const": false },
+        "biometric_inputs_supported": { "const": false },
+        "patient_display_authorization_conferred": { "const": false },
+        "profile_actions_mutate_source_usdz": { "const": false },
+        "material_facts_may_be_removed": { "const": false }
+      }
+    },
+    "action_vocabulary": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": ["visibility", "material", "motion"],
+      "properties": {
+        "visibility": { "$ref": "#/$defs/actionVocabulary" },
+        "material": { "$ref": "#/$defs/actionVocabulary" },
+        "motion": { "$ref": "#/$defs/actionVocabulary" }
+      }
+    },
+    "profiles": {
+      "type": "array",
+      "minItems": 135,
+      "maxItems": 135,
+      "items": { "$ref": "#/$defs/profile" }
+    }
+  },
+  "$defs": {
+    "actionVocabulary": {
+      "type": "object",
+      "minProperties": 1,
+      "additionalProperties": { "type": "string", "minLength": 1 }
+    },
+    "actionList": {
+      "type": "array",
+      "minItems": 1,
+      "uniqueItems": true,
+      "items": { "type": "string", "minLength": 1 }
+    },
+    "stringList": {
+      "type": "array",
+      "uniqueItems": true,
+      "items": { "type": "string", "minLength": 1 }
+    },
+    "contentCategory": {
+      "enum": [
+        "adaptive_orientation_candidate",
+        "airway_orientation",
+        "anatomy",
+        "blood_flow_teaching",
+        "clinical_environment",
+        "comfort_oriented_design_hypothesis",
+        "conditional_open_cranial_context",
+        "cranial_nerves",
+        "cranial_support_anatomy",
+        "cranial_vascular_anatomy",
+        "endocrine_anatomy",
+        "endovascular_device_concept",
+        "endovascular_procedure_context",
+        "endovascular_support_tool",
+        "external_orientation",
+        "flow_visualization",
+        "guidance_ui",
+        "head_layer_anatomy",
+        "microanatomy_teaching",
+        "muscle_anatomy",
+        "neural_detail_anatomy",
+        "neuroanatomy",
+        "open_cranial_instrument",
+        "pathology_teaching",
+        "patient_context",
+        "prototype_patient_education",
+        "recovery_context",
+        "registered_core_anatomy",
+        "review_assembly",
+        "scale_separated_micro_teaching",
+        "staff_context",
+        "vascular_anatomy"
+      ]
+    },
+    "graphicContentTag": {
+      "enum": [
+        "animated_particles_or_flow",
+        "blood_or_blood_components",
+        "body_or_clinical_staff",
+        "bone_access_instrument_or_state",
+        "bone_anatomy",
+        "clot_or_thrombus",
+        "edema_or_swelling",
+        "exposed_tissue_or_cutaway",
+        "external_anatomy",
+        "fluid_or_flow_cue",
+        "hemorrhage",
+        "incision_or_opening",
+        "internal_anatomy",
+        "ischemic_tissue_or_pathology",
+        "medical_device",
+        "medical_equipment",
+        "microscopic_detail",
+        "needle_wire_catheter_or_drain",
+        "none_observed",
+        "procedure_sequence_cue",
+        "surgical_instrument",
+        "suture_closure_or_dressing",
+        "vascular_anatomy"
+      ]
+    },
+    "profile": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": [
+        "asset_id",
+        "title",
+        "module",
+        "source_manifest",
+        "content_categories",
+        "graphic_content_tags",
+        "presentation_intensity",
+        "allowed_actions",
+        "replacement_rules",
+        "clinical_safeguards"
+      ],
+      "properties": {
+        "asset_id": {
+          "type": "string",
+          "pattern": "^[a-z0-9_]+$"
+        },
+        "title": { "type": "string", "minLength": 1 },
+        "module": { "type": "string", "minLength": 1 },
+        "source_manifest": {
+          "type": "string",
+          "pattern": "^RealityKitContent/Assets/.+asset_manifest.*\\.json$"
+        },
+        "content_categories": {
+          "type": "array",
+          "minItems": 1,
+          "uniqueItems": true,
+          "items": { "$ref": "#/$defs/contentCategory" }
+        },
+        "graphic_content_tags": {
+          "type": "array",
+          "minItems": 1,
+          "uniqueItems": true,
+          "items": { "$ref": "#/$defs/graphicContentTag" }
+        },
+        "presentation_intensity": {
+          "enum": ["minimal", "low", "moderate", "high"]
+        },
+        "allowed_actions": {
+          "type": "object",
+          "additionalProperties": false,
+          "required": ["visibility", "material", "motion"],
+          "properties": {
+            "visibility": { "$ref": "#/$defs/actionList" },
+            "material": { "$ref": "#/$defs/actionList" },
+            "motion": { "$ref": "#/$defs/actionList" }
+          }
+        },
+        "replacement_rules": {
+          "type": "object",
+          "additionalProperties": false,
+          "required": [
+            "role",
+            "replaces_asset_ids",
+            "never_co_load_with_asset_ids",
+            "candidate_replacement_asset_ids",
+            "candidate_use",
+            "approval_required",
+            "source_must_remain_available",
+            "restore_source_before_medical_detail"
+          ],
+          "properties": {
+            "role": {
+              "enum": ["standalone", "component", "aggregate", "orientation_candidate"]
+            },
+            "replaces_asset_ids": { "$ref": "#/$defs/stringList" },
+            "never_co_load_with_asset_ids": { "$ref": "#/$defs/stringList" },
+            "candidate_replacement_asset_ids": { "$ref": "#/$defs/stringList" },
+            "candidate_use": {
+              "enum": [
+                "not_applicable",
+                "orientation_interstitial_only_not_content_equivalent"
+              ]
+            },
+            "approval_required": { "const": true },
+            "source_must_remain_available": { "const": true },
+            "restore_source_before_medical_detail": { "const": true }
+          }
+        },
+        "clinical_safeguards": {
+          "type": "object",
+          "additionalProperties": false,
+          "required": [
+            "patient_display_authorized",
+            "required_review_status",
+            "patient_specific",
+            "non_diagnostic",
+            "anxiety_inference_allowed",
+            "preserve_material_facts",
+            "safeguard_tags"
+          ],
+          "properties": {
+            "patient_display_authorized": { "const": false },
+            "required_review_status": {
+              "type": "string",
+              "pattern": "^REQUIRES_"
+            },
+            "patient_specific": { "const": false },
+            "non_diagnostic": { "const": true },
+            "anxiety_inference_allowed": { "const": false },
+            "preserve_material_facts": { "const": true },
+            "safeguard_tags": {
+              "allOf": [
+                { "$ref": "#/$defs/stringList" },
+                { "minItems": 1 }
+              ]
+            }
+          }
+        }
+      }
+    }
+  }
+}

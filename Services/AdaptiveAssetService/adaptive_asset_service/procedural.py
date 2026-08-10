@@ -27,8 +27,11 @@ def build_usda(asset_id: str, title: str, tier: str, recipe_sha256: str) -> str:
     metersPerUnit = 1
     upAxis = "Y"
     customLayerData = {{
+        string artifactRole = "abstract_procedural_review_draft"
+        bool displayAuthorized = false
         string generator = "Stroke Vision procedural comfort template v1"
-        string intendedUse = "Patient/family educational orientation only"
+        string intendedUse = "Governed developer and clinician review draft only"
+        string reviewGate = "specialist_and_human_factors_review_required_before_patient_display"
     }}
 )
 
@@ -37,8 +40,11 @@ def Xform "CalmPresentation"
     custom string sourceAssetId = {_usda_string(asset_id)}
     custom string sourceAssetTitle = {_usda_string(title)}
     custom string adaptationTier = {_usda_string(tier)}
+    custom string artifactRole = "abstract_procedural_review_draft"
+    custom bool displayAuthorized = false
     custom string recipeSha256 = {_usda_string(recipe_sha256)}
-    custom string clinicalWarning = "Abstract orientation graphic; not anatomy and not for clinical decisions"
+    custom string reviewGate = "specialist_and_human_factors_review_required_before_patient_display"
+    custom string clinicalWarning = "Abstract review draft; not anatomy, not authorized for patient display, and not for clinical decisions"
 
     def Scope "Materials"
     {{
@@ -207,7 +213,15 @@ class ArtifactStore:
         directory.mkdir(mode=0o700, exist_ok=True)
         self._secure_directory(directory)
         usda = build_usda(asset_id, title, tier, recipe_sha256).encode("utf-8")
-        sidecar = json.dumps(recipe, indent=2, sort_keys=True).encode("utf-8") + b"\n"
+        sidecar_document = {
+            "schema_version": "1.0",
+            "artifact_role": "abstract_procedural_review_draft",
+            "display_authorized": False,
+            "review_gate": "specialist_and_human_factors_review_required_before_patient_display",
+            "source_asset_mutated": False,
+            "recipe": recipe,
+        }
+        sidecar = json.dumps(sidecar_document, indent=2, sort_keys=True).encode("utf-8") + b"\n"
         self._atomic_write(directory / "scene.usda", usda)
         self._atomic_write(directory / "recipe.json", sidecar)
         return {

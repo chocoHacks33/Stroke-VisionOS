@@ -16,10 +16,8 @@
         0.166934,
         0.145702
       ],
-      "usdc_bytes": 5242774,
-      "usdc_sha256": "ad938c5737f8e2aae552277360ea4826cef6b066e3f4cbbfb81112281143e2d8",
-      "usdc_bytes_match": true,
-      "usdc_sha256_match": true,
+      "source_usdc_validation_status": "validated_in_authoring_source_kit_not_distributed_in_runtime_repository",
+      "runtime_repository_usdc_present": false,
       "usdz_bytes": 5243068,
       "usdz_sha256": "698016952f59068cb91cd6fb04fc50dbccec8c4c1495091e8e624bf21ec9efa6",
       "usdz_bytes_match": true,

@@ -23,10 +23,14 @@ Observed RealityKit desktop decode time: **285.4 ms**.
 This observation is not a Vision Pro latency, frame-rate, memory, thermal, or
 interaction guarantee.
 
-## Integrity
+## Runtime release integrity
+
+The authoring source kit also validated a standalone USDC interchange file, but
+that editable source is intentionally not distributed in this runtime repository.
+The embedded USD stage is package-internal and is not represented as a standalone
+release file. Runtime integrity is therefore asserted against the USDZ only.
 
 ```text
-ad938c5737f8e2aae552277360ea4826cef6b066e3f4cbbfb81112281143e2d8  brain_orientation_calm_educational_v1.usdc
 698016952f59068cb91cd6fb04fc50dbccec8c4c1495091e8e624bf21ec9efa6  brain_orientation_calm_educational_v1.usdz
 ```
 

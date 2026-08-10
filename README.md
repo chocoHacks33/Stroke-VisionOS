@@ -141,22 +141,29 @@ training meaning is encoded.
 
 ## Adaptive visual-comfort endpoint
 
+The end-to-end Codex handoff for creating the native visionOS app, wiring the
+service and RealityKit executor, and validating Simulator and physical Apple
+Vision Pro behavior is in [`instructions.md`](instructions.md).
+
 [`Services/AdaptiveAssetService`](Services/AdaptiveAssetService) provides a
-small local HTTP service for changing the presentation of a catalogued source asset
-without rewriting its USDZ. `POST /v1/visual-adaptations` returns an immediate,
-reversible RealityKit sidecar recipe for layer visibility, material intensity,
-motion, labels, and pacing. It may also report a display-blocked orientation
-candidate for later governed review. A compatibility alias is
+small local HTTP service (service/API 0.2.0; Python 3.9+) for changing the
+presentation of a catalogued source asset without rewriting its USDZ.
+`POST /v1/visual-adaptations` returns a presentation-policy recipe plus an
+exact, package-SHA-bound RealityKit application plan. The plan addresses
+entities by child-index path and executes visibility, material, and authored
+animation changes only. Opacity requests resolve to discrete visibility with
+no runtime alpha changes, runtime LOD variants are unavailable, and annotations,
+pacing, labels, and controls remain app-owned. A compatibility alias is
 available at `/v1/adaptations`.
 
 ```mermaid
 flowchart LR
     A["Viewer chooses detail and motion"] --> B["POST /v1/visual-adaptations"]
     B --> C{"Edit or generate?"}
-    C -->|"Edit — immediate"| D["Apply reversible RealityKit recipe"]
+    C -->|"Edit — immediate"| D["Apply reversible RealityKit plan"]
     C -->|"Generate — asynchronous"| E["Create abstract USDA review draft"]
     D --> F["Show active mode and Restore Original"]
-    E --> G["Clinician review required before display"]
+    E --> G["Specialist and human-factors review required"]
 ```
 
 The service deliberately does **not** infer or diagnose anxiety. It rejects
@@ -174,12 +181,37 @@ python3 -m adaptive_asset_service --port 8765
 python3 -m unittest discover -s tests -v
 ```
 
-The fast path is intended for on-the-spot use and preserves the source model.
-In a local 250-request loopback check, the HTTP edit path measured 0.455 ms
-median and 0.813 ms p95; this is development-machine evidence, not a Vision Pro
-or production-network latency guarantee. Generated drafts are deterministic,
-abstract, non-anatomical review artifacts and remain display-blocked until an
-external authenticated clinical-review workflow approves them.
+With the service running, open
+[http://127.0.0.1:8765/](http://127.0.0.1:8765/) for the packaged developer
+control panel. It browses the path-free catalog, builds explicit-preference
+requests, visualizes returned presentation properties, exposes JSON/cURL
+handoff, and polls generated review drafts. Its abstract sketch is not a USDZ
+render and the panel cannot authorize patient display.
+
+The default service validates one adaptation profile and exact RealityKit
+selector map for each of the 135 released assets. The captured topology covers
+7,243 entities, including 3,472 model entities and 24 authored animation
+resources. Selector identity is exact for the recorded package revision;
+semantic classification is presentation routing and still requires external
+clinical and human-factors review. Mapped labels and primary pathology are
+excluded from automatic material changes. Source USDZ bytes stay untouched and
+one-action runtime restoration remains required.
+
+The service includes a developer-only
+[`RealityKitAdaptivePlanSession`](Services/AdaptiveAssetService/clients/README.md)
+reference executor. It securely binds the RealityKit root to the loaded package
+revision, authorizes plans against the local packaged bindings/profiles, and
+requires explicit developer context, expected audience/detail/motion, fallback,
+animation baseline, and UI readiness. Its 135/135 real-package host validation
+is recorded in the endpoint evidence. It is not integrated into a visionOS app,
+rejects patient execution context, and does not grant patient-display approval.
+
+The calm orientation asset is reported only for overview requests involving
+the 19 allowlisted brain/neuroanatomy sources. It remains
+`display_authorized: false` and is never loaded automatically. Generated USDA
+and JSON artifacts are deterministic, abstract review drafts. The USDA embeds
+`displayAuthorized=false`; the JSON embeds `display_authorized=false`; both
+embed the review gate and also carry display-blocking HTTP headers.
 The reproducible checks and remaining gates are recorded in
 [`ADAPTIVE_ENDPOINT_VALIDATION.md`](docs/adaptive-visuals/ADAPTIVE_ENDPOINT_VALIDATION.md).
 

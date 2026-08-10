@@ -96,14 +96,28 @@ RealityKit. Module reports retain their exact validation dates.
 - The 1600 × 1200 preview passed visual inspection for framing, silhouette,
   tonal separation, and absence of blood, lesion, incision, or instrument
   content.
-- The adaptive service passes 21/21 dependency-free unit tests, OpenAPI JSON
-  parsing, Python compilation, full-catalog lookup, biometric-field rejection,
-  traversal rejection, privacy-safe logs, reversible edit recipes, and
-  display-blocked procedural generation.
+- Service/API 0.2.0 passes 41/41 dependency-free unit tests, OpenAPI JSON
+  parsing, Python 3.9 compilation, full-catalog lookup and content binding,
+  packaged control-panel/security-header checks, path-free catalog browsing,
+  biometric-field rejection, traversal rejection, privacy-safe logs,
+  reversible edit plans, and display-blocked procedural generation.
+- All 135 released assets have a fail-closed adaptation profile and an exact
+  package-SHA-bound RealityKit child-index selector record. The captured
+  topology covers 7,243 entities, 3,472 model entities, and 24 authored
+  animation resources. Selector identity passed technical validation; semantic
+  classification still requires external clinical and human-factors review.
+- Executable plans contain visibility, bounded developer-preview material, and
+  authored-animation operations only. They use discrete visibility without
+  runtime alpha, expose no runtime LOD variant, leave annotations/pacing/controls
+  app-owned, protect mapped labels and primary-pathology materials, keep the
+  source untouched/restorable, and explicitly leave medical-content
+  preservation subject to external review.
 - The new orientation model remains
   `REQUIRES_SPECIALIST_AND_HUMAN_FACTORS_REVIEW`. The endpoint exposes it only
-  as `display_authorized: false`; neither a technical package pass nor an API
-  response authorizes patient display.
+  for the 19 allowlisted neuro source assets and only as
+  `display_authorized: false`; neither a technical package pass nor an API
+  response authorizes patient display. Generated USDA and JSON review artifacts
+  also embed the false display flag and review gate.
 - Detailed evidence is retained in
   [ADAPTIVE_VISUALS_VALIDATION_V1.md](validation/ADAPTIVE_VISUALS_VALIDATION_V1.md)
   and

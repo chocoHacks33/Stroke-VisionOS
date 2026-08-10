@@ -2,7 +2,7 @@
   "openapi": "3.1.0",
   "info": {
     "title": "Stroke Vision Adaptive Asset Service",
-    "version": "0.1.0",
+    "version": "0.2.0",
     "description": "Local, non-diagnostic presentation adaptation for patient/family educational assets. This API does not accept biometrics or infer anxiety. The prototype authorizes developer preview only and always returns patient_display_authorized=false."
   },
   "servers": [
@@ -23,6 +23,25 @@
               "application/json": {
                 "schema": {
                   "$ref": "#/components/schemas/Health"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/v1/catalog": {
+      "get": {
+        "operationId": "listCatalogAssets",
+        "summary": "List path-free public metadata for the local developer control panel",
+        "description": "Returns stable manifest IDs and display metadata. It never returns catalog roots, manifest paths, or package paths.",
+        "responses": {
+          "200": {
+            "description": "Public catalog metadata",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/CatalogResponse"
                 }
               }
             }
@@ -90,6 +109,9 @@
           "400": {
             "$ref": "#/components/responses/BadRequest"
           },
+          "411": {
+            "$ref": "#/components/responses/LengthRequired"
+          },
           "404": {
             "$ref": "#/components/responses/NotFound"
           },
@@ -140,6 +162,18 @@
           },
           "400": {
             "$ref": "#/components/responses/BadRequest"
+          },
+          "404": {
+            "$ref": "#/components/responses/NotFound"
+          },
+          "411": {
+            "$ref": "#/components/responses/LengthRequired"
+          },
+          "413": {
+            "$ref": "#/components/responses/RequestTooLarge"
+          },
+          "415": {
+            "$ref": "#/components/responses/UnsupportedMediaType"
           }
         }
       }
@@ -218,7 +252,7 @@
               },
               "application/json": {
                 "schema": {
-                  "$ref": "#/components/schemas/Recipe"
+                  "$ref": "#/components/schemas/ReviewArtifactEnvelope"
                 }
               }
             }
@@ -273,6 +307,16 @@
           }
         }
       },
+      "LengthRequired": {
+        "description": "Content-Length is required for POST requests",
+        "content": {
+          "application/json": {
+            "schema": {
+              "$ref": "#/components/schemas/ErrorResponse"
+            }
+          }
+        }
+      },
       "UnsupportedMediaType": {
         "description": "Content-Type is not application/json",
         "content": {
@@ -297,7 +341,7 @@
         "properties": {
           "asset_id": {
             "type": "string",
-            "pattern": "^[A-Za-z0-9][A-Za-z0-9_.-]{0,127}$",
+            "pattern": "^(?!.*\\.\\.)[A-Za-z0-9][A-Za-z0-9_.-]{0,127}$",
             "description": "Exact manifest ID; it is never interpreted as a path."
           },
           "audience": {
@@ -383,6 +427,7 @@
           "service",
           "version",
           "catalog",
+          "adaptation_mapping",
           "diagnostic_inference"
         ],
         "properties": {
@@ -412,19 +457,78 @@
               }
             }
           },
+          "adaptation_mapping": {
+            "$ref": "#/components/schemas/AdaptationMappingSummary"
+          },
           "diagnostic_inference": {
             "const": false
           }
         }
       },
-      "SourceAsset": {
+      "AdaptationMappingSummary": {
         "type": "object",
+        "additionalProperties": false,
+        "required": [
+          "configured",
+          "profiled_assets",
+          "entity_mapped_assets"
+        ],
+        "properties": {
+          "configured": { "type": "boolean" },
+          "profiled_assets": { "type": "integer", "minimum": 0 },
+          "entity_mapped_assets": { "type": "integer", "minimum": 0 }
+        }
+      },
+      "CatalogResponse": {
+        "type": "object",
+        "additionalProperties": false,
+        "required": [
+          "catalog",
+          "assets"
+        ],
+        "properties": {
+          "catalog": {
+            "$ref": "#/components/schemas/CatalogSummary"
+          },
+          "assets": {
+            "type": "array",
+            "items": {
+              "$ref": "#/components/schemas/CatalogAsset"
+            }
+          }
+        }
+      },
+      "CatalogSummary": {
+        "type": "object",
+        "additionalProperties": false,
+        "required": [
+          "assets",
+          "manifests"
+        ],
+        "properties": {
+          "assets": {
+            "type": "integer",
+            "minimum": 1
+          },
+          "manifests": {
+            "type": "integer",
+            "minimum": 1
+          }
+        }
+      },
+      "CatalogAsset": {
+        "type": "object",
+        "additionalProperties": false,
         "required": [
           "asset_id",
           "title",
           "module",
           "description",
-          "clinical_review_status"
+          "clinical_review_status",
+          "package_name",
+          "package_bytes",
+          "package_sha256",
+          "package_integrity"
         ],
         "properties": {
           "asset_id": {
@@ -443,9 +547,160 @@
             "type": "string"
           },
           "package_name": {
-            "type": [
-              "string",
-              "null"
+            "type": "string",
+            "description": "Package basename only; no relative or absolute path is exposed."
+          },
+          "package_bytes": {
+            "type": "integer",
+            "minimum": 1
+          },
+          "package_sha256": {
+            "type": "string",
+            "pattern": "^[a-f0-9]{64}$"
+          },
+          "package_integrity": {
+            "type": "string",
+            "enum": [
+              "verified_against_manifest",
+              "partially_verified_against_manifest",
+              "observed_without_manifest_digest"
+            ]
+          },
+          "adaptation_profile": {
+            "$ref": "#/components/schemas/CatalogProfileSummary"
+          },
+          "entity_mapping": {
+            "$ref": "#/components/schemas/EntityMappingSummary"
+          }
+        }
+      },
+      "CatalogProfileSummary": {
+        "type": "object",
+        "additionalProperties": false,
+        "required": [
+          "presentation_intensity",
+          "content_categories",
+          "graphic_content_tags",
+          "role",
+          "patient_display_authorized"
+        ],
+        "properties": {
+          "presentation_intensity": {
+            "enum": ["minimal", "low", "moderate", "high"]
+          },
+          "content_categories": {
+            "type": "array",
+            "items": { "type": "string" }
+          },
+          "graphic_content_tags": {
+            "type": "array",
+            "items": { "type": "string" }
+          },
+          "role": {
+            "enum": ["standalone", "component", "aggregate", "orientation_candidate"]
+          },
+          "patient_display_authorized": { "const": false }
+        }
+      },
+      "EntityMappingSummary": {
+        "type": "object",
+        "additionalProperties": false,
+        "required": [
+          "mapping_status",
+          "selector_kind",
+          "package_sha256",
+          "model_entity_count",
+          "animation_resource_count",
+          "primary_semantic_group",
+          "semantic_group_counts"
+        ],
+        "properties": {
+          "mapping_status": { "const": "exact_revision_bound" },
+          "selector_kind": { "const": "child_index_path" },
+          "package_sha256": { "type": "string", "pattern": "^[a-f0-9]{64}$" },
+          "model_entity_count": { "type": "integer", "minimum": 1 },
+          "animation_resource_count": { "type": "integer", "minimum": 0 },
+          "primary_semantic_group": { "type": "string" },
+          "semantic_group_counts": {
+            "type": "object",
+            "additionalProperties": { "type": "integer", "minimum": 0 }
+          }
+        }
+      },
+      "SourceAsset": {
+        "type": "object",
+        "required": [
+          "asset_id",
+          "title",
+          "module",
+          "description",
+          "clinical_review_status",
+          "package_name",
+          "package_bytes",
+          "package_sha256",
+          "package_integrity"
+        ],
+        "properties": {
+          "asset_id": {
+            "type": "string"
+          },
+          "title": {
+            "type": "string"
+          },
+          "module": {
+            "type": "string"
+          },
+          "description": {
+            "type": "string"
+          },
+          "clinical_review_status": {
+            "type": "string"
+          },
+          "package_name": {
+            "type": "string"
+          },
+          "package_bytes": {
+            "type": "integer",
+            "minimum": 1
+          },
+          "package_sha256": {
+            "type": "string",
+            "pattern": "^[a-f0-9]{64}$"
+          },
+          "package_integrity": {
+            "enum": [
+              "verified_against_manifest",
+              "partially_verified_against_manifest",
+              "observed_without_manifest_digest"
+            ]
+          }
+        }
+      },
+      "SourceAssetRevision": {
+        "type": "object",
+        "required": [
+          "package_name",
+          "package_bytes",
+          "package_sha256",
+          "package_integrity"
+        ],
+        "properties": {
+          "package_name": {
+            "type": "string"
+          },
+          "package_bytes": {
+            "type": "integer",
+            "minimum": 1
+          },
+          "package_sha256": {
+            "type": "string",
+            "pattern": "^[a-f0-9]{64}$"
+          },
+          "package_integrity": {
+            "enum": [
+              "verified_against_manifest",
+              "partially_verified_against_manifest",
+              "observed_without_manifest_digest"
             ]
           }
         }
@@ -511,7 +766,9 @@
           "comfort_controls",
           "recommended_fallback",
           "warnings",
-          "transparency"
+          "transparency",
+          "source_asset_revision",
+          "entity_mapping_status"
         ],
         "properties": {
           "schema_version": {
@@ -572,7 +829,43 @@
           },
           "family_access": {
             "type": "object"
+          },
+          "source_asset_revision": {
+            "$ref": "#/components/schemas/SourceAssetRevision"
+          },
+          "catalog_profile_revision": {
+            "type": "string",
+            "pattern": "^[a-f0-9]{64}$"
+          },
+          "entity_mapping_revision": {
+            "type": "string",
+            "pattern": "^[a-f0-9]{64}$"
+          },
+          "entity_mapping_status": {
+            "enum": ["exact_revision_bound", "not_configured"]
           }
+        }
+      },
+      "ReviewArtifactEnvelope": {
+        "type": "object",
+        "additionalProperties": false,
+        "required": [
+          "schema_version",
+          "artifact_role",
+          "display_authorized",
+          "review_gate",
+          "source_asset_mutated",
+          "recipe"
+        ],
+        "properties": {
+          "schema_version": { "const": "1.0" },
+          "artifact_role": { "const": "abstract_procedural_review_draft" },
+          "display_authorized": { "const": false },
+          "review_gate": {
+            "const": "specialist_and_human_factors_review_required_before_patient_display"
+          },
+          "source_asset_mutated": { "const": false },
+          "recipe": { "$ref": "#/components/schemas/Recipe" }
         }
       },
       "OrientationAssetCandidate": {
@@ -581,6 +874,10 @@
           "asset_id",
           "role",
           "clinical_review_status",
+          "package_name",
+          "package_bytes",
+          "package_sha256",
+          "package_integrity",
           "display_authorized",
           "review_gate",
           "co_load_with_source",
@@ -595,6 +892,24 @@
           },
           "clinical_review_status": {
             "type": "string"
+          },
+          "package_name": {
+            "type": "string"
+          },
+          "package_bytes": {
+            "type": "integer",
+            "minimum": 1
+          },
+          "package_sha256": {
+            "type": "string",
+            "pattern": "^[a-f0-9]{64}$"
+          },
+          "package_integrity": {
+            "enum": [
+              "verified_against_manifest",
+              "partially_verified_against_manifest",
+              "observed_without_manifest_digest"
+            ]
           },
           "display_authorized": {
             "const": false
@@ -647,8 +962,214 @@
           "orientation_asset_candidate": {
             "$ref": "#/components/schemas/OrientationAssetCandidate"
           },
+          "catalog_adaptation_profile": {
+            "$ref": "#/components/schemas/CatalogAdaptationProfile"
+          },
+          "application_plan": {
+            "$ref": "#/components/schemas/ApplicationPlan"
+          },
           "latency_class": {
             "type": "string"
+          }
+        }
+      },
+      "CatalogAdaptationProfile": {
+        "type": "object",
+        "required": [
+          "asset_id",
+          "module",
+          "content_categories",
+          "graphic_content_tags",
+          "presentation_intensity",
+          "allowed_actions",
+          "replacement_rules",
+          "clinical_safeguards"
+        ],
+        "properties": {
+          "asset_id": { "type": "string" },
+          "module": { "type": "string" },
+          "content_categories": { "type": "array", "items": { "type": "string" } },
+          "graphic_content_tags": { "type": "array", "items": { "type": "string" } },
+          "presentation_intensity": { "enum": ["minimal", "low", "moderate", "high"] },
+          "allowed_actions": { "type": "object" },
+          "replacement_rules": { "type": "object" },
+          "clinical_safeguards": {
+            "type": "object",
+            "required": ["patient_display_authorized", "non_diagnostic", "anxiety_inference_allowed", "preserve_material_facts"],
+            "properties": {
+              "patient_display_authorized": { "const": false },
+              "non_diagnostic": { "const": true },
+              "anxiety_inference_allowed": { "const": false },
+              "preserve_material_facts": { "const": true }
+            }
+          }
+        }
+      },
+      "ChildIndexOperation": {
+        "type": "object",
+        "required": ["operation", "child_index_path", "debug_path"],
+        "properties": {
+          "operation": { "type": "string" },
+          "child_index_path": {
+            "type": "array",
+            "items": { "type": "integer", "minimum": 0 }
+          },
+          "debug_path": { "type": "string" }
+        }
+      },
+      "ApplicationPlan": {
+        "type": "object",
+        "required": [
+          "schema_version",
+          "mapping_status",
+          "selector_kind",
+          "source_package_sha256",
+          "root_contract",
+          "revision_mismatch_behavior",
+          "semantic_group_coverage",
+          "visibility_operations",
+          "material_operations",
+          "material_contract",
+          "animation_operations",
+          "animation_contract",
+          "opacity_contract",
+          "lod_contract",
+          "presentation_ui_contract",
+          "profile_action_contract",
+          "content_warning_required",
+          "progressive_disclosure_required",
+          "unresolved_requested_changes",
+          "fallback_if_unresolved",
+          "restore_contract",
+          "source_asset_unchanged",
+          "source_medical_content_remains_available",
+          "medical_content_preservation_status",
+          "patient_display_authorized",
+          "operation_counts"
+        ],
+        "properties": {
+          "schema_version": { "const": "1.0" },
+          "mapping_status": { "const": "exact_revision_bound" },
+          "selector_kind": { "const": "child_index_path" },
+          "source_package_sha256": { "type": "string", "pattern": "^[a-f0-9]{64}$" },
+          "root_contract": { "type": "string" },
+          "revision_mismatch_behavior": { "type": "string" },
+          "semantic_group_coverage": {
+            "type": "object",
+            "required": [
+              "present_groups",
+              "requested_hidden_groups_present",
+              "requested_hidden_groups_not_present",
+              "absent_group_behavior"
+            ],
+            "properties": {
+              "present_groups": { "type": "array", "items": { "type": "string" } },
+              "requested_hidden_groups_present": { "type": "array", "items": { "type": "string" } },
+              "requested_hidden_groups_not_present": { "type": "array", "items": { "type": "string" } },
+              "absent_group_behavior": { "const": "not_applicable_no_fallback" }
+            }
+          },
+          "visibility_operations": {
+            "type": "array",
+            "items": { "$ref": "#/components/schemas/ChildIndexOperation" }
+          },
+          "protected_primary_matches_not_hidden": { "type": "integer", "minimum": 0 },
+          "profile_blocked_visibility_matches": { "type": "integer", "minimum": 0 },
+          "material_operations": {
+            "type": "array",
+            "items": { "$ref": "#/components/schemas/ChildIndexOperation" }
+          },
+          "material_contract": {
+            "type": "object",
+            "required": [
+              "status",
+              "clinical_detail_behavior",
+              "protected_semantic_groups",
+              "protected_entity_count",
+              "mapped_labels_and_primary_pathology_remain_unmodified",
+              "source_legend_and_unmodified_asset_remain_available"
+            ],
+            "properties": {
+              "status": { "const": "display_blocked_developer_preview_only" },
+              "clinical_detail_behavior": { "const": "preserve_source_materials" },
+              "protected_semantic_groups": { "type": "array", "items": { "type": "string" } },
+              "protected_entity_count": { "type": "integer", "minimum": 0 },
+              "mapped_labels_and_primary_pathology_remain_unmodified": { "const": true },
+              "source_legend_and_unmodified_asset_remain_available": { "const": true }
+            }
+          },
+          "animation_operations": {
+            "type": "array",
+            "items": { "$ref": "#/components/schemas/ChildIndexOperation" }
+          },
+          "animation_contract": {
+            "type": "object",
+            "required": ["static_pose_strategy", "reviewed_representative_frame_available", "invented_animation_allowed"],
+            "properties": {
+              "static_pose_strategy": { "enum": ["initial_authored_pose", "not_requested"] },
+              "reviewed_representative_frame_available": { "const": false },
+              "invented_animation_allowed": { "const": false }
+            }
+          },
+          "opacity_contract": {
+            "type": "object",
+            "required": ["strategy", "requested_values", "opacity_operations", "reason"],
+            "properties": {
+              "strategy": { "const": "discrete_visibility_only_no_runtime_transparency" },
+              "requested_values": { "type": "object" },
+              "opacity_operations": { "type": "array", "maxItems": 0 },
+              "reason": { "type": "string" }
+            }
+          },
+          "lod_contract": {
+            "type": "object",
+            "required": ["requested_bias", "runtime_lod_variant_available", "applied", "behavior"],
+            "properties": {
+              "requested_bias": { "type": "integer", "minimum": 0 },
+              "runtime_lod_variant_available": { "const": false },
+              "applied": { "const": false },
+              "behavior": { "const": "preserve_source_geometry_and_profile_on_device" }
+            }
+          },
+          "presentation_ui_contract": {
+            "type": "object",
+            "required": [
+              "owner",
+              "annotations",
+              "pacing",
+              "comfort_controls",
+              "authored_geometry_labels_automatically_hidden",
+              "reason"
+            ],
+            "properties": {
+              "owner": { "const": "visionOS_application" },
+              "annotations": { "type": "object" },
+              "pacing": { "type": "object" },
+              "comfort_controls": { "type": "object" },
+              "authored_geometry_labels_automatically_hidden": { "const": false },
+              "reason": { "type": "string" }
+            }
+          },
+          "profile_action_contract": { "type": "object" },
+          "content_warning_required": { "type": "boolean" },
+          "progressive_disclosure_required": { "type": "boolean" },
+          "unresolved_requested_changes": { "type": "boolean" },
+          "fallback_if_unresolved": { "type": "string" },
+          "restore_contract": { "type": "object" },
+          "source_asset_unchanged": { "const": true },
+          "source_medical_content_remains_available": { "const": true },
+          "medical_content_preservation_status": {
+            "const": "requires_external_clinical_and_human_factors_review"
+          },
+          "patient_display_authorized": { "const": false },
+          "operation_counts": {
+            "type": "object",
+            "required": ["visibility", "materials", "animations"],
+            "properties": {
+              "visibility": { "type": "integer", "minimum": 0 },
+              "materials": { "type": "integer", "minimum": 0 },
+              "animations": { "type": "integer", "minimum": 0 }
+            }
           }
         }
       },
@@ -660,6 +1181,9 @@
           "mutates_source_asset",
           "fallback_if_semantic_layers_missing",
           "developer_preview_authorized",
+          "developer_runtime_application_authorized",
+          "semantic_mapping_status",
+          "fallback_required",
           "source_asset_manifest_approved",
           "patient_display_authorized",
           "patient_display_review_required",
@@ -683,6 +1207,16 @@
           "developer_preview_authorized": {
             "const": true
           },
+          "developer_runtime_application_authorized": {
+            "type": "boolean",
+            "description": "True only when exact package-revision-bound profiles and entity bindings were loaded."
+          },
+          "semantic_mapping_status": {
+            "enum": ["exact_revision_bound", "not_configured"]
+          },
+          "fallback_required": {
+            "type": "boolean"
+          },
           "source_asset_manifest_approved": {
             "type": "boolean"
           },
@@ -696,7 +1230,7 @@
             "const": "APPROVED_FOR_PATIENT_EDUCATION"
           },
           "required_adaptive_policy_approval": {
-            "const": "presentation-preference-v1"
+            "const": "presentation-preference-v2"
           },
           "authorization_notice": {
             "type": "string"

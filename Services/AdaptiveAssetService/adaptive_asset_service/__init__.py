@@ -3,4 +3,4 @@
 from .service import AdaptationService, ServiceError
 
 __all__ = ["AdaptationService", "ServiceError"]
-__version__ = "0.1.0"
+__version__ = "0.2.0"

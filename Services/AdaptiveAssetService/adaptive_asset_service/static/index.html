@@ -1,0 +1,280 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <meta name="color-scheme" content="dark">
+  <meta name="description" content="Local developer preview and integration harness for Stroke Vision adaptive presentation recipes.">
+  <title>Adaptive Visual Lab · Stroke Vision</title>
+  <link rel="stylesheet" href="/ui/app.css">
+</head>
+<body>
+  <a class="skip-link" href="#workspace">Skip to controls</a>
+
+  <header class="topbar">
+    <a class="brand" href="/" aria-label="Adaptive Visual Lab home">
+      <span class="brand-mark" aria-hidden="true"><span></span></span>
+      <span>
+        <strong>Stroke Vision</strong>
+        <small>Adaptive Visual Lab</small>
+      </span>
+    </a>
+    <div class="environment-badges" aria-label="Environment status">
+      <span class="badge badge-online"><span class="status-dot"></span>Loopback service</span>
+      <span class="badge">Developer preview</span>
+      <span class="badge badge-blocked">Patient display blocked</span>
+    </div>
+  </header>
+
+  <main>
+    <section class="hero" aria-labelledby="page-title">
+      <div>
+        <p class="eyebrow">Presentation recipe workbench</p>
+        <h1 id="page-title">Shape the level of detail without rewriting the medical source.</h1>
+        <p class="hero-copy">Choose an asset, explicit viewing preference, and motion profile. The service returns a reversible RealityKit sidecar recipe or a clinician-gated abstract review draft.</p>
+      </div>
+      <aside class="boundary-card" aria-label="Safety boundary">
+        <span class="boundary-icon" aria-hidden="true">i</span>
+        <div>
+          <strong>Preference, not diagnosis</strong>
+          <p>This lab never reads pupil, gaze, joint, voice, movement, or other biometric data. It does not estimate anxiety.</p>
+        </div>
+      </aside>
+    </section>
+
+    <section class="workspace" id="workspace" aria-label="Adaptive presentation workbench">
+      <aside class="control-panel panel">
+        <div class="panel-heading">
+          <div>
+            <p class="step-label">01 · Configure</p>
+            <h2>Presentation request</h2>
+          </div>
+          <span class="catalog-count" id="catalog-count">Loading catalog…</span>
+        </div>
+
+        <form id="adaptation-form">
+          <fieldset class="form-section asset-section">
+            <legend>Source asset</legend>
+            <label class="field-label" for="asset-filter">Search by name, ID, or module</label>
+            <div class="search-field">
+              <span aria-hidden="true">⌕</span>
+              <input id="asset-filter" type="search" placeholder="Search 135 assets" autocomplete="off">
+            </div>
+            <label class="sr-only" for="asset-id">Catalog asset</label>
+            <select id="asset-id" size="5" required aria-describedby="asset-help"></select>
+            <p class="field-help" id="asset-help">Only manifest-backed IDs are sent. File paths never enter the request.</p>
+            <article class="asset-summary" id="asset-summary" aria-live="polite">
+              <span class="asset-module">Waiting for catalog</span>
+              <strong>Select an asset to inspect its record.</strong>
+              <p>The catalog is loaded read-only from local manifests.</p>
+            </article>
+          </fieldset>
+
+          <fieldset class="form-section">
+            <legend>Operation</legend>
+            <div class="segmented two-up">
+              <input class="sr-only" type="radio" name="mode" id="mode-edit" value="edit" checked>
+              <label for="mode-edit"><strong>Fast edit</strong><small>Immediate sidecar</small></label>
+              <input class="sr-only" type="radio" name="mode" id="mode-generate" value="generate">
+              <label for="mode-generate"><strong>Review draft</strong><small>Async abstract USDA</small></label>
+            </div>
+          </fieldset>
+
+          <fieldset class="form-section">
+            <legend>Audience</legend>
+            <div class="segmented two-up">
+              <input class="sr-only" type="radio" name="audience" id="audience-patient" value="patient" checked>
+              <label for="audience-patient"><strong>Patient</strong><small>Direct preference</small></label>
+              <input class="sr-only" type="radio" name="audience" id="audience-family" value="family">
+              <label for="audience-family"><strong>Family</strong><small>Privacy gate added</small></label>
+            </div>
+          </fieldset>
+
+          <fieldset class="form-section">
+            <legend>Preference source</legend>
+            <label class="field-label" for="adaptation-source">Who selected the presentation?</label>
+            <select id="adaptation-source">
+              <option value="self_report_preference">Viewer self-report</option>
+              <option value="clinician_override">Governed facilitator choice</option>
+              <option value="simulated_demo">Seeded demo simulation</option>
+            </select>
+            <div class="demo-settings" id="demo-settings" hidden>
+              <label class="toggle-row" for="simulate-tier">
+                <span><strong>Let the demo choose the tier</strong><small>Deterministic and clearly labelled</small></span>
+                <input id="simulate-tier" type="checkbox" checked>
+              </label>
+              <label class="field-label" for="simulation-seed">Simulation seed</label>
+              <input id="simulation-seed" type="number" min="0" max="9007199254740991" value="20260809" inputmode="numeric">
+            </div>
+          </fieldset>
+
+          <fieldset class="form-section detail-section" id="detail-section">
+            <legend>Visual detail</legend>
+            <div class="tier-grid">
+              <input class="sr-only" type="radio" name="detail" id="detail-overview" value="overview">
+              <label for="detail-overview"><span>01</span><strong>Overview</strong><small>Orientation only</small></label>
+              <input class="sr-only" type="radio" name="detail" id="detail-simplified" value="simplified" checked>
+              <label for="detail-simplified"><span>02</span><strong>Simplified</strong><small>Essential layers</small></label>
+              <input class="sr-only" type="radio" name="detail" id="detail-standard" value="standard">
+              <label for="detail-standard"><span>03</span><strong>Standard</strong><small>Guided balance</small></label>
+              <input class="sr-only" type="radio" name="detail" id="detail-clinical" value="clinical_detail">
+              <label for="detail-clinical"><span>04</span><strong>Clinical detail</strong><small>Facilitator-led</small></label>
+            </div>
+          </fieldset>
+
+          <fieldset class="form-section">
+            <legend>Motion</legend>
+            <div class="segmented three-up">
+              <input class="sr-only" type="radio" name="motion" id="motion-system" value="system_default" checked>
+              <label for="motion-system">System</label>
+              <input class="sr-only" type="radio" name="motion" id="motion-reduced" value="reduced">
+              <label for="motion-reduced">Reduced</label>
+              <input class="sr-only" type="radio" name="motion" id="motion-static" value="static">
+              <label for="motion-static">Static</label>
+            </div>
+          </fieldset>
+
+          <div class="form-actions">
+            <button class="button button-primary" type="submit" id="submit-button">
+              <span>Build preview recipe</span><span aria-hidden="true">→</span>
+            </button>
+            <button class="button button-secondary" type="button" id="reset-button">Reset controls</button>
+          </div>
+        </form>
+      </aside>
+
+      <section class="preview-panel panel" aria-labelledby="preview-title">
+        <div class="panel-heading preview-heading">
+          <div>
+            <p class="step-label">02 · Inspect</p>
+            <h2 id="preview-title">Presentation preview</h2>
+          </div>
+          <span class="recipe-state state-idle" id="recipe-state"><span></span>Awaiting request</span>
+        </div>
+
+        <div class="visual-stage" id="visual-stage" data-detail="simplified" data-motion="system_default" aria-label="Abstract two-dimensional presentation sketch; not a rendered medical asset">
+          <div class="stage-grid" aria-hidden="true"></div>
+          <div class="stage-corner stage-corner-top"><span>DEV VIEW</span><span>GENERIC</span></div>
+          <div class="stage-corner stage-corner-bottom"><span id="stage-tier">SIMPLIFIED</span><span id="stage-motion">SYSTEM MOTION</span></div>
+          <div class="brain-composition" aria-hidden="true">
+            <div class="brain-shadow"></div>
+            <div class="brainstem"></div>
+            <div class="cerebellum"><span></span><span></span><span></span></div>
+            <div class="hemisphere hemisphere-left"><i></i><i></i><i></i><i></i></div>
+            <div class="hemisphere hemisphere-right"><i></i><i></i><i></i><i></i></div>
+            <div class="flow-network">
+              <span class="flow-line line-one"></span>
+              <span class="flow-line line-two"></span>
+              <span class="flow-line line-three"></span>
+              <span class="flow-node node-one"></span>
+              <span class="flow-node node-two"></span>
+              <span class="flow-node node-three"></span>
+            </div>
+            <div class="particle-field"><span></span><span></span><span></span><span></span><span></span></div>
+          </div>
+          <div class="stage-caption">
+            <span>Presentation sketch</span>
+            <strong id="stage-caption">Configure a request to inspect its visual policy.</strong>
+            <small>Not a USDZ render · not diagnostic anatomy</small>
+          </div>
+        </div>
+
+        <div class="metric-grid" aria-label="Recipe summary">
+          <article><span>Visible groups</span><strong id="metric-groups">—</strong><small id="metric-groups-note">No recipe</small></article>
+          <article><span>Blood / particle intent</span><strong id="metric-blood">—</strong><small>No runtime alpha</small></article>
+          <article><span>Label ceiling</span><strong id="metric-labels">—</strong><small>App-owned annotations</small></article>
+          <article><span>Motion speed</span><strong id="metric-motion">—</strong><small id="metric-motion-note">No recipe</small></article>
+        </div>
+
+        <section class="gate-card" id="gate-card" aria-live="polite">
+          <span class="gate-lock" aria-hidden="true"></span>
+          <div>
+            <p>Patient-display authorization</p>
+            <strong id="gate-title">Blocked by prototype policy</strong>
+            <small id="gate-detail">A completed recipe is not an approval to show adapted content to a patient.</small>
+          </div>
+          <span class="gate-value">FALSE</span>
+        </section>
+
+        <section class="candidate-card" id="candidate-card" hidden>
+          <div>
+            <p>Orientation candidate</p>
+            <strong id="candidate-title">Calm orientation model</strong>
+            <small id="candidate-detail">Review-gated replacement; never co-load with the source.</small>
+          </div>
+          <span>DISPLAY BLOCKED</span>
+        </section>
+
+        <section class="layer-summary" aria-labelledby="layers-title">
+          <div class="section-heading">
+            <h3 id="layers-title">Semantic layer intent</h3>
+            <span id="mapping-status">Awaiting exact map</span>
+          </div>
+          <div class="layer-columns">
+            <div><p>Visible</p><ul id="visible-layers"><li class="placeholder">Recipe groups appear here</li></ul></div>
+            <div><p>Deferred</p><ul id="hidden-layers"><li class="placeholder">Nothing selected yet</li></ul></div>
+          </div>
+        </section>
+      </section>
+    </section>
+
+    <section class="inspector panel" aria-labelledby="inspector-title">
+      <div class="panel-heading inspector-heading">
+        <div>
+          <p class="step-label">03 · Integrate</p>
+          <h2 id="inspector-title">Request and response contract</h2>
+        </div>
+        <div class="inspector-actions">
+          <button class="button button-quiet" type="button" id="copy-request">Copy request</button>
+          <button class="button button-quiet" type="button" id="copy-response">Copy response</button>
+        </div>
+      </div>
+
+      <div class="code-grid">
+        <article class="code-card">
+          <div class="code-heading"><span>POST</span><code>/v1/visual-adaptations</code></div>
+          <pre id="request-json" tabindex="0">{
+  "status": "Configure the form, then build a recipe"
+}</pre>
+        </article>
+        <article class="code-card">
+          <div class="code-heading"><span>JSON</span><code>response</code></div>
+          <pre id="response-json" tabindex="0">{
+  "patient_display_authorized": false
+}</pre>
+        </article>
+      </div>
+
+      <article class="integration-card">
+        <div>
+          <p>Client handoff</p>
+          <strong>Apply only as a reversible app-side presentation layer.</strong>
+          <small>Validate the policy version and semantic mapping, preserve the source, show the active-state badge, and reject patient display while authorization is false.</small>
+        </div>
+        <button class="button button-secondary" type="button" id="copy-curl">Copy cURL</button>
+        <pre id="curl-command">curl -H 'Content-Type: application/json' \
+  --data @examples/edit_request.json \
+  http://127.0.0.1:8765/v1/visual-adaptations</pre>
+      </article>
+
+      <article class="job-card" id="job-card" hidden aria-live="polite">
+        <div class="job-status-icon" aria-hidden="true"><span></span></div>
+        <div>
+          <p>Procedural review draft</p>
+          <strong id="job-title">Queued</strong>
+          <small id="job-detail">Waiting for the local deterministic template.</small>
+        </div>
+        <div class="job-links" id="job-links"></div>
+      </article>
+    </section>
+
+    <footer>
+      <p><strong>Adaptive Visual Lab</strong> runs locally and stores no patient data.</p>
+      <p>Generic education only · no diagnosis, planning, navigation, or standalone informed consent.</p>
+    </footer>
+  </main>
+
+  <div class="toast" id="toast" role="status" aria-live="polite"></div>
+  <script src="/ui/app.js" defer></script>
+</body>
+</html>
